@@ -9,6 +9,7 @@ import {
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
+import VIP from './pages/VIP';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='*' element={<h1>Not Found</h1>} />
           <Route path='/signup' element={<Signup/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
+          <Route path='/vip' element={<VIP/>} />
         </Routes>
       </BrowserRouter>
     </React.Fragment>
