@@ -9,6 +9,9 @@ import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-rou
 import Navbar from './components/global/Navbar';
 import Task from './pages/Task';
 import Team from './pages/Team';
+import Profile from './pages/Profile';
+import Orders from './pages/Orders';
+import IncomingDetails from './pages/IncomeDetails';
 
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
           <Route path='/vip' element={<VIP/>} />
           <Route path='/task' element={<Task/>} />
           <Route path='/team' element={<Team/>} />
+          <Route path='/profile' element={<Profile/>} />
+          <Route path='/orders' element={<Orders/>} />
+          <Route path='/income' element={<IncomingDetails/>} />
         </Routes>
       </Router>
       
