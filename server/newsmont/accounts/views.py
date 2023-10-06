@@ -12,12 +12,13 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def signup(request):
     if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        phone_number = request.POST.get('phone_number')
-        invite_code = request.POST.get('invite_code')
-        password = request.POST.get('password')
-        country_code = request.POST.get('country_code')
+        data = json.loads(request.body.decode('utf-8'))
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
+        phone_number = data.get('phone_number')
+        invite_code = data.get('invite_code')
+        password = data.get('password')
+        country_code = data.get('country_code')
 
         if not phone_number:
             return JsonResponse({'status': 'Error', 'message': 'Phone Number not provided'})
@@ -53,8 +54,9 @@ def signup(request):
 @csrf_exempt
 def activate_account(request):
     if request.method == 'POST':
-        phone_number = request.POST.get('phone_number')
-        otp = request.POST.get('otp')
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        otp = data.get('otp')
         user_profile_object = Profile.objects.filter(phone_number=phone_number).first()
         if user_profile_object:
             if user_profile_object.otp == otp and user_profile_object.start_time + timezone.timedelta(minutes=1) > timezone.now():                
@@ -68,8 +70,9 @@ def activate_account(request):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
-        phone_number = request.POST.get('phone_number')
-        password = request.POST.get('password')
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        password = data.get('password')
         user_object = User.objects.filter(username=phone_number).first()
         if user_object:
             if user_object.check_password(password):
@@ -84,7 +87,8 @@ def login(request):
 @csrf_exempt
 def forogt_password(request):
     if request.method == 'POST':
-        phone_number = request.POST.get('phone_number')
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
         user_object = User.objects.filter(username=phone_number).first()
         if user_object:
             token = generate_otp()
@@ -102,8 +106,9 @@ def forogt_password(request):
 @csrf_exempt
 def verify_forgot_password_token(request):
     if request.method == 'POST':
-        phone_number = request.POST.get('phone_number')
-        otp = request.POST.get('otp')
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        otp = data.get('otp')
         user_profile_object = Profile.objects.filter(phone_number=phone_number).first()
         if user_profile_object:
             if user_profile_object.forgot_password_token == otp and user_profile_object.forgot_password_token_start_time + timezone.timedelta(minutes=1) > timezone.now():                
@@ -115,8 +120,9 @@ def verify_forgot_password_token(request):
 @csrf_exempt
 def reset_password(request):
     if request.method == 'POST':
-        phone_number = request.POST.get('phone_number')
-        password = request.POST.get('password')
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        password = data.get('password')
         user_profile_object = Profile.objects.filter(phone_number=phone_number).first()
         if user_profile_object:
             user_object = user_profile_object.user
