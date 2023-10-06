@@ -12,6 +12,7 @@ import Team from './pages/Team';
 import Profile from './pages/Profile';
 import Orders from './pages/Orders';
 import IncomingDetails from './pages/IncomeDetails';
+import Footer from './components/general/Footer';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path='/orders' element={<Orders/>} />
           <Route path='/income' element={<IncomingDetails/>} />
         </Routes>
+        <Footer/>
       </Router>
       
     </React.Fragment>
