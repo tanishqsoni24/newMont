@@ -90,11 +90,11 @@ export default function Navbar() {
               </li>
             </Link>
 
-            <Link to="/My">
+            <Link to="/profile">
               <li
                 onClick={closeMenu}
                 className={`block py-2 pl-3 pr-4 text-black rounded col-p text-lg ${
-                  location.pathname === "/Team" ? "md:dark:text-[#0E9F6E]" : ""
+                  location.pathname === "/profile" ? "md:dark:text-[#0E9F6E]" : ""
                 } hover:text-[#0E9F6E] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#0E9F6E] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
               >
                 My profile

@@ -4,7 +4,7 @@ export default function Team() {
   return (
     <React.Fragment>
         <div style={{marginTop:"7rem"}} className="md:w-5/6 w-full mx-auto">
-            <div className="border mx-auto py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex justify-around">
+            <div className="border mx-1 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex justify-around">
 
             
             <div className="withdrawals flex flex-col item-center justify-center">
@@ -20,8 +20,8 @@ export default function Team() {
                 <p>Team Size</p>
             </div>
         </div>
-        <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white'>Invitation Code</h2>
-        <div className="border mx-auto py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <h2 className='mb-2 mx-1 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white'>Invitation Code</h2>
+        <div className="border mx-1 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="mb-6 mx-3">
   <label for="success" className="block mb-2 text-sm font-medium text-emerald-700 dark:text-emerald-500">Invite now</label>
   <input type="text" disabled id="success" className="bg-emerald-50 border border-emerald-500 text-emerald-900 dark:text-emerald-400 placeholder-emerald-700 dark:placeholder-emerald-500 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-emerald-500" placeholder="445dfyh8654s" />
@@ -29,9 +29,9 @@ export default function Team() {
   <button type="button" className="focus:outline-none text-white mx-3 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Copy Link</button>
 
             </div>
-            <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white'>Team Member</h2>
+            <h2 className='mb-2 mx-1 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white'>Team Member</h2>
             
-<div className="relative overflow-x-auto">
+<div className="relative overflow-x-auto mx-1">
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <tbody>
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
