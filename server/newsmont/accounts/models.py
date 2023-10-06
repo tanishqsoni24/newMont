@@ -14,12 +14,18 @@ class Profile(BaseModel):
     otp = models.CharField(max_length=6, blank=True, unique=True)
     start_time = models.DateTimeField(null=True, blank=True)
     recommended_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recommended_by", null=True, blank=True)
+    forgot_password_token = models.CharField(max_length=6, blank=True, unique=True)
+    forgot_password_token_start_time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.user.first_name
     
     def start_timer(self):
         self.start_time = timezone.now()
+        self.save()
+
+    def forgot_password_token_timer(self):
+        self.forgot_password_token_start_time = timezone.now()
         self.save()
 
     def save(self, *args, **kwargs):
