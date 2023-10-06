@@ -57,7 +57,7 @@ def activate_account(request):
         otp = request.POST.get('otp')
         user_profile_object = Profile.objects.filter(phone_number=phone_number).first()
         if user_profile_object:
-            if user_profile_object.otp == otp and user_profile_object.start_time + timezone.timedelta(minutes=3) > timezone.now():                
+            if user_profile_object.otp == otp and user_profile_object.start_time + timezone.timedelta(minutes=1) > timezone.now():                
                 user_profile_object.is_verified = True
                 user_profile_object.save()
                 return JsonResponse({'status': 'Success', 'message': 'Account Activated'})
@@ -78,5 +78,50 @@ def login(request):
                     return JsonResponse({'status': 'Success', 'message': 'Logged In'})
                 return JsonResponse({'status': 'Error', 'message': 'Account not activated'})
             return JsonResponse({'status': 'Error', 'message': 'Password Incorrect'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def forogt_password(request):
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            token = generate_otp()
+            user_profile_object = Profile.objects.filter(user=user_object).first()
+            user_profile_object.forgot_password_token = token
+            user_profile_object.forgot_password_token_timer()
+            user_profile_object.save()
+            response = send_otp(phone_number, token)
+            if response.status_code == 200:
+                return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
+            return JsonResponse({'status': 'Error', 'message': 'OTP Not Sent'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def verify_forgot_password_token(request):
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        otp = request.POST.get('otp')
+        user_profile_object = Profile.objects.filter(phone_number=phone_number).first()
+        if user_profile_object:
+            if user_profile_object.forgot_password_token == otp and user_profile_object.forgot_password_token_start_time + timezone.timedelta(minutes=1) > timezone.now():                
+                return JsonResponse({'status': 'Success', 'message': 'OTP Correct'})
+            return JsonResponse({'status': 'Error', 'message': 'OTP Incorrect'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def reset_password(request):
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        password = request.POST.get('password')
+        user_profile_object = Profile.objects.filter(phone_number=phone_number).first()
+        if user_profile_object:
+            user_object = user_profile_object.user
+            user_object.set_password(password)
+            user_object.save()
+            return JsonResponse({'status': 'Success', 'message': 'Password Reset Successfully'})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
