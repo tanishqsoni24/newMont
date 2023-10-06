@@ -1,6 +1,19 @@
 import React from "react";
+import { useState } from "react";
 import '../../App.css';
-export default function card(props) {
+export default function Card(props) {
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const showPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+
   return (
     <div className="w-full max-w-sm m-1 bg-white my-5 border  dark:bg-white dark:border dark:border-gray-100">
       <a href="/">
@@ -75,18 +88,47 @@ export default function card(props) {
             {props.rate}
           </span>
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-3xl font-thin col-p text-gray-900 dark:text-[#0E9F6E]">
+        <div className="flex flex-wrap items-center justify-between">
+          <span className=" ml-7 md:ml-0 text-lg md:text-3xl font-thin col-p text-gray-900 dark:text-[#0E9F6E]">
           ₹{props.total}
           </span>
           <a
-            href="/"
-            className="text-[#0E9F6E] hover:text-black focus:ring-4 focus:outline-none font-medium border border-[#0E9F6E] text-sm px-5 py-2.5 text-center dark:bg-transparent dark:hover:bg-[#0E9F6E] "
+            onClick={showPopup}
+            className="text-[#0E9F6E] ml-4 hover:text-black focus:ring-4 focus:outline-none font-medium border border-[#0E9F6E] text-sm px-5 py-2.5 text-center dark:bg-transparent dark:hover:bg-[#0E9F6E] hover:cursor:pointer "
           >
-            Add to cart
+            Purchase
           </a>
         </div>
       </div>
+      {isPopupOpen && (
+            <div className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20">
+        <div className="flex w-96 justify-end">
+          <img onClick={closePopup} className="mx-3"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC" alt=".." />
+          </div>
+          <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md ">
+          <p className="text-center text-xl font-semibold text-black" >Good Details</p>
+          <div className="contain p-3 mt-7 bg-white rounded-lg ">
+            <img className="w-32 rounded-lg " src={props.src} alt="" />
+            <p className="pt-3" >{props.desc}</p>
+            <p>₹{props.price}</p>
+          </div>
+          <p className="text-center text-xl font-semibold text-black mt-7" >Income Details</p>
+          <div className="contain p-3 mt-7 bg-white rounded-lg">
+
+            <p >VIP: VIPO</p>
+            <p >Days: {props.days}</p>
+            <p >Daily Income : ₹{props.daily}</p>
+            <p >Total Income : ₹{props.total}</p>
+          </div>
+          
+            <button
+              className="mt-4 py-2 px-11 md:px-32 bg-[#057A55] text-white rounded-3xl hover:bg-[#03543F] transition-colors 100ms ease-in-out "
+            >
+              Confirm Purchase
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
