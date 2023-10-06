@@ -12,6 +12,7 @@ export default function VipCard(props) {
     <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
   <div className="bg-emerald-600 h-2.5 rounded-full" style={{width: "45%"}}></div>
 </div>
+<p className="mb-3 my-2 font-normal text-gray-500 dark:text-gray-400">Go to this step by step guideline process on how to certify for your weekly benefits:</p>
 </div>
 
   )
