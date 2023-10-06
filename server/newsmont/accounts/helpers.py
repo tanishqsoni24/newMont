@@ -27,5 +27,3 @@ def send_otp(phone, otp):
     except Exception as e:
         print("here",e)
         return JsonResponse({'status': message.error_code, 'message': str(message.error_message)})
-    
-send_otp(8445933567, 123456)
