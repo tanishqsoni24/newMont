@@ -8,6 +8,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Card from "../components/general/Card";
 import "../App.css";
 import { Carousel } from "react-responsive-carousel";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -86,6 +87,7 @@ export default function Home() {
           </div>
         </div>
         <div className="second">
+          <Link to="/vip">
           <div className="item p-8" >
             <svg
               className="w-12"
@@ -99,6 +101,8 @@ export default function Home() {
             </svg>
             <p>VIP User</p>
           </div>
+          </Link>
+          <Link to="/team">
           <div className="item p-8" >
             <svg
               className="w-12"
@@ -124,6 +128,7 @@ export default function Home() {
             </svg>
             <p>Team</p>
           </div>
+          </Link>
         </div>
       {isPopupOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50 z-20">
