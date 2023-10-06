@@ -20,14 +20,16 @@ def signup(request):
         password = data.get('password')
         country_code = data.get('country_code')
 
+        print(data)
+
         if not phone_number:
             return JsonResponse({'status': 'Error', 'message': 'Phone Number not provided'})
         if not password:
             return JsonResponse({'status': 'Error', 'message': 'Password not provided'})
         if len(phone_number) != 10:
             return JsonResponse({'status': 'Error', 'message': 'Phone Number Invalid'})
-        if country_code != '+91':
-            return JsonResponse({'status': 'Error', 'message': 'Country Code Invalid'})
+        # if country_code != '+91':
+        #     return JsonResponse({'status': 'Error', 'message': 'Country Code Invalid'})
 
         user_obj = Profile.objects.filter(phone_number=phone_number).first()
         if user_obj:
