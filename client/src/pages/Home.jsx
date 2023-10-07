@@ -94,13 +94,16 @@ export default function Home() {
         </div>
       </Carousel>
       {isMainPopupOpen && (
-          <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50 z-20">
+          <div  className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20">
+            <div style={{width:"20rem"}} className="flex flex-col justify-center items-end">
+
             <img
               onClick={closemainPopup}
               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC"
               alt=".."
-            />
-            <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md ">
+              />
+              </div>
+            <div style={{width:"20rem"}} className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md ">
               <h3 className="font-bold text-xl text-black text-center mb-7" >Announcement</h3>
                <p>
                1.Notice: Newmont Mining APP will be officially launched on 10/1/2023.</p>
@@ -140,12 +143,14 @@ export default function Home() {
           </Link>
         </div>
         {isPopupOpen && (
-          <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50 z-20">
+          <div className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20">
+            <div style={{width:"14rem"}} className="flex flex-col justify-center items-end">
             <img
               onClick={closePopup}
               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC"
               alt=".."
             />
+            </div>
             <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md ">
             <img className="m-auto" width="50" height="50" src="https://img.icons8.com/ios/50/0E9F6E/telegram-app.png" alt="telegram-app"/>
               <p className="font-bold pb-3 pl-9 pr-9 justify-self-center">
@@ -160,13 +165,15 @@ export default function Home() {
         {isWPopupOpen && (
           <div
             id="pop"
-            className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50 z-20"
+            className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20"
           >
+            <div style={{width:"14rem"}} className="flex flex-col justify-center items-end">
             <img
               onClick={closeWPopup}
               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC"
               alt=".."
             />
+            </div>
             <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md ">
             <img className="m-auto" width="50" height="50" src="https://img.icons8.com/ios/50/0E9F6E/whatsapp--v1.png" alt="whatsapp--v1"/>
               <p className="font-bold pb-3 pl-9 pr-9 justify-self-center">
@@ -185,38 +192,32 @@ export default function Home() {
       </h2>
 
       <div className="card-nav mt-24 ">
-        <hr />
         <ul className="flex justify-around my-5 ">
           <li
             onClick={() => { setIsExclusive(false); setIsGift(false); setIsUpgrade(true);}}
-            className="cursor-pointer   hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out"
+            className={`cursor-pointer  ${isupgrade ? 'text-emerald-700 border-b-2 pb-2 border-emerald-700' : ''}  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out`}
           >
             Upgrade
           </li>
           <li
             onClick={() => { setIsExclusive(true); setIsGift(false); setIsUpgrade(false);}}
-            className="  cursor-pointer hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out"
+            className={`cursor-pointer  ${isexclusive ? 'text-emerald-700 border-b-2 pb-2 border-emerald-700 ' : ''}  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out`}
           >
             Exclusive
           </li>
           <li
             onClick={() => { setIsExclusive(false); setIsGift(true); setIsUpgrade(false);}}
-            className="cursor-pointer  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out"
+            className={`cursor-pointer  ${isgift ? 'text-emerald-700 border-b-2 pb-2 border-emerald-700' : ''}  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out`}
           >
             Gift
           </li>
         </ul>
-        <hr />
       </div>
 
       {/* Container for the cards */}
       <div className="container mx-auto mt-8 md:ml-0">
         {/* Flex row for the cards */}
-        <div id="exclusive"  className={`head my-11 mt-44 ${isupgrade ? 'block' : 'hidden'} `}>
-          <p className="text-center font-light text-4xl text-[#014737]">
-            UPGRADE
-          </p>
-          <hr />
+        <div id="exclusive"  className={`head my-11 ${isupgrade ? 'block' : 'hidden'} `}>
         </div>
         <div id="upgrade" className={`flex upgrade flex-wrap md:ml-9 ${isupgrade ? 'block' : 'hidden'}`}>
           {/* Set the width of each card for large screens */}
@@ -321,11 +322,7 @@ export default function Home() {
             />
           </div>
         </div>
-        <div id="exclusive"  className={`head my-11 mt-44 ${isexclusive ? 'block' : 'hidden'} `}>
-          <p className="text-center font-light text-4xl text-[#014737]">
-            EXCLUSIVE
-          </p>
-          <hr />
+        <div id="exclusive"  className={`head my-11 ${isexclusive ? 'block' : 'hidden'} `}>
         </div>
         <div className={`flex upgrade flex-wrap md:ml-9 ${isexclusive ? 'block' : 'hidden'}`}>
           {/* Set the width of each card for large screens */}
@@ -431,9 +428,7 @@ export default function Home() {
             />
           </div>
         </div>
-        <div id="gift" className={`head my-11 mt-44 ${isgift ? 'block' : 'hidden'} `}>
-          <p className="text-center font-light text-4xl text-[#014737]">GIFT</p>
-          <hr />
+        <div id="gift" className={`head my-11 ${isgift ? 'block' : 'hidden'} `}>
         </div>
 
         <div className={`flex upgrade flex-wrap md:ml-9 ${isgift ? 'block' : 'hidden'}`}>

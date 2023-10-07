@@ -39,45 +39,53 @@ export default function Profile() {
                 <h2 className='mb-2 mx-1 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white'>Common Functions</h2>
 
                 <div className="border mx-3 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 grid grid-cols-2 gap-2 md:flex md:flex-wrap md:justify-around">
-                    <Link to='/income'>
                     <div className="income-details my-3 mx-auto">
-                    <img width="32" height="32" src="https://img.icons8.com/ios/50/0E9F6E/expensive-2--v1.png" alt="expensive-2--v1"/>
-                    <p className='mx-auto'>Incoming Details</p>
-                    </div>
+                    <Link to='/income'>
+                    <img width="32" height="32"  className='mx-auto' src="https://img.icons8.com/ios/50/0E9F6E/expensive-2--v1.png" alt="expensive-2--v1"/>
+                    <p className='mx-auto text-center'>Income Details</p>
                     </Link>
-                    <Link to='/orders'>
+                    </div>
                     <div className="order my-3 mx-auto">
+                    <Link to='/orders'>
                     <img width="32" height="32" className='mx-auto' src="https://img.icons8.com/ios/50/0E9F6E/add-shopping-cart--v1.png" alt="add-shopping-cart--v1"/>
-                    <p className='mx-auto'>Order</p>
-                    </div>
+                    <p className='mx-auto text-center'>Order</p>
                     </Link>
+                    </div>
                     <div className="bank-card mx-auto my-3">
+                    <Link to='/bank-card'>
                     <img width="32" height="32" className='mx-auto' src="https://img.icons8.com/ios/50/0E9F6E/card-verification-value.png" alt="card-verification-value"/>
-                    <p className='mx-auto'>Bank Card</p>
+                    <p className='mx-auto text-center'>Bank Card</p>
+                    </Link> 
                     </div>
                     <div className="forgot-password mx-auto my-3">
+                        <Link to='/change-password'>
                     <img width="32" height="32" className='mx-auto' src="https://img.icons8.com/ios/50/0E9F6E/lock--v1.png" alt="lock--v1"/>
-                    <p className='mx-auto'>Forgot Password</p>
+                    <p className='mx-auto text-center'>Change Password</p>
+                    </Link>
                     </div>
                     <div className="delete-account mx-auto my-3">
                     <img width="32" height="32" className='mx-auto' src="https://img.icons8.com/ios/50/0E9F6E/trash--v1.png" alt="trash--v1"/> 
-                    <p className='mx-auto'>Delete Account</p>
+                    <p className='mx-auto text-center'>Delete Account</p>
                     </div>
                     <div className="download mx-auto my-3">
                     <img width="32" height="32" className='mx-auto' src="https://img.icons8.com/ios/50/0E9F6E/downloads-folder--v1.png" alt="downloads-folder--v1"/>
-                    <p className='mx-auto'>Download</p>
+                    <p className='mx-auto text-center'>Download</p>
                     </div>
                     <div className="recharge-record mx-auto my-3">
+                    <Link to='/recharge-record'>
                     <img width="32" height="32" className='mx-auto' src="https://img.icons8.com/ios/50/0E9F6E/money-bag.png" alt="money-bag"/>
-                    <p className='mx-auto'>Recharge Record</p>
+                    <p className='mx-auto text-center'>Recharge Record</p>
+                    </Link>
                     </div>
                     <div className="withdraw-record mx-auto my-3">
+                        <Link to='/withdraw-record'>
                     <img width="32" height="32" className='mx-auto' src="https://img.icons8.com/ios/50/0E9F6E/banknotes.png" alt="banknotes"/>
-                    <p className='mx-auto'>Withdraw Record</p>
+                    <p className='mx-auto text-center'>Withdraw Record</p>
+                    </Link>
                     </div>
                     <div className="logout mx-auto my-5">
                     <img width="32" height="32" className='mx-auto' src="https://img.icons8.com/windows/32/0E9F6E/exit.png" alt="exit"/>
-                    <p className='mx-auto'>logout</p>
+                    <p className='mx-auto text-center'>logout</p>
                     </div>
                     </div>
 
