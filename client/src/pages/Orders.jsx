@@ -42,7 +42,7 @@ export default function Orders() {
                     1
                 </td>
                 <td class="px-6 py-4">
-                    $2499
+                ₹2585
                 </td>
             </tr>
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -56,7 +56,7 @@ export default function Orders() {
                     1
                 </td>
                 <td class="px-6 py-4">
-                    $2499
+                ₹2585
                 </td>
             </tr>
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -70,7 +70,7 @@ export default function Orders() {
                     1
                 </td>
                 <td class="px-6 py-4">
-                    $2499
+                ₹2585
                 </td>
             </tr>
         </tbody>

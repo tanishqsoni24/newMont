@@ -39,24 +39,10 @@ export default function IncomingDetails() {
                     2021-08-01
                 </td>
                 <td class="px-6 py-4">
-                    +$2499
+                    +₹285
                 </td>
                 <td class="px-6 py-4">
-                    $8499
-                </td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Iron ore
-                </th>
-                <td class="px-6 py-4">
-                    2021-08-01
-                </td>
-                <td class="px-6 py-4">
-                    +$2499
-                </td>
-                <td class="px-6 py-4">
-                    $8499
+                ₹2585
                 </td>
             </tr>
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -67,10 +53,24 @@ export default function IncomingDetails() {
                     2021-08-01
                 </td>
                 <td class="px-6 py-4">
-                    +$2499
+                    +₹255
                 </td>
                 <td class="px-6 py-4">
-                    $8499
+                ₹25855
+                </td>
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Iron ore
+                </th>
+                <td class="px-6 py-4">
+                    2021-08-01
+                </td>
+                <td class="px-6 py-4">
+                    +₹2585
+                </td>
+                <td class="px-6 py-4">
+                ₹8585
                 </td>
             </tr>
         </tbody>

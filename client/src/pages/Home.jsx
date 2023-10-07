@@ -9,6 +9,8 @@ import Card from "../components/general/Card";
 import "../App.css";
 import { Carousel } from "react-responsive-carousel";
 import { Link } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
+import "./animate.css";
 
 export default function Home() {
   const scrollToSection = (sectionId) => {
@@ -22,7 +24,11 @@ export default function Home() {
   };
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isMainPopupOpen, setIsMainPopupOpen] = useState(true);
   const [isWPopupOpen, setIsWPopupOpen] = useState(false);
+  const [isexclusive, setIsExclusive] = useState(false);
+  const [isupgrade, setIsUpgrade] = useState(true);
+  const [isgift, setIsGift] = useState(false);
 
   const showPopup = () => {
     setIsPopupOpen(true);
@@ -30,6 +36,9 @@ export default function Home() {
 
   const closePopup = () => {
     setIsPopupOpen(false);
+  };
+  const closemainPopup = () => {
+    setIsMainPopupOpen(false);
   };
 
   const showWPopup = () => {
@@ -84,62 +93,180 @@ export default function Home() {
           <img src={cr3} alt="Slide 3" />
         </div>
       </Carousel>
-
+      <CSSTransition
+          in={isMainPopupOpen}
+          timeout={300} // Adjust the duration as needed
+          classNames="popup" // Use a class name of your choice
+          unmountOnExit
+        >
+      <div>
+      {isMainPopupOpen && (
+        <div className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20">
+          <div
+            style={{ width: "20rem" }}
+            className="flex flex-col justify-center items-end"
+          >
+            <img
+              onClick={closemainPopup}
+              width="20"
+              height="20"
+              className="mb-1"
+              src="https://img.icons8.com/ios-glyphs/30/0E9F6E/delete-sign.png"
+              alt="delete-sign"
+            />
+          </div>
+          <div
+            style={{ width: "20rem" }}
+            className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md "
+          >
+            <h3 className="font-bold text-xl text-black text-center mb-7">
+              Announcement
+            </h3>
+            <p>
+              1.Notice: Newmont Mining APP will be officially launched on
+              10/1/2023.
+            </p>
+            <p>
+              2.Withdrawal is available when your account balance reaches 180₹
+            </p>
+            <p>3.Withdrawal handling fee is 3%,</p>
+            <p>
+              4.If recharge fails, please refresh or choose another channel.{" "}
+            </p>
+            <p>
+              {" "}
+              5.If the team recharge reaches 100,000, the reward will be 10,000.
+            </p>
+            <p>
+              6. You can get Rs 1.5 Lakh when your team recharge reaches 5
+              Lakhs.
+            </p>
+            <p>7.This event will only be open once.</p>
+          </div>
+        </div>
+      )}
+      </div>
+      </CSSTransition>
       <div className="container flex justify-center bg-[#F3FAF7] rounded-lg">
         <div className="first">
           <div className="item p-2 m-8 cursor-pointer " onClick={showPopup}>
-          <img width="50" height="50" src="https://img.icons8.com/ios/50/0E9F6E/telegram-app.png" alt="telegram-app"/>
+            <img
+              width="50"
+              height="50"
+              src="https://img.icons8.com/ios/50/0E9F6E/telegram-app.png"
+              alt="telegram-app"
+            />
             <p>Telegram</p>
           </div>
           <div className="item p-2 m-8 cursor-pointer" onClick={showWPopup}>
-          <img width="50" height="50" src="https://img.icons8.com/ios/50/0E9F6E/whatsapp--v1.png" alt="whatsapp--v1"/>
+            <img
+              width="50"
+              height="50"
+              src="https://img.icons8.com/ios/50/0E9F6E/whatsapp--v1.png"
+              alt="whatsapp--v1"
+            />
             <p>Whatsapp</p>
           </div>
         </div>
         <div className="second">
-         <Link to="/vip">
-          <div className="item p-2 m-8 cursor-pointer">
-          <img width="50" height="50" src="https://img.icons8.com/ios/50/0E9F6E/crown.png" alt="crown"/>
-            <p>VIP User</p>
-          </div>
+          <Link to="/vip">
+            <div className="item p-2 m-8 cursor-pointer">
+              <img
+                width="50"
+                height="50"
+                src="https://img.icons8.com/ios/50/0E9F6E/crown.png"
+                alt="crown"
+              />
+              <p>VIP User</p>
+            </div>
           </Link>
           <Link to="/team">
-          <div className="item p-2 m-8 cursor-pointer">
-          <img width="50" height="50" src="https://img.icons8.com/ios/50/0E9F6E/conference-call--v1.png" alt="conference-call--v1"/>
-            <p>My Team</p>
-          </div>
+            <div className="item p-2 m-8 cursor-pointer">
+              <img
+                width="50"
+                height="50"
+                src="https://img.icons8.com/ios/50/0E9F6E/conference-call--v1.png"
+                alt="conference-call--v1"
+              />
+              <p>My Team</p>
+            </div>
           </Link>
         </div>
-        {isPopupOpen && (
-          <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50 z-20">
-            <img
-              onClick={closePopup}
-              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC"
-              alt=".."
-            />
-            <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md ">
-            <img className="m-auto" width="50" height="50" src="https://img.icons8.com/ios/50/0E9F6E/telegram-app.png" alt="telegram-app"/>
-              <p className="font-bold pb-3 pl-9 pr-9 justify-self-center">
-                Telegram
-              </p>
-              <button className="mt-4 px-5 py-2 md:ml-5 ml-5 bg-[#057A55] text-white rounded-3xl hover:bg-[#03543F] transition-colors 100ms ease-in-out ">
-                Join Now
-              </button>
-            </div>
+        <CSSTransition
+          in={isPopupOpen}
+          timeout={300} // Adjust the duration as needed
+          classNames="popup" // Use a class name of your choice
+          unmountOnExit
+        >
+          <div>
+            {isPopupOpen && (
+              <div className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20">
+                <div
+                  style={{ width: "14rem" }}
+                  className="flex flex-col justify-center items-end"
+                >
+                  <img
+                    onClick={closePopup}
+                    width="20"
+                    height="20"
+                    className="mb-1"
+                    src="https://img.icons8.com/ios-glyphs/30/0E9F6E/delete-sign.png"
+                    alt="delete-sign"
+                  />
+                </div>
+                <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md">
+                  <img
+                    className="m-auto"
+                    width="50"
+                    height="50"
+                    src="https://img.icons8.com/ios/50/014737/telegram-app.png"
+                    alt="telegram-app"
+                  />
+                  <p className="font-bold pb-3 pl-9 pr-9 justify-self-center">
+                    Telegram
+                  </p>
+                  <button className="mt-4 px-5 py-2 md:ml-5 ml-5 bg-[#057A55] text-white rounded-3xl hover:bg-[#03543F] transition-colors 100ms ease-in-out">
+                    Join Now
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </CSSTransition>
+
+        <CSSTransition
+          in={isWPopupOpen}
+          timeout={300} // Adjust the duration as needed
+          classNames="popup" // Use a class name of your choice
+          unmountOnExit
+        >
+        <div>
         {isWPopupOpen && (
           <div
             id="pop"
-            className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50 z-20"
+            className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20"
           >
-            <img
-              onClick={closeWPopup}
-              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC"
-              alt=".."
-            />
+            <div
+              style={{ width: "14rem" }}
+              className="flex flex-col justify-center items-end"
+            >
+              <img
+                onClick={closeWPopup}
+                width="20"
+                height="20"
+                className="mb-1"
+                src="https://img.icons8.com/ios-glyphs/30/014737/delete-sign.png"
+                alt="delete-sign"
+              />
+            </div>
             <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md ">
-            <img className="m-auto" width="50" height="50" src="https://img.icons8.com/ios/50/0E9F6E/whatsapp--v1.png" alt="whatsapp--v1"/>
+              <img
+                className="m-auto"
+                width="50"
+                height="50"
+                src="https://img.icons8.com/ios/50/0E9F6E/whatsapp--v1.png"
+                alt="whatsapp--v1"
+              />
               <p className="font-bold pb-3 pl-9 pr-9 justify-self-center">
                 Whatsapp
               </p>
@@ -149,6 +276,8 @@ export default function Home() {
             </div>
           </div>
         )}
+        </div>
+        </CSSTransition>
       </div>
 
       <h2 className="text-[#0E9F6E] text-center col-p m-7 md:text-4xl text-3xl">
@@ -156,39 +285,69 @@ export default function Home() {
       </h2>
 
       <div className="card-nav mt-24 ">
-        <hr />
         <ul className="flex justify-around my-5 ">
           <li
-            onClick={() => scrollToSection("upgrade")}
-            className="cursor-pointer   hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out"
+            onClick={() => {
+              setIsExclusive(false);
+              setIsGift(false);
+              setIsUpgrade(true);
+            }}
+            className={`cursor-pointer  ${
+              isupgrade
+                ? "text-emerald-700 border-b-2 pb-2 border-emerald-700"
+                : ""
+            }  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out`}
           >
             Upgrade
           </li>
           <li
-            onClick={() => scrollToSection("exclusive")}
-            className="  cursor-pointer hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out"
+            onClick={() => {
+              setIsExclusive(true);
+              setIsGift(false);
+              setIsUpgrade(false);
+            }}
+            className={`cursor-pointer  ${
+              isexclusive
+                ? "text-emerald-700 border-b-2 pb-2 border-emerald-700 "
+                : ""
+            }  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out`}
           >
             Exclusive
           </li>
           <li
-            onClick={() => scrollToSection("gift")}
-            className="cursor-pointer  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out"
+            onClick={() => {
+              setIsExclusive(false);
+              setIsGift(true);
+              setIsUpgrade(false);
+            }}
+            className={`cursor-pointer  ${
+              isgift
+                ? "text-emerald-700 border-b-2 pb-2 border-emerald-700"
+                : ""
+            }  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out`}
           >
             Gift
           </li>
         </ul>
-        <hr />
       </div>
 
       {/* Container for the cards */}
       <div className="container mx-auto mt-8 md:ml-0">
         {/* Flex row for the cards */}
-
-        <div id="upgrade" className="flex upgrade flex-wrap md:ml-9">
+        <div
+          id="exclusive"
+          className={`head my-11 ${isupgrade ? "block" : "hidden"} `}
+        ></div>
+        <div
+          id="upgrade"
+          className={`flex upgrade flex-wrap md:ml-9 ${
+            isupgrade ? "block" : "hidden"
+          }`}
+        >
           {/* Set the width of each card for large screens */}
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
-              desc="Iron Mine"
+              desc="Iron Mine upgrade"
               days="45"
               daily="240"
               total="40000"
@@ -206,6 +365,17 @@ export default function Home() {
               price="15,223"
               rate="4.3"
               src="https://source.unsplash.com/800x600/?office"
+            />
+          </div>
+          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
+            <Card
+              desc="Silver Mine"
+              days="45"
+              daily="240"
+              total="40000"
+              price="90,623"
+              rate="4.1 "
+              src="https://source.unsplash.com/800x600/?work"
             />
           </div>
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
@@ -263,17 +433,7 @@ export default function Home() {
               src="https://source.unsplash.com/800x600/?mines"
             />
           </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="90,623"
-              rate="4.1 "
-              src="https://source.unsplash.com/800x600/?work"
-            />
-          </div>
+
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
               desc="Gold Mine"
@@ -286,17 +446,19 @@ export default function Home() {
             />
           </div>
         </div>
-        <div id="exclusive" className="head my-11 ">
-          <p className="text-center font-light text-2xl text-[#014737]">
-            EXCLUSIVE
-          </p>
-          <hr />
-        </div>
-        <div className="flex upgrade flex-wrap md:ml-9">
+        <div
+          id="exclusive"
+          className={`head my-11 ${isexclusive ? "block" : "hidden"} `}
+        ></div>
+        <div
+          className={`flex upgrade flex-wrap md:ml-9 ${
+            isexclusive ? "block" : "hidden"
+          }`}
+        >
           {/* Set the width of each card for large screens */}
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
-              desc="Iron Mine"
+              desc="Iron Mine exclusive"
               days="45"
               daily="240"
               total="40000"
@@ -305,17 +467,7 @@ export default function Home() {
               src="https://source.unsplash.com/800x600/?work"
             />
           </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="15,223"
-              rate="4.3"
-              src="https://source.unsplash.com/800x600/?office"
-            />
-          </div>
+
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
               desc="Gold Mine"
@@ -325,6 +477,17 @@ export default function Home() {
               price="71,223"
               rate="4.1"
               src="https://source.unsplash.com/800x600/?coal"
+            />
+          </div>
+          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
+            <Card
+              desc="Iron Mine"
+              days="45"
+              daily="240"
+              total="40000"
+              price="22,423"
+              rate="4.5"
+              src="https://source.unsplash.com/800x600/?mines"
             />
           </div>
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
@@ -362,15 +525,16 @@ export default function Home() {
           </div>
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
-              desc="Iron Mine"
+              desc="Silver Mine"
               days="45"
               daily="240"
               total="40000"
-              price="22,423"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?mines"
+              price="15,223"
+              rate="4.3"
+              src="https://source.unsplash.com/800x600/?office"
             />
           </div>
+
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
               desc="Silver Mine"
@@ -394,16 +558,20 @@ export default function Home() {
             />
           </div>
         </div>
-        <div id="gift" className="head my-11">
-          <p className="text-center font-light text-2xl text-[#014737]">GIFT</p>
-          <hr />
-        </div>
+        <div
+          id="gift"
+          className={`head my-11 ${isgift ? "block" : "hidden"} `}
+        ></div>
 
-        <div className="flex upgrade flex-wrap md:ml-9">
+        <div
+          className={`flex upgrade flex-wrap md:ml-9 ${
+            isgift ? "block" : "hidden"
+          }`}
+        >
           {/* Set the width of each card for large screens */}
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
-              desc="Iron Mine"
+              desc="Iron Mine gift"
               days="45"
               daily="240"
               total="40000"
