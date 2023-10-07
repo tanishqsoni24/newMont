@@ -336,8 +336,8 @@ export default function Home() {
         {/* Flex row for the cards */}
         <div
             className={`flex upgrade flex-wrap md:ml-9 ${
-              isupgrade ? 'translate-y-0 opacity-100 ' : 'translate-y-12 opacity-0 '
-            } transition-all duration-300`}
+              isupgrade ? 'block ' : 'hidden'
+            }`}
          
         >
           {/* Set the width of each card for large screens */}
@@ -444,8 +444,8 @@ export default function Home() {
         </div>
         <div
                className={`flex upgrade flex-wrap md:ml-9 ${
-                isexclusive ? '-translate-y-full opacity-100 ' : 'translate-y-12 opacity-0 '
-              } transition-all duration-300`}
+                isexclusive ? 'block ' : 'hidden'
+              } `}
         >
           {/* Set the width of each card for large screens */}
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
@@ -553,8 +553,8 @@ export default function Home() {
 
         <div
            className={`flex upgrade flex-wrap md:ml-9 ${
-            isgift ? 'translate-y-[-201%] opacity-100   ' : 'translate-y-12 opacity-0'
-          } transition-all duration-300 ease-in-out `}
+            isgift ? ' block ' : 'hidden'
+          }`}
         >
           {/* Set the width of each card for large screens */}
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
