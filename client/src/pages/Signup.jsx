@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
+    const navigate = useNavigate();
     const [signup , setSignup] = useState({
         first_name:'',
         last_name:'',
@@ -22,6 +24,13 @@ export default function Signup() {
             console.log(signup)
             const response = await axios.post('http://localhost:8000/accounts/signup/',signup ,{ headers: { 'Content-Type': 'application/json' } });
             console.log(response)
+
+            if(response.status === 200){
+                console.log('success')
+            }
+
+            // push the url to /otp 
+            navigate('/otp')
 
         }
         catch(err){
