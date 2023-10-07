@@ -17,6 +17,7 @@ import RechargeRecord from './pages/RechargeRecord';
 import ChangePassword from './pages/ChangePassword';
 import AddBankCard from './pages/AddBankCard';
 import BankCard from './pages/BankCard';
+import Otp from './pages/Otp';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path='/add-card' element={<React.Fragment><Navbar /><AddBankCard /><Footer /></React.Fragment>} />
           <Route path='/bank-card' element={<React.Fragment><Navbar /><BankCard /><Footer /></React.Fragment>} />
           <Route path='*' element={<h1>Not Found</h1>} />
+          <Route path="/otp" element={<Otp/>} />
         </Routes>
       </Router>
     </React.Fragment>
