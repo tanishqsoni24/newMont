@@ -22,7 +22,11 @@ export default function Home() {
   };
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isMainPopupOpen, setIsMainPopupOpen] = useState(true);
   const [isWPopupOpen, setIsWPopupOpen] = useState(false);
+  const [isexclusive, setIsExclusive] = useState(false);
+  const [isupgrade, setIsUpgrade] = useState(true);
+  const [isgift, setIsGift] = useState(false);
 
   const showPopup = () => {
     setIsPopupOpen(true);
@@ -31,6 +35,10 @@ export default function Home() {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
+  const closemainPopup = () => {
+    setIsMainPopupOpen(false);
+  };
+
 
   const showWPopup = () => {
     setIsWPopupOpen(true);
@@ -57,6 +65,7 @@ export default function Home() {
   }, []);
 
   return (
+    
     <div id="top" className="carousel-container mt-20">
       <Carousel
         showThumbs={false}
@@ -84,7 +93,27 @@ export default function Home() {
           <img src={cr3} alt="Slide 3" />
         </div>
       </Carousel>
-
+      {isMainPopupOpen && (
+          <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50 z-20">
+            <img
+              onClick={closemainPopup}
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC"
+              alt=".."
+            />
+            <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md ">
+              <h3 className="font-bold text-xl text-black text-center mb-7" >Announcement</h3>
+               <p>
+               1.Notice: Newmont Mining APP will be officially launched on 10/1/2023.</p>
+               <p>2.Withdrawal is available when your account balance reaches 180₹</p>
+               <p>3.Withdrawal handling fee is 3%,</p>
+               <p>4.If recharge fails, please refresh or choose another channel. </p>
+              <p> 5.If the team recharge reaches 100,000, the reward will be 10,000.</p>
+               <p>6. You can get Rs 1.5 Lakh when your team recharge reaches 5 Lakhs.</p>
+               <p>7.This event will only be open once.</p>
+              
+            </div>
+          </div>
+        )}
       <div className="container flex justify-center bg-[#F3FAF7] rounded-lg">
         <div className="first">
           <div className="item p-2 m-8 cursor-pointer " onClick={showPopup}>
@@ -159,19 +188,19 @@ export default function Home() {
         <hr />
         <ul className="flex justify-around my-5 ">
           <li
-            onClick={() => scrollToSection("upgrade")}
+            onClick={() => { setIsExclusive(false); setIsGift(false); setIsUpgrade(true);}}
             className="cursor-pointer   hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out"
           >
             Upgrade
           </li>
           <li
-            onClick={() => scrollToSection("exclusive")}
+            onClick={() => { setIsExclusive(true); setIsGift(false); setIsUpgrade(false);}}
             className="  cursor-pointer hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out"
           >
             Exclusive
           </li>
           <li
-            onClick={() => scrollToSection("gift")}
+            onClick={() => { setIsExclusive(false); setIsGift(true); setIsUpgrade(false);}}
             className="cursor-pointer  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out"
           >
             Gift
@@ -183,12 +212,17 @@ export default function Home() {
       {/* Container for the cards */}
       <div className="container mx-auto mt-8 md:ml-0">
         {/* Flex row for the cards */}
-
-        <div id="upgrade" className="flex upgrade flex-wrap md:ml-9">
+        <div id="exclusive"  className={`head my-11 mt-44 ${isupgrade ? 'block' : 'hidden'} `}>
+          <p className="text-center font-light text-4xl text-[#014737]">
+            UPGRADE
+          </p>
+          <hr />
+        </div>
+        <div id="upgrade" className={`flex upgrade flex-wrap md:ml-9 ${isupgrade ? 'block' : 'hidden'}`}>
           {/* Set the width of each card for large screens */}
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
-              desc="Iron Mine"
+              desc="Iron Mine upgrade"
               days="45"
               daily="240"
               total="40000"
@@ -206,6 +240,17 @@ export default function Home() {
               price="15,223"
               rate="4.3"
               src="https://source.unsplash.com/800x600/?office"
+            />
+          </div>
+          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
+            <Card
+              desc="Silver Mine"
+              days="45"
+              daily="240"
+              total="40000"
+              price="90,623"
+              rate="4.1 "
+              src="https://source.unsplash.com/800x600/?work"
             />
           </div>
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
@@ -263,17 +308,7 @@ export default function Home() {
               src="https://source.unsplash.com/800x600/?mines"
             />
           </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="90,623"
-              rate="4.1 "
-              src="https://source.unsplash.com/800x600/?work"
-            />
-          </div>
+
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
               desc="Gold Mine"
@@ -286,17 +321,17 @@ export default function Home() {
             />
           </div>
         </div>
-        <div id="exclusive" className="head my-11 ">
-          <p className="text-center font-light text-2xl text-[#014737]">
+        <div id="exclusive"  className={`head my-11 mt-44 ${isexclusive ? 'block' : 'hidden'} `}>
+          <p className="text-center font-light text-4xl text-[#014737]">
             EXCLUSIVE
           </p>
           <hr />
         </div>
-        <div className="flex upgrade flex-wrap md:ml-9">
+        <div className={`flex upgrade flex-wrap md:ml-9 ${isexclusive ? 'block' : 'hidden'}`}>
           {/* Set the width of each card for large screens */}
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
-              desc="Iron Mine"
+              desc="Iron Mine exclusive"
               days="45"
               daily="240"
               total="40000"
@@ -305,17 +340,7 @@ export default function Home() {
               src="https://source.unsplash.com/800x600/?work"
             />
           </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="15,223"
-              rate="4.3"
-              src="https://source.unsplash.com/800x600/?office"
-            />
-          </div>
+          
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
               desc="Gold Mine"
@@ -325,6 +350,17 @@ export default function Home() {
               price="71,223"
               rate="4.1"
               src="https://source.unsplash.com/800x600/?coal"
+            />
+          </div>
+          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
+            <Card
+              desc="Iron Mine"
+              days="45"
+              daily="240"
+              total="40000"
+              price="22,423"
+              rate="4.5"
+              src="https://source.unsplash.com/800x600/?mines"
             />
           </div>
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
@@ -362,15 +398,16 @@ export default function Home() {
           </div>
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
-              desc="Iron Mine"
+              desc="Silver Mine"
               days="45"
               daily="240"
               total="40000"
-              price="22,423"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?mines"
+              price="15,223"
+              rate="4.3"
+              src="https://source.unsplash.com/800x600/?office"
             />
           </div>
+          
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
               desc="Silver Mine"
@@ -394,16 +431,16 @@ export default function Home() {
             />
           </div>
         </div>
-        <div id="gift" className="head my-11">
-          <p className="text-center font-light text-2xl text-[#014737]">GIFT</p>
+        <div id="gift" className={`head my-11 mt-44 ${isgift ? 'block' : 'hidden'} `}>
+          <p className="text-center font-light text-4xl text-[#014737]">GIFT</p>
           <hr />
         </div>
 
-        <div className="flex upgrade flex-wrap md:ml-9">
+        <div className={`flex upgrade flex-wrap md:ml-9 ${isgift ? 'block' : 'hidden'}`}>
           {/* Set the width of each card for large screens */}
           <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
             <Card
-              desc="Iron Mine"
+              desc="Iron Mine gift"
               days="45"
               daily="240"
               total="40000"
