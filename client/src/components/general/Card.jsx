@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import '../../App.css';
+import { CSSTransition } from "react-transition-group";
+import "../../pages/animate.css";
 export default function Card(props) {
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -16,15 +18,17 @@ export default function Card(props) {
 
   return (
     <div className="w-full max-w-sm m-1 bg-white my-5 border  dark:bg-white dark:border dark:border-gray-100">
-      <a href="/">
+      <a  onClick={showPopup}>
+        
         <img
+        
           className="p-3   "
           src={props.src}
           alt="product"
         />
       </a>
       <div className="px-5 pb-5">
-        <a href="/">
+        <a  onClick={showPopup}>
           <h5 className="text-xl font-thin tracking-tight text-gray-900 p-2 dark:text-[#0E9F6E]">
             {props.desc}
           </h5>
@@ -100,10 +104,17 @@ export default function Card(props) {
           </a>
         </div>
       </div>
+      <CSSTransition
+          in={isPopupOpen}
+          timeout={300} // Adjust the duration as needed
+          classNames="popup" // Use a class name of your choice
+          unmountOnExit
+        >
+      <div>
       {isPopupOpen && (
             <div className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20">
         <div className="flex w-96 justify-end">
-          <img onClick={closePopup} className="mx-3"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC" alt=".." />
+          <img onClick={closePopup} className="-mx-9"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC" alt=".." />
           </div>
           <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md ">
           <p className="text-center text-xl font-semibold text-black" >Good Details</p>
@@ -129,6 +140,8 @@ export default function Card(props) {
           </div>
         </div>
       )}
+      </div>
+      </CSSTransition>
     </div>
   );
 }
