@@ -13,6 +13,11 @@ import Profile from './pages/Profile';
 import Orders from './pages/Orders';
 import IncomingDetails from './pages/IncomeDetails';
 import Footer from './components/general/Footer';
+import WithdrawRecord from './pages/WithdrawRecord';
+import RechargeRecord from './pages/RechargeRecord';
+import ChangePassword from './pages/ChangePassword';
+import AddBankCard from './pages/AddBankCard';
+import BankCard from './pages/BankCard';
 
 
 function App() {
@@ -32,6 +37,11 @@ function App() {
           <Route path='/profile' element={<Profile/>} />
           <Route path='/orders' element={<Orders/>} />
           <Route path='/income' element={<IncomingDetails/>} />
+          <Route path='/withdraw-record' element={<WithdrawRecord/>} />
+          <Route path='/recharge-record' element={<RechargeRecord/>} />
+          <Route path='/change-password' element={<ChangePassword/>} />
+          <Route path='/add-card' element={<AddBankCard/>} />
+          <Route path='/bank-card' element={<BankCard/>} />
         </Routes>
         <Footer/>
       </Router>
