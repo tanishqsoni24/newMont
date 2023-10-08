@@ -3,6 +3,7 @@ import { useState } from "react";
 import '../../App.css';
 import { CSSTransition } from "react-transition-group";
 import "../../pages/animate.css";
+import axios from "axios";
 export default function Card(props) {
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -14,6 +15,22 @@ export default function Card(props) {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
+
+  const handlepurchase = async () => {
+    setIsPopupOpen(false);
+
+    // check wallet balance elegible for purchase
+
+
+
+
+    // if elegible
+
+    // purchase
+
+    const purchase = await axios.post("http://localhost:8000/dasboard/purchase", props.id , {"content": "application/json"});
+
+  }
 
 
   return (
@@ -126,13 +143,14 @@ export default function Card(props) {
           <p className="text-center text-xl font-semibold text-black mt-7" >Income Details</p>
           <div className="contain p-3 mt-7 bg-white rounded-lg">
 
-            <p >VIP: VIPO</p>
+            <p >VIP: {props.vip}</p>
             <p >Days: {props.days}</p>
             <p >Daily Income : ₹{props.daily}</p>
             <p >Total Income : ₹{props.total}</p>
           </div>
           
-            <button
+            <button 
+            onClick={handlepurchase} 
               className="mt-4 py-2 px-11 md:px-32 bg-[#057A55] text-white rounded-3xl hover:bg-[#03543F] transition-colors 100ms ease-in-out "
             >
               Confirm Purchase
