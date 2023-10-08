@@ -38,14 +38,17 @@ def signup(request):
         user_create_object.save()
 
         otp = generate_otp()
+        print(otp)
         user_profile_object = Profile.objects.create(user=user_create_object, phone_number=phone_number, otp=otp)
+        print("here")
         user_profile_object.start_timer()
+        print("here 2")
         user_profile_object.save()
+        print("here 3")
 
         response = send_otp(phone_number, otp)
         if response.status_code == 200:
             if invite_code:
-                user_profile_object.invite_code = generate_ref_code()
                 user_profile_object.recommended_by = Profile.objects.filter(invite_code=invite_code).first().user
                 user_profile_object.save()
             return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
@@ -131,5 +134,58 @@ def reset_password(request):
             user_object.set_password(password)
             user_object.save()
             return JsonResponse({'status': 'Success', 'message': 'Password Reset Successfully'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def change_my_password(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        old_password = data.get('old_password')
+        new_password = data.get('new_password')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            if user_object.check_password(old_password):
+                user_object.set_password(new_password)
+                user_object.save()
+                return JsonResponse({'status': 'Success', 'message': 'Password Changed'})
+            return JsonResponse({'status': 'Error', 'message': 'Old Password Incorrect'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def delete_account(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            user_object.delete()
+            return JsonResponse({'status': 'Success', 'message': 'Account Deleted'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def my_teams(request):  
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            level_1 = Profile.objects.filter(recommended_by=user_object).values()
+            level_2 = []
+            level_3 = []
+            for i in level_1:
+                level_2 += Profile.objects.filter(recommended_by=i['user_id']).values()
+            for i in level_2:
+                level_3 += Profile.objects.filter(recommended_by=i['user_id']).values()
+            myteams = {
+                'level_1': list(level_1),
+                'level_2': list(level_2),
+                'level_3': list(level_3)
+            }
+
+            return JsonResponse({'status': 'Success', 'message': 'My Teams', 'myteams' : myteams })
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})

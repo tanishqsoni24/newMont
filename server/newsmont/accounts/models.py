@@ -14,8 +14,9 @@ class Profile(BaseModel):
     otp = models.CharField(max_length=6, blank=True, unique=True)
     start_time = models.DateTimeField(null=True, blank=True)
     recommended_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recommended_by", null=True, blank=True)
-    forgot_password_token = models.CharField(max_length=6, blank=True, unique=True)
+    forgot_password_token = models.CharField(max_length=6, blank=True, null=True, unique=True)
     forgot_password_token_start_time = models.DateTimeField(null=True, blank=True)
+    vip_level = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.first_name
