@@ -2,9 +2,11 @@ import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
+import Spinner from '../components/general/Spinner'
 
 export default function Signup() {
     const navigate = useNavigate();
+    const[loading,setLoading]=useState(false)
     const [signup , setSignup] = useState({
         first_name:'',
         last_name:'',
@@ -18,7 +20,7 @@ export default function Signup() {
         setSignup({...signup,[name]:value})
     }
     const handleSubmit = async (e)=>{
-        
+        setLoading(true);
         try{
             e.preventDefault()
             console.log(signup)
@@ -36,6 +38,7 @@ export default function Signup() {
         catch(err){
             console.log(err)
         }
+        setLoading(false);
     }
   return (
     <section style={{marginTop:"7rem", marginBottom:"7rem"}} className=" bg-gray-50 h-screen dark:bg-gray-900 py-auto">
@@ -95,13 +98,14 @@ export default function Signup() {
                   </div>
                   <button type="submit"
                   onClick={handleSubmit}
-                  className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Sign up</button>
+                  className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">{loading ? 'Signing up...' : 'Sign up'}</button>
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                       Have an account? <Link to="/login" className="font-medium text-emerald-600 hover:underline dark:text-emerald-500">Sign in</Link>
                   </p>
               </form>
           </div>
       </div>
+      {loading && <Spinner/>}
   </div>
 </section>
   )

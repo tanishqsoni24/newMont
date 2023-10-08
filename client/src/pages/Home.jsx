@@ -351,14 +351,10 @@ export default function Home() {
       <div className="container mx-auto mt-8 md:ml-0">
         {/* Flex row for the cards */}
         <div
-          id="exclusive"
-          className={`head my-11 ${isupgrade ? "block" : "hidden"} `}
-        ></div>
-        <div
-          id="upgrade"
-          className={`flex upgrade flex-wrap md:ml-9 ${
-            isupgrade ? "block" : "hidden"
-          }`}
+            className={`flex upgrade flex-wrap md:ml-9 ${
+              isupgrade ? 'block ' : 'hidden'
+            }`}
+         
         >
           {/* Set the width of each card for large screens */}
           {upgrade && upgrade.map((item) => (
@@ -376,13 +372,9 @@ export default function Home() {
             </div>))}
         </div>
         <div
-          id="exclusive"
-          className={`head my-11 ${isexclusive ? "block" : "hidden"} `}
-        ></div>
-        <div
-          className={`flex upgrade flex-wrap md:ml-9 ${
-            isexclusive ? "block" : "hidden"
-          }`}
+               className={`flex upgrade flex-wrap md:ml-9 ${
+                isexclusive ? 'block ' : 'hidden'
+              } `}
         >
           {/* Set the width of each card for large screens */}
           {exclusive && exclusive.map((item) => (
@@ -399,14 +391,10 @@ export default function Home() {
               />
             </div>))}
         </div>
-        <div
-          id="gift"
-          className={`head my-11 ${isgift ? "block" : "hidden"} `}
-        ></div>
 
         <div
-          className={`flex upgrade flex-wrap md:ml-9 ${
-            isgift ? "block" : "hidden"
+           className={`flex upgrade flex-wrap md:ml-9 ${
+            isgift ? ' block ' : 'hidden'
           }`}
         >
           {/* Set the width of each card for large screens */}
