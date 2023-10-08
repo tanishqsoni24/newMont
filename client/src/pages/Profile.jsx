@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 export default function Profile() {
     return (
@@ -84,8 +85,14 @@ export default function Profile() {
                     </Link>
                     </div>
                     <div className="logout mx-auto my-5">
+                        <button onClick={()=>{
+                            Cookies.remove("session_id")
+                            window.location.href = "/login"
+                        }}>
+
                     <img width="32" height="32" className='mx-auto' src="https://img.icons8.com/windows/32/0E9F6E/exit.png" alt="exit"/>
                     <p className='mx-auto text-center'>logout</p>
+                    </button>
                     </div>
                     </div>
 
