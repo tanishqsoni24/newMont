@@ -27,7 +27,7 @@ export default function Otp() {
 
         if (response.status === 200) {
             console.log('success')
-            navigate('/')
+            navigate('/');
 
         }
 

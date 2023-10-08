@@ -1,6 +1,19 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 export default function AddBankCard() {
+    const [bankCard, setBankCard] = useState({
+        accountHolderName: '',
+        bankName: '',
+        accountNumber: '',
+        ifscCode: ''
+    })
+    const handleChange = text => e => {
+        setBankCard({...bankCard, [text]: e.target.value})
+    }
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        console.log(bankCard)
+    }
   return (
     <section style={{marginTop:"8rem"}} className=" bg-gray-50 h-screen dark:bg-gray-900 py-auto">
     <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">

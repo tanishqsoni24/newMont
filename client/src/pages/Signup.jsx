@@ -24,7 +24,7 @@ export default function Signup() {
         try{
             e.preventDefault()
             console.log(signup)
-            const response = await axios.post('http://localhost:8000/accounts/signup/',signup ,{ headers: { 'Content-Type': 'application/json' } });
+            const response = await axios.post('http://127.0.0.1:8000/accounts/signup/',signup ,{ headers: { 'Content-Type': 'application/json' } });
             console.log(response)
 
             if(response.status === 200){

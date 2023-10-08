@@ -11,8 +11,24 @@ import { Carousel } from "react-responsive-carousel";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import "./animate.css";
+import axios from "axios";
 
 export default function Home() {
+  const [exclusive, setExclusive] = useState([]);
+  const [upgrade, setUpgrade] = useState([]);
+  const [gift, setGift] = useState([]);
+  useEffect(() => {
+
+    const fetching = async () => {
+      const response = await axios.get("http://127.0.0.1:8000/dashboard/all_products/");
+      console.log(response.data);
+      setExclusive(response.data.exclusive_product_details);
+      setUpgrade(response.data.upgrade_product_details);
+      setGift(response.data.gift_product_details);
+    }
+    fetching();
+  }, [])
+
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -341,106 +357,19 @@ export default function Home() {
          
         >
           {/* Set the width of each card for large screens */}
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Iron Mine upgrade"
-              days="45"
-              daily="240"
-              total="40000"
-              price="24,223"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?work"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="15,223"
-              rate="4.3"
-              src="https://source.unsplash.com/800x600/?office"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="90,623"
-              rate="4.1 "
-              src="https://source.unsplash.com/800x600/?work"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Gold Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="71,223"
-              rate="4.1"
-              src="https://source.unsplash.com/800x600/?coal"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Iron Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="34,223"
-              rate="4.7"
-              src="https://source.unsplash.com/800x600/?worker"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine "
-              days="45"
-              daily="240"
-              total="40000"
-              price="45,223"
-              rate="4.9"
-              src="https://source.unsplash.com/800x600/?workers"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Gold Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="62,323"
-              rate="5.0"
-              src="https://source.unsplash.com/800x600/?office"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Iron Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="22,423"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?mines"
-            />
-          </div>
-
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Gold Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="34,223"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?worker"
-            />
-          </div>
+          {upgrade && upgrade.map((item) => (
+            <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
+              <Card
+              vip={item.eligible_for_vip_number}
+                desc={item.name}
+                days={item.days}
+                daily={item.daily_income}
+                total={item.total_income}
+                price={item.price}
+                rate="4.5"
+                src={"http://127.0.0.1:8000"+item.image}
+              />
+            </div>))}
         </div>
         <div
                className={`flex upgrade flex-wrap md:ml-9 ${
@@ -448,107 +377,19 @@ export default function Home() {
               } `}
         >
           {/* Set the width of each card for large screens */}
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Iron Mine exclusive"
-              days="45"
-              daily="240"
-              total="40000"
-              price="24,223"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?work"
-            />
-          </div>
-
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Gold Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="71,223"
-              rate="4.1"
-              src="https://source.unsplash.com/800x600/?coal"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Iron Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="22,423"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?mines"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Iron Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="34,223"
-              rate="4.7"
-              src="https://source.unsplash.com/800x600/?worker"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine "
-              days="45"
-              daily="240"
-              total="40000"
-              price="45,223"
-              rate="4.9"
-              src="https://source.unsplash.com/800x600/?workers"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Gold Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="62,323"
-              rate="5.0"
-              src="https://source.unsplash.com/800x600/?office"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="15,223"
-              rate="4.3"
-              src="https://source.unsplash.com/800x600/?office"
-            />
-          </div>
-
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="90,623"
-              rate="4.1 "
-              src="https://source.unsplash.com/800x600/?work"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Gold Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="34,223"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?worker"
-            />
-          </div>
+          {exclusive && exclusive.map((item) => (
+            <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
+              <Card
+              vip={item.eligible_for_vip_number}
+                desc={item.name}
+                days={item.days}
+                daily={item.daily_income}
+                total={item.total_income}
+                price={item.price}
+                rate="4.5"
+                src={"http://127.0.0.1:8000"+item.image}
+              />
+            </div>))}
         </div>
 
         <div
@@ -557,105 +398,19 @@ export default function Home() {
           }`}
         >
           {/* Set the width of each card for large screens */}
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Iron Mine gift"
-              days="45"
-              daily="240"
-              total="40000"
-              price="24,223"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?work"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="15,223"
-              rate="4.3"
-              src="https://source.unsplash.com/800x600/?office"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Gold Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="71,223"
-              rate="4.1"
-              src="https://source.unsplash.com/800x600/?coal"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Iron Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="34,223"
-              rate="4.7"
-              src="https://source.unsplash.com/800x600/?worker"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine "
-              days="45"
-              daily="240"
-              total="40000"
-              price="45,223"
-              rate="4.9"
-              src="https://source.unsplash.com/800x600/?workers"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Gold Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="62,323"
-              rate="5.0"
-              src="https://source.unsplash.com/800x600/?office"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Iron Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="22,423"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?mines"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Silver Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="90,623"
-              rate="4.1 "
-              src="https://source.unsplash.com/800x600/?work"
-            />
-          </div>
-          <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
-            <Card
-              desc="Gold Mine"
-              days="45"
-              daily="240"
-              total="40000"
-              price="34,223"
-              rate="4.5"
-              src="https://source.unsplash.com/800x600/?worker"
-            />
-          </div>
+          {gift && gift.map((item) => (
+            <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
+              <Card
+              vip={item.eligible_for_vip_number}
+                desc={item.name}
+                days={item.days}
+                daily={item.daily_income}
+                total={item.total_income}
+                price={item.price}
+                rate="4.5"
+                src={"http://127.0.0.1:8000"+item.image}
+              />
+            </div>))}
         </div>
       </div>
     </div>

@@ -2,8 +2,12 @@ import React,{useState} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Spinner from '../components/general/Spinner'
+import sign  from "jwt-encode";
+import Cookies from 'js-cookie'
+import { useNavigate } from 'react-router-dom'
 export default function Login() {
     const[loading,setLoading]=useState(false)
+    const navigate = useNavigate()
     const [login , setLogin] = useState({
         phone_number:'',
         password:''
@@ -18,6 +22,23 @@ export default function Login() {
         try{
             const response = await axios.post('http://localhost:8000/accounts/login/',login, { headers: { 'Content-Type': 'application/json' } });
             console.log(response)
+            console.log(response.data)
+
+            if(response.data.status === "Success"){
+
+                // decode the token
+                const token_data = {
+                    phone_number: login.phone_number,
+                }
+                const token = await sign(token_data, "AuthSystemBuild", {
+                    expiresIn: "30d",
+                  });
+                Cookies.set("session_id", token, { expires: 30 });
+
+                // redirect to home page
+                window.location.href = "/"
+                
+            }
         }
         catch(err){
             console.log(err)
