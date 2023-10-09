@@ -83,7 +83,17 @@ def login(request):
             if user_object.check_password(password):
                 user_profile_object = Profile.objects.filter(user=user_object).first()
                 if user_profile_object.is_verified:
-                    return JsonResponse({'status': 'Success', 'message': 'Logged In'})
+                    data = {
+                        'first_name': user_object.first_name,
+                        'last_name': user_object.last_name,
+                        'phone_number': user_object.username,
+                        'country_code': '+91',
+                        'invite_code': user_profile_object.invite_code,
+                        'is_verified': user_profile_object.is_verified,
+                        'is_active': user_object.is_active
+                    }
+                    print(data)
+                    return JsonResponse({'status': 'Success', 'message': 'Logged In', 'data': data})
                 return JsonResponse({'status': 'Error', 'message': 'Account not activated'})
             return JsonResponse({'status': 'Error', 'message': 'Password Incorrect'})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
