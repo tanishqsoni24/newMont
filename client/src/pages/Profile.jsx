@@ -1,16 +1,36 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
-import Cookies from 'js-cookie'
+import jwt_decode from "jwt-decode";
+import Cookies from "js-cookie";
 
 export default function Profile() {
+    const [user, setUser] = useState({
+        phone_number: '',
+        name: '',
+    })
+
+    useEffect(() => {
+        const userDeatil = async () => {
+        const token = Cookies.get("session_id");
+        const decoded = await jwt_decode(token);
+        console.log(decoded)
+
+        setUser({
+            phone_number: decoded.phone_number,
+            name: decoded.first_name + " " + decoded.last_name
+        })
+        }
+        userDeatil()
+
+    }, [])
+    
     return (
         <React.Fragment>
             <div style={{ marginTop: "7rem" }} className="md:w-5/6 w-full mx-auto">
                 <div className="profile flex my-5 flex-col items-center justify-center">
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAADbElEQVR4nO2ZWUgWURTHf6aphRYtPkQktoBh0L6QBElUBBJRL+0gES0PFUlU0EK0QBBClIE9RWJQBkVmRD20LyoVRGFEGxZqi0tFFJhLXPgPXOTzW2Y+mon8wcVx7rln/ve7c+ecOQO99PLPkAjMArYBJUA5cBY4CiwD+hNwUoDtQCPQFaZ9BPIJKCOB55bYx8AxrcoKrcQO4J7624BTwDwCRAZQJ4FVwJQI9nu7rdBlYAAB4JwE3dTtFYkEIAtYB9RrbCU+MwroBH4BY1yMzwSaNZkF+MhmiSjz4GNfHHx45pJErPTgY7x81OIj1RIRaYOHIxloB34rBvnCK03Ezf6waZOfZHzihQSM9uDDrEKHWiI+cUcTmenBxwj5aMBHyiViiQcfc+XjNj6yRyL2e/BxUD7MX9/Il4irHnzcl4/5+MhiiWhW6hErQ60nlkn9faNKIja6HJ8EHJCPM/hIXRziSK58mCegb1yRiFUefGyQj1J8ZL1EvAO2uhi/G3gfh3zNM32txNFE+VgwUfybXgPO+xnVHRL01DIpxhCiZ5p+gKcEiIsStSWGMcc15ggBYqFEfQDSorAfDvzQmHEEiD7AQwmrAFLD2A4C7srW1LsCx1jgpwQOC2M3WTafI9j5SkMUE5kgm2cEmHqJNHugJ3Jk85IA810iTWzJDtGfrYKcE0QDSY6Cm1NBNFltsSqRGTp2Mt0u7SfzdhgocoG3Vs50UpUR8/9XtS5VSkqsbMDcXjMIAFOB04rqRtgDIF19Jj60WivQYsWMwUCNzndo8tP/tnhT311t1bTsZiqPDjtD9Jtz3auUdqsBCiLEIc+kScgn68LNSjEKrX2Rpzquc2vZrV19edZ+KZSPJsvuC7DLWt24Re1Ncu5c6BGwBuhn2R22RLTouAh4olZk3WKOLzPGwaxCQbeVblL+ZjR4wny3uGY5Nm9xc8JMuMKyvaBX2Vq1JJ1z+ivCCJwN3LJsrwMD3U4i1cqfzOeyRVGMSdd7fJWOl1pilofojyYZbbQ+Itl3QNQUy8EbfZhxww1rIm4LcJnAa/k4EevgbD3zzeac5FJAVrcA2alvjW6YaFXsQ2UMPXJIFzfFBbesDfHUMp/b3FLppiLpBCsjxi2lISZSFocfpjqWQXZEDlprjSVydwW8pbha0156+Y/5A+i7dzTeZORWAAAAAElFTkSuQmCC" />
-                    <h2 className='mb-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-white'>Tanishq</h2>
-                    <h2 className='mb-2 text-sm font-semibold tracking-tight text-gray-600 my-1 dark:text-white'>+91 70****1844</h2>
-
+                    <h2 className='mb-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-white'>{user.name}</h2>
+                    <h2 className='mb-2 text-sm font-semibold tracking-tight text-gray-600 my-1 dark:text-white'>+91 {user.phone_number}</h2>
                 </div>
                 <div className="border mx-1 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex justify-between">
 

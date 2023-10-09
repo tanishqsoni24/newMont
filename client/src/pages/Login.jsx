@@ -27,8 +27,12 @@ export default function Login() {
             if(response.data.status === "Success"){
 
                 // decode the token
+                console.log(response.data.data)
                 const token_data = {
-                    phone_number: login.phone_number,
+                    first_name: response.data.data.first_name,
+                    last_name: response.data.data.last_name,
+                    phone_number: response.data.data.phone_number,
+                    invite_code: response.data.data.invite_code,
                 }
                 const token = await sign(token_data, "AuthSystemBuild", {
                     expiresIn: "30d",

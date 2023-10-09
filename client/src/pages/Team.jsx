@@ -1,6 +1,27 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
+import { Link } from 'react-router-dom'
+import jwt_decode from "jwt-decode";
+import Cookies from "js-cookie";
+
 
 export default function Team() {
+    const [user, setUser] = useState({
+        invite_code: '',
+    })
+
+    useEffect(() => {
+        const userDeatil = async () => {
+        const token = Cookies.get("session_id");
+        const decoded = await jwt_decode(token);
+        console.log(decoded)
+
+        setUser({
+            invite_code: decoded.invite_code,
+        })
+        }
+        userDeatil()
+
+    }, [])
   return (
     <React.Fragment>
         <div style={{marginTop:"7rem"}} className="md:w-5/6 w-full mx-auto">
@@ -24,7 +45,7 @@ export default function Team() {
         <div className="border mx-1 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="mb-6 mx-3">
   <label for="success" className="block mb-2 text-sm font-medium text-emerald-700 dark:text-emerald-500">Invite now</label>
-  <input type="text" disabled id="success" className="bg-emerald-50 border border-emerald-500 text-emerald-900 dark:text-emerald-400 placeholder-emerald-700 dark:placeholder-emerald-500 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-emerald-500" placeholder="445dfyh8654s" />
+  <input type="text" disabled id="success" className="bg-emerald-50 border border-emerald-500 text-emerald-900 dark:text-emerald-400 placeholder-emerald-700 dark:placeholder-emerald-500 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-emerald-500" placeholder={user.invite_code} />
   </div>
   <button type="button" className="focus:outline-none text-white mx-3 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Copy Link</button>
 
