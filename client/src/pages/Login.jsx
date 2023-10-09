@@ -33,6 +33,9 @@ export default function Login() {
                     last_name: response.data.data.last_name,
                     phone_number: response.data.data.phone_number,
                     invite_code: response.data.data.invite_code,
+                    wallet: response.data.data.wallet,
+                    recharge_amount: response.data.data.recharge_amount,
+                    income: response.data.data.income,
                 }
                 const token = await sign(token_data, "AuthSystemBuild", {
                     expiresIn: "30d",

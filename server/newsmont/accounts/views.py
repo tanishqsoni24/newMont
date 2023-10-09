@@ -7,6 +7,9 @@ import json
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
+from dashboard.models import Recharge_Record
+from django.utils import timezone
+
 # Create your views here.
 
 @csrf_exempt
@@ -90,9 +93,12 @@ def login(request):
                         'country_code': '+91',
                         'invite_code': user_profile_object.invite_code,
                         'is_verified': user_profile_object.is_verified,
-                        'is_active': user_object.is_active
+                        'is_active': user_object.is_active,
+                        'wallet': user_profile_object.wallet,
+                        'recharge_amount': user_profile_object.recharge_amount,
+                        'income': user_profile_object.income,
                     }
-                    print(data)
+                    print(user_profile_object.wallet, user_profile_object.recharge_amount, user_profile_object.income)
                     return JsonResponse({'status': 'Success', 'message': 'Logged In', 'data': data})
                 return JsonResponse({'status': 'Error', 'message': 'Account not activated'})
             return JsonResponse({'status': 'Error', 'message': 'Password Incorrect'})
@@ -197,5 +203,31 @@ def my_teams(request):
             }
 
             return JsonResponse({'status': 'Success', 'message': 'My Teams', 'myteams' : myteams })
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+
+@csrf_exempt
+def recharge(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        amount = data.get('amount')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            user_profile_object = Profile.objects.filter(user=user_object).first()
+            print(user_profile_object.wallet, user_profile_object.recharge_amount, user_profile_object.income)
+            user_profile_object.wallet = user_profile_object.wallet + int(amount)
+            user_profile_object.recharge_amount = user_profile_object.recharge_amount + int(amount)
+            user_profile_object.save()
+
+            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=amount, status=True, date=timezone.now(), amount_left=user_profile_object.wallet)
+            recharge_record_object.save()
+
+            print(recharge_record_object.status, recharge_record_object.amount, recharge_record_object.date, recharge_record_object.amount_left)
+
+
+
+            return JsonResponse({'status': 'Success', 'message': 'Recharge Successful', 'data': {'wallet': user_profile_object.wallet, 'recharge_amount': user_profile_object.recharge_amount, 'income': user_profile_object.income}})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})

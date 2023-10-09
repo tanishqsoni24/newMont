@@ -17,6 +17,9 @@ class Profile(BaseModel):
     forgot_password_token = models.CharField(max_length=6, blank=True, null=True, unique=True)
     forgot_password_token_start_time = models.DateTimeField(null=True, blank=True)
     vip_level = models.IntegerField(default=0)
+    wallet = models.IntegerField(default=0)
+    recharge_amount = models.IntegerField(default=0)
+    income = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.first_name

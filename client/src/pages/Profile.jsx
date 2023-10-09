@@ -2,27 +2,85 @@ import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
+import axios from 'axios'
+import sign  from "jwt-encode";
 
 export default function Profile() {
     const [user, setUser] = useState({
         phone_number: '',
         name: '',
+        wallet: '',
+        recharge_amount: '',
+        income: '',
+        invite_code: '',
     })
-
-    useEffect(() => {
-        const userDeatil = async () => {
+    const [isRechargePopupOpen, setIsRechargePopupOpen] = useState(false);
+    const openPopup = () => {
+        setIsRechargePopupOpen(true);
+    }
+    const closePopup = () => {
+        setIsRechargePopupOpen(false);
+    }
+    const userDeatil = async () => {
         const token = Cookies.get("session_id");
         const decoded = await jwt_decode(token);
         console.log(decoded)
 
         setUser({
             phone_number: decoded.phone_number,
-            name: decoded.first_name + " " + decoded.last_name
+            name: decoded.first_name + " " + decoded.last_name,
+            wallet: decoded.wallet,
+            recharge_amount: decoded.recharge_amount,
+            income: decoded.income,
+            invite_code: decoded.invite_code,
         })
         }
+    useEffect(() => {
         userDeatil()
 
     }, [])
+
+    const [recharge, setRecharge] = useState(0)
+
+    const handelRecharge = async (e) => {
+        e.preventDefault()
+        try{
+            const response = await axios.post('http://localhost:8000/accounts/recharge/',{amount: recharge, phone_number: user.phone_number}, { headers: { 'Content-Type': 'application/json' } });
+
+            if(response.data.status === "Success"){
+
+                console.log(response.data)
+
+                // decode the token
+
+                Cookies.remove("session_id")
+
+                const token_data = {
+                    first_name: user.name.split(" ")[0],
+                    last_name: user.name.split(" ")[1],
+                    phone_number: user.phone_number,
+                    invite_code: user.invite_code,
+                    wallet: response.data.data.wallet,
+                    recharge_amount: response.data.data.recharge_amount,
+                    income: response.data.data.income,
+                }
+                const token = await sign(token_data, "AuthSystemBuild", {
+                    expiresIn: "30d",
+                  });
+                Cookies.set("session_id", token, { expires: 30 });
+
+                console.log(token_data)
+
+                userDeatil()
+
+                // close popup 
+                closePopup()
+            }
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
     
     return (
         <React.Fragment>
@@ -36,11 +94,11 @@ export default function Profile() {
 
 
                     <div className="mx-4 flex flex-col item-center justify-center">
-                        <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹27000.00</h2>
+                        <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹{user.wallet}.00</h2>
                         <p>Cash</p>
                     </div>
                     <div className="teamSize flex mx-4 flex-col item-center justify-center">
-                    <button type="button" className="text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Recharge</button>
+                    <button type="button" className="text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800" onClick={openPopup}>Recharge</button>
                     <button type="button" class="text-emerald-900 bg-white border border-emerald-700 focus:outline-none hover:bg-emerald-100 focus:ring-4 focus:ring-emerald-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-emerald-600 dark:hover:bg-emerald-700 dark:hover:border-emerald-600 dark:focus:ring-emerald-700">Withdraw</button>
                     </div>
                 </div>
@@ -49,11 +107,11 @@ export default function Profile() {
 
 
                     <div className="mx-4 flex flex-col item-center justify-center">
-                        <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹568.00</h2>
+                        <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹{user.income}.00</h2>
                         <p>Income</p>
                     </div>
                     <div className="teamSize flex mx-4 flex-col item-center justify-center">
-                    <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹5668.00</h2>
+                    <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹{user.recharge_amount}.00</h2>
                         <p>Recharge Amount</p>
                     </div>
                 </div>
@@ -117,6 +175,44 @@ export default function Profile() {
                     </div>
 
             </div>
+
+            {isRechargePopupOpen && (
+          <div
+            id="pop"
+            className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20"
+          >
+            <div
+              style={{ width: "20rem" }}
+              className="flex flex-col justify-center items-end"
+            >
+              <img
+                onClick={closePopup}
+                width="20"
+                height="20"
+                className="mb-1"
+                src="https://img.icons8.com/ios-glyphs/30/014737/delete-sign.png"
+                alt="delete-sign"
+              />
+      <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-emerald-900 md:text-2xl dark:text-white">
+                  Recharge Amount
+              </h1>
+              <form className="space-y-4 md:space-y-6" action="#">
+                  <div>
+                      <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amount</label>
+                      <input type="number"
+                      onChange={(e)=>setRecharge(e.target.value)}
+                    value={recharge==0? "": recharge}
+                      name="recharge" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="750" required=""/>
+                  </div>
+                  <button type="submit" onClick={handelRecharge} className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Process</button>
+              </form>
+          </div>
+      </div>
+            </div>
+            </div>
+            )}
         </React.Fragment>
     )
 }
