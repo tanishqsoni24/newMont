@@ -57,17 +57,10 @@ class Recharge_Record(BaseModel):
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     status = models.BooleanField(default=False)
     date = models.DateTimeField(blank=True, null=True)
-    amount_left = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    amount_left = models.DecimalField(default=0,max_digits=10, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
         return self.amount + " " + self.date
-    
-class Wallet(BaseModel):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="wallet_user")
-    amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
     
 class Orders(BaseModel):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="orer_user")

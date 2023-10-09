@@ -10,4 +10,5 @@ urlpatterns = [
     path('reset-password/', views.reset_password, name='reset_password'),
     path('verify-forgot-password-token/', views.verify_forgot_password_token, name='verify_forgot_password_token'),
     path('my-teams/', views.my_teams, name='my_teams'),
+    path('recharge/', views.recharge, name='recharge'),
 ]
