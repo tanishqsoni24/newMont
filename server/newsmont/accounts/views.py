@@ -7,8 +7,7 @@ import json
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from dashboard.models import Recharge_Record
-from django.utils import timezone
+from dashboard.models import Recharge_Record, Withdraw_Record, Bank_Card
 
 # Create your views here.
 
@@ -220,14 +219,53 @@ def recharge(request):
             user_profile_object.wallet = user_profile_object.wallet + int(amount)
             user_profile_object.recharge_amount = user_profile_object.recharge_amount + int(amount)
             user_profile_object.save()
-
             recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=amount, status=True, date=timezone.now(), amount_left=user_profile_object.wallet)
             recharge_record_object.save()
-
-            print(recharge_record_object.status, recharge_record_object.amount, recharge_record_object.date, recharge_record_object.amount_left)
-
-
-
             return JsonResponse({'status': 'Success', 'message': 'Recharge Successful', 'data': {'wallet': user_profile_object.wallet, 'recharge_amount': user_profile_object.recharge_amount, 'income': user_profile_object.income}})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+
+
+@csrf_exempt
+def withdrawl(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        amount = data.get('amount')
+        bank_card_id = data.get('bank_card_id')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            user_profile_object = Profile.objects.filter(user=user_object).first()
+            if user_profile_object.wallet >= int(amount):
+                user_profile_object.wallet = user_profile_object.wallet - int(amount)
+                user_profile_object.save()
+                withdraw_record_object = Withdraw_Record.objects.create(user=user_profile_object, amount=amount, status=False, date=timezone.now(), bank_card_id=bank_card_id)
+                withdraw_record_object.save()
+                return JsonResponse({'status': 'Success', 'message': 'Withdrawl Successful', 'data': {'wallet': user_profile_object.wallet}})
+            return JsonResponse({'status': 'Error', 'message': 'Withdrawl Amount Greater than Wallet Amount'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+
+@csrf_exempt
+def add_bank_card(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        card_holder_name = data.get('card_holder_name')
+        card_number = data.get('card_number')
+        ifsc_code = data.get('ifsc_code')
+        bank_name = data.get('bank_name')
+        user_object = User.objects.filter(username=phone_number).first()
+        
+        if user_object:
+            user_profile_object = Profile.objects.filter(user=user_object).first()
+            print(data)
+            bank_card_object = Bank_Card.objects.create(user=user_profile_object, card_holder_name=card_holder_name, card_number=card_number, ifsc_code=ifsc_code, bank_name=bank_name)
+            bank_card_object.save()
+            print(bank_card_object)
+            return JsonResponse({'status': 'Success', 'message': 'Bank Card Added'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
