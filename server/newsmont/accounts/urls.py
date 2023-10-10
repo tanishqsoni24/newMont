@@ -11,4 +11,6 @@ urlpatterns = [
     path('verify-forgot-password-token/', views.verify_forgot_password_token, name='verify_forgot_password_token'),
     path('my-teams/', views.my_teams, name='my_teams'),
     path('recharge/', views.recharge, name='recharge'),
+    path('withdraw/', views.withdrawl, name='withdraw'),
+    path('add-bank-card/', views.add_bank_card, name='bank_card'),
 ]
