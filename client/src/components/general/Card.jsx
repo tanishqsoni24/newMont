@@ -46,16 +46,16 @@ export default function Card(props) {
       </a>
       <div className="px-5 pb-5">
         <a  onClick={showPopup}>
-          <h5 className="text-xl font-thin tracking-tight text-gray-900 p-2 dark:text-[#0E9F6E]">
+          <h5 className="text-xl tracking-tight text-gray-900 p-2 dark:text-[#0E9F6E]">
             {props.desc}
           </h5>
-          <h5 className="text-lg font-thin tracking-tight text-gray-900 p-1 dark:text-[#0E9F6E]">
+          <h5 className="text-lg tracking-tight text-gray-900 p-1 dark:text-[#0E9F6E]">
              Days: {props.days}
           </h5>
-          <h5 className="text-lg font-thin tracking-tight text-gray-900 p-1 dark:text-[#0E9F6E]">
+          <h5 className="text-lg tracking-tight text-gray-900 p-1 dark:text-[#0E9F6E]">
             Daily Income: ₹{props.daily}
           </h5>
-          <h5 className="text-lg font-thin tracking-tight text-gray-900 p-1 dark:text-[#0E9F6E]">
+          <h5 className="text-lg tracking-tight text-gray-900 p-1 dark:text-[#0E9F6E]">
             Total Income :₹{props.total}
           </h5>
         </a>

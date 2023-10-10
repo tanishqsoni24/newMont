@@ -230,8 +230,6 @@ def recharge(request):
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
 
-
-
 @csrf_exempt
 def withdrawl(request):
     if request.method == "POST":
