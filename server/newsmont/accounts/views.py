@@ -6,8 +6,9 @@ from .helpers import *
 import json
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-
 from dashboard.models import Recharge_Record, Withdraw_Record, Bank_Card
+from django.utils import timezone
+from administ.models import *
 
 # Create your views here.
 
@@ -219,8 +220,12 @@ def recharge(request):
             user_profile_object.wallet = user_profile_object.wallet + int(amount)
             user_profile_object.recharge_amount = user_profile_object.recharge_amount + int(amount)
             user_profile_object.save()
-            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=amount, status=True, date=timezone.now(), amount_left=user_profile_object.wallet)
+            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=int(amount), status=True, date=timezone.now(), amount_left=user_profile_object.wallet)
             recharge_record_object.save()
+            admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
+            update_admin_wallet = Admin_wallet.objects.filter(user=admin_user).first()
+            update_admin_wallet.amount = update_admin_wallet.amount + int(amount)
+            update_admin_wallet.save()
             return JsonResponse({'status': 'Success', 'message': 'Recharge Successful', 'data': {'wallet': user_profile_object.wallet, 'recharge_amount': user_profile_object.recharge_amount, 'income': user_profile_object.income}})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
@@ -233,20 +238,24 @@ def withdrawl(request):
         data = json.loads(request.body.decode('utf-8'))
         phone_number = data.get('phone_number')
         amount = data.get('amount')
-        bank_card_id = data.get('bank_card_id')
+        bank_card_number = data.get('bank_card_id')
         user_object = User.objects.filter(username=phone_number).first()
         if user_object:
             user_profile_object = Profile.objects.filter(user=user_object).first()
             if user_profile_object.wallet >= int(amount):
-                user_profile_object.wallet = user_profile_object.wallet - int(amount)
-                user_profile_object.save()
-                withdraw_record_object = Withdraw_Record.objects.create(user=user_profile_object, amount=amount, status=False, date=timezone.now(), bank_card_id=bank_card_id)
-                withdraw_record_object.save()
-                return JsonResponse({'status': 'Success', 'message': 'Withdrawl Successful', 'data': {'wallet': user_profile_object.wallet}})
+                admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
+                admin_wallet = Admin_wallet.objects.filter(user=admin_user).first()
+                if admin_wallet.amount >= int(amount):
+                  user_profile_object.wallet = user_profile_object.wallet - int(amount)
+                  user_profile_object.save()
+                  bank_card = Bank_Card.objects.filter(account_number=bank_card_number).first()
+                  withdraw_record_object = Withdraw_Record.objects.create(user=user_profile_object, amount=amount, status=False, date=timezone.now(), bank_card=bank_card)
+                  withdraw_record_object.save()
+                  return JsonResponse({'status': 'Success', 'message': 'Withdrawl Successful', 'data': {'wallet': user_profile_object.wallet}})
+                return JsonResponse({'status': 'Error', 'message': "We can't process your request right now."})
             return JsonResponse({'status': 'Error', 'message': 'Withdrawl Amount Greater than Wallet Amount'})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
-
 
 @csrf_exempt
 def add_bank_card(request):
