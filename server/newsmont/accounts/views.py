@@ -6,9 +6,9 @@ from .helpers import *
 import json
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-
 from dashboard.models import Recharge_Record
 from django.utils import timezone
+from administ.models import *
 
 # Create your views here.
 
@@ -221,12 +221,12 @@ def recharge(request):
             user_profile_object.recharge_amount = user_profile_object.recharge_amount + int(amount)
             user_profile_object.save()
 
-            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=amount, status=True, date=timezone.now(), amount_left=user_profile_object.wallet)
+            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=int(amount), status=True, date=timezone.now(), amount_left=user_profile_object.wallet)
             recharge_record_object.save()
-
-            print(recharge_record_object.status, recharge_record_object.amount, recharge_record_object.date, recharge_record_object.amount_left)
-
-
+            admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
+            update_admin_wallet = Admin_wallet.objects.filter(user=admin_user).first()
+            update_admin_wallet.amount = update_admin_wallet.amount + int(amount)
+            update_admin_wallet.save()
 
             return JsonResponse({'status': 'Success', 'message': 'Recharge Successful', 'data': {'wallet': user_profile_object.wallet, 'recharge_amount': user_profile_object.recharge_amount, 'income': user_profile_object.income}})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
