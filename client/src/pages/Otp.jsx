@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 export default function Otp() {
+  const[loading,setLoading]=useState(false)
     const navigate = useNavigate();
     const [timer, setTimer] = useState("1:00");
     const handelResendOtp = () => {
@@ -20,6 +21,7 @@ export default function Otp() {
 
     const [otp, setOtp] = useState('')
     const handelSubmit = async (e) => {
+      setLoading(true);
         e.preventDefault()
         const response = await axios.post('http://localhost:8000/accounts/activate/', otp, { headers: { 'Content-Type': 'application/json' } });
 
@@ -30,7 +32,7 @@ export default function Otp() {
             navigate('/');
 
         }
-
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -81,7 +83,7 @@ export default function Otp() {
                     {/* Resend OTP */}
                     <p className='text-sm text-gray-500'>Didn't get OTP? <button onClick={handelResendOtp} className='text-emerald-600'>Resend OTP</button></p>
                   </div>
-                  <button type="submit" className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Submit</button>
+                  <button type="submit" className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">{loading? 'Submitting...' : 'Submit'}</button>
               </form>
           </div>
       </div>
