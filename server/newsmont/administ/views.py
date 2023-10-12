@@ -72,7 +72,7 @@ def admin_index(request):
                             "daily_income": product.daily_income,
                             "total_income": product.total_income
                         })
-                    return JsonResponse({"status": "Success", "logged in successfully and data is sent!": recharge_records_details, "withdraw_records_details": withdraw_records_details, "users_details": users_details, "products_details": products_details})
+                    return JsonResponse({"status": "Success", "message": "logged in successfully and data is sent!", "recharge_records": recharge_records_details, "withdraw_records_details": withdraw_records_details, "users_details": users_details, "products_details": products_details})
                 return JsonResponse({"status": "Failed", "message": "Invalid Password"})
             return JsonResponse({"status": "Failed", "message": "You are not an admin"})
         return JsonResponse({"status": "Failed", "message": "Invalid Phone Number"})
