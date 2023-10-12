@@ -4,9 +4,11 @@ from accounts.models import *
 from dashboard.models import *
 from administ.models import * 
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
+@csrf_exempt
 def admin_index(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
@@ -76,7 +78,7 @@ def admin_index(request):
         return JsonResponse({"status": "Failed", "message": "Invalid Phone Number"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
     
-
+@csrf_exempt
 def show_withdrawl_requests(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
@@ -90,7 +92,7 @@ def show_withdrawl_requests(request):
                 "phone": record.user.phone_number,
                 "amount": record.amount,
                 "status": record.status,
-                "date": record.date.strftime("%B-%d-%Y"),
+                "date": str(record.date.strftime("%B-%d-%Y")),
                 "account_number": record.bank_card.account_number,
                 "ifsc_code": record.bank_card.ifsc_code,
                 "card_holder_name": record.bank_card.card_holder_name
@@ -98,7 +100,115 @@ def show_withdrawl_requests(request):
         return JsonResponse({"status": "Success", "logged in successfully and data is sent!": withdraw_records_details})
     return JsonResponse({"status": "Failed", "message": "Invalid Request"})
 
+@csrf_exempt
+def show_recharge_requests(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone = data.get("phone_number")
+        recharge_records = Recharge_Record.objects.all()
+        recharge_records_details = []
+        for record in recharge_records:
+            recharge_records_details.append({
+                "id": record.uid,
+                "user": record.user.user.first_name,
+                "phone": record.user.phone_number,
+                "amount": record.amount,
+                "status": record.status,
+                "date": str(record.date.strftime("%B-%d-%Y")),
+                "amount_left": record.amount_left
+            })
+        return JsonResponse({"status": "Success", "logged in successfully and data is sent!": recharge_records_details})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})
 
+@csrf_exempt
+def show_users(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone = data.get("phone_number")
+        users = Profile.objects.all()
+        users_details = []
+        for user in users:
+            users_details.append({
+                "id": user.uid,
+                "name": user.user.first_name,
+                "phone_number": user.phone_number,
+                "invite_code": user.invite_code,
+                "is_verified": user.is_verified,
+                "start_time": user.start_time,
+                "recommended_by": user.recommended_by.user.first_name,
+                "vip_level": user.vip_level,
+                "wallet": user.wallet,
+                "recharge_amount": user.recharge_amount,
+                "income": user.income,
+                "is_admin": user.is_admin
+            })
+        return JsonResponse({"status": "Success", "logged in successfully and data is sent!": users_details})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})
+
+@csrf_exempt
+def show_products(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone = data.get("phone_number")
+        products = Product.objects.all()
+        products_details = []
+        for product in products:
+            products_details.append({
+                "id": product.uid,
+                "name": product.name,
+                "slug": product.slug,
+                "category": product.category.name,
+                "price": product.price,
+                "eligible_for_vip_number": product.eligible_for_vip_number,
+                "image": product.image.url,
+                "days": product.days,
+                "daily_income": product.daily_income,
+                "total_income": product.total_income
+            })
+        return JsonResponse({"status": "Success", "logged in successfully and data is sent!": products_details})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})
+
+@csrf_exempt
+def userwise_recharge_records(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone = data.get("phone_number")
+        user = Profile.objects.filter(phone_number=phone).first()
+        recharge_records = Recharge_Record.objects.filter(user=user).all()
+        recharge_records_details = []
+        for record in recharge_records:
+            recharge_records_details.append({
+                "id": record.uid,
+                "user": record.user.user.first_name,
+                "amount": record.amount,
+                "status": record.status,
+                "date": record.date,
+                "amount_left": record.amount_left
+            })
+        return JsonResponse({"status": "Success", "logged in successfully and data is sent!": recharge_records_details})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})
+
+@csrf_exempt
+def userwise_withdraw_records(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone = data.get("phone_number")
+        user = Profile.objects.filter(phone_number=phone).first()
+        withdraw_records = Withdraw_Record.objects.filter(user=user).all()
+        withdraw_records_details = []
+        for record in withdraw_records:
+            withdraw_records_details.append({
+                "id": record.uid,
+                "user": record.user.user.first_name,
+                "amount": record.amount,
+                "status": record.status,
+                "date": record.date,
+                "bank_card": record.bank_card.card_number
+            })
+        return JsonResponse({"status": "Success", "logged in successfully and data is sent!": withdraw_records_details})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})
+
+@csrf_exempt
 def send_response_to_ref_num(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
@@ -131,3 +241,46 @@ def send_response_to_ref_num(request):
                 return JsonResponse(json_data)
             return JsonResponse({"status": "Failed", "message": "Insufficient Balance"})
         return JsonResponse({"status": "Failed", "message": "Invalid Referral Number"})
+
+@csrf_exempt
+def approved_recharge_records(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        recharge_records = Recharge_Record.objects.filter(status=True).all()
+        recharge_records_details = []
+        for record in recharge_records:
+            recharge_records_details.append({
+                "id": record.uid,
+                "user": record.user.user.first_name,
+                "amount": record.amount,
+                "status": record.status,
+                "date": record.date,
+                "amount_left": record.amount_left
+            })
+        return JsonResponse({"status": "Success", "Data is sent!": recharge_records_details})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})
+
+@csrf_exempt
+def approve_recharge_record(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        uid = data.get("recharge_id")
+        recharge_record = Recharge_Record.objects.filter(uid=uid).first()
+        if recharge_record:
+            recharge_record.status = True
+            recharge_record.save()
+            
+            #update admin wallet
+            admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
+            admin_wallet = Admin_wallet.objects.filter(user=admin_user).first()
+            admin_wallet.amount = admin_wallet.amount + recharge_record.amount
+            admin_wallet.save()
+
+            # update user wallet
+            user = recharge_record.user
+            user.wallet = user.wallet + recharge_record.amount
+            user.save() 
+
+            return JsonResponse({"status": "Success", "message": "Recharge Approved"})
+        return JsonResponse({"status": "Failed", "message": "Invalid Recharge Record"})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})

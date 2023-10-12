@@ -65,7 +65,6 @@ class Recharge_Record(BaseModel):
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     status = models.BooleanField(default=False)
     date = models.DateTimeField(blank=True, null=True)
-    amount_left = models.DecimalField(default=0,max_digits=10, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
         return "Rs. " + str(self.amount) + " - " + str(self.user.user.first_name) + " : " + str(self.date.strftime("%B-%d-%Y"))
@@ -74,9 +73,12 @@ class Orders(BaseModel):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="orer_user")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="order_product")
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    status = models.BooleanField(default=False)
-    date = models.DateTimeField(blank=True, null=True)
+    date_purchase = models.DateTimeField(blank=True, null=True)
+
+    def set_date_purchase(self):
+        self.date_purchase = timezone.now()
+        self.save()
 
     def __str__(self):
-        return self.name
+        return self.user.user.first_name + " : " + str(self.date_purchase.strftime("%B-%d-%Y")) + " : " + self.product.name
     

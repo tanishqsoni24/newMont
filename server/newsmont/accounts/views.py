@@ -215,17 +215,14 @@ def recharge(request):
         amount = data.get('amount')
         user_object = User.objects.filter(username=phone_number).first()
         if user_object:
-            user_profile_object = Profile.objects.filter(user=user_object).first()
-            print(user_profile_object.wallet, user_profile_object.recharge_amount, user_profile_object.income)
-            user_profile_object.wallet = user_profile_object.wallet + int(amount)
-            user_profile_object.recharge_amount = user_profile_object.recharge_amount + int(amount)
-            user_profile_object.save()
-            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=int(amount), status=True, date=timezone.now(), amount_left=user_profile_object.wallet)
-            recharge_record_object.save()
             admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
-            update_admin_wallet = Admin_wallet.objects.filter(user=admin_user).first()
-            update_admin_wallet.amount = update_admin_wallet.amount + int(amount)
-            update_admin_wallet.save()
+            if not admin_user:
+                return JsonResponse({'status': 'Error', 'message': 'Admin not found'})
+            user_profile_object = Profile.objects.filter(user=user_object).first()
+            if not user_profile_object:
+                return JsonResponse({'status': 'Error', 'message': 'User not found'})
+            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=int(amount), date=timezone.now())
+            recharge_record_object.save()
             return JsonResponse({'status': 'Success', 'message': 'Recharge Successful', 'data': {'wallet': user_profile_object.wallet, 'recharge_amount': user_profile_object.recharge_amount, 'income': user_profile_object.income}})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
@@ -244,12 +241,10 @@ def withdrawl(request):
                 admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
                 admin_wallet = Admin_wallet.objects.filter(user=admin_user).first()
                 if admin_wallet.amount >= int(amount):
-                  user_profile_object.wallet = user_profile_object.wallet - int(amount)
-                  user_profile_object.save()
                   bank_card = Bank_Card.objects.filter(account_number=bank_card_number).first()
                   withdraw_record_object = Withdraw_Record.objects.create(user=user_profile_object, amount=amount, status=False, date=timezone.now(), bank_card=bank_card)
                   withdraw_record_object.save()
-                  return JsonResponse({'status': 'Success', 'message': 'Withdrawl Successful', 'data': {'wallet': user_profile_object.wallet}})
+                  return JsonResponse({'status': 'Success', 'message': 'Approval Request Sent', 'data': {'wallet': user_profile_object.wallet}})
                 return JsonResponse({'status': 'Error', 'message': "We can't process your request right now."})
             return JsonResponse({'status': 'Error', 'message': 'Withdrawl Amount Greater than Wallet Amount'})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
@@ -276,3 +271,15 @@ def add_bank_card(request):
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
 
+@csrf_exempt
+def my_withdraw_requests(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            user_profile_object = Profile.objects.filter(user=user_object).first()
+            withdraw_records = Withdraw_Record.objects.filter(user=user_profile_object).values()
+            return JsonResponse({'status': 'Success', 'message': 'My Withdraw Requests', 'data': list(withdraw_records)})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})

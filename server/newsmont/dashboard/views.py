@@ -53,11 +53,24 @@ def all_proucts(request):
 def purchase_product(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
-        user = Profile.objects.all().first()
+        phone = data.get('phone_number')
+        user = Profile.objects.filter(phone_number=phone).first()
         product_id = data.get('product_id')
         product = Product.objects.filter(uid=product_id).first()
+        user_wallet = user.wallet
+        product_price = product.price
+        if user_wallet < product_price:
+            return JsonResponse({'status': 'Error', 'message': 'Insufficient balance'})
+        user.wallet = user_wallet - product_price
+        user_vip_level = user.vip_level
+        if (product.category.name == 'gift' or product.category.name == 'exclusive') and user_vip_level < product.eligible_for_vip_number:
+            return JsonResponse({'status': 'Error', 'message': 'You are not eligible for this product'})
         if product.category.name == 'upgrade':
             user.vip_level = user.vip_level + 1
             user.save()
+        user.save()
+        order = Orders.objects.create(user=user, product=product, amount=product_price)
+        order.save()
+        order.set_date_purchase()
         return JsonResponse({'status': 'Success', 'message': 'Product purchased successfully'})
     return JsonResponse({'status': 'Error', 'message': 'Something went wrong'})
