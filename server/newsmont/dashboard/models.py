@@ -42,7 +42,7 @@ class Bank_Card(BaseModel):
     bank_name = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
-        return self.card_holder_name + " - " + self.card_number
+        return self.card_holder_name + " - " + self.account_number
     
 class Withdraw_Record(BaseModel):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="withdraw_user")

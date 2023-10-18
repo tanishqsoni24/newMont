@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import axios from 'axios';
 
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie'
+import jwtDecode from 'jwt-decode';
 
 export default function Otp() {
   const[loading,setLoading]=useState(false)
@@ -23,14 +25,18 @@ export default function Otp() {
     const handelSubmit = async (e) => {
       setLoading(true);
         e.preventDefault()
-        const response = await axios.post('http://localhost:8000/accounts/activate/', otp, { headers: { 'Content-Type': 'application/json' } });
+        const token = Cookies.get("phone_number");
+        const decoded = await jwtDecode(token);
+        const response = await axios.post('http://localhost:8000/accounts/activate/', {
+          phone_number: decoded.phone_number,
+          otp: otp
+        }, { headers: { 'Content-Type': 'application/json' } });
 
         console.log(response)
 
-        if (response.status === 200) {
+        if (response.status === "Success") {
             console.log('success')
-            navigate('/');
-
+            window.location.href = "/"
         }
         setLoading(false);
     }
@@ -83,7 +89,9 @@ export default function Otp() {
                     {/* Resend OTP */}
                     <p className='text-sm text-gray-500'>Didn't get OTP? <button onClick={handelResendOtp} className='text-emerald-600'>Resend OTP</button></p>
                   </div>
-                  <button type="submit" className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">{loading? 'Submitting...' : 'Submit'}</button>
+                  <button type="submit"
+                  onClick={handelSubmit}
+                  className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">{loading? 'Submitting...' : 'Submit'}</button>
               </form>
           </div>
       </div>

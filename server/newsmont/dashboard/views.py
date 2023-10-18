@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import *
 from django.http import JsonResponse
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -50,6 +51,8 @@ def all_proucts(request):
         })
     return JsonResponse({'status': 'Success', 'upgrade_product_details': upgrade_product_details, 'exclusive_product_details': exclusive_product_details, 'gift_product_details': gift_product_details})
 
+
+@csrf_exempt
 def purchase_product(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
@@ -61,10 +64,10 @@ def purchase_product(request):
         product_price = product.price
         if user_wallet < product_price:
             return JsonResponse({'status': 'Error', 'message': 'Insufficient balance'})
-        user.wallet = user_wallet - product_price
         user_vip_level = user.vip_level
         if (product.category.name == 'gift' or product.category.name == 'exclusive') and user_vip_level < product.eligible_for_vip_number:
             return JsonResponse({'status': 'Error', 'message': 'You are not eligible for this product'})
+        user.wallet = user_wallet - product_price
         if product.category.name == 'upgrade':
             user.vip_level = user.vip_level + 1
             user.save()

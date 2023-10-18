@@ -1,6 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useState } from 'react'
+import axios from 'axios'
+import Cookies from 'js-cookie'
+import jwt_decode from 'jwt-decode'
 
 export default function Orders() {
+
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        const requestorders = async () => {
+            const token = Cookies.get("session_id");
+            const decoded = await jwt_decode(token);
+            const response = await axios.post('http://localhost:8000/accounts/myorders/',{
+                phone_number : decoded.phone_number
+            } ,{ headers: { 'Content-Type': 'application/json' } });
+            console.log(response.data.data)
+            setOrders(response.data.data)
+        }
+        requestorders()
+      }
+        , [])
+
+    useEffect(() => {
+        console.log("orders:", orders)
+    }, [orders])
     return (
 
         <div style={{ marginTop: "7rem" }} className="container flex flex-col mx-auto justify-center item-center">
@@ -23,56 +47,25 @@ export default function Orders() {
                     Date
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Quantity
-                </th>
-                <th scope="col" class="px-6 py-3">
                     Price
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            { orders.length>0 && orders.map((order, index) => {
+                return (
+             <tr key={index} class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Iron ore
+                    {order.product_name}
                 </th>
                 <td class="px-6 py-4">
-                    2021-08-01
+                    {order.date_purchase}
                 </td>
                 <td class="px-6 py-4">
-                    1
-                </td>
-                <td class="px-6 py-4">
-                ₹2585
+                ₹{order.product_price}
                 </td>
             </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Iron ore
-                </th>
-                <td class="px-6 py-4">
-                    2021-08-01
-                </td>
-                <td class="px-6 py-4">
-                    1
-                </td>
-                <td class="px-6 py-4">
-                ₹2585
-                </td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Iron ore
-                </th>
-                <td class="px-6 py-4">
-                    2021-08-01
-                </td>
-                <td class="px-6 py-4">
-                    1
-                </td>
-                <td class="px-6 py-4">
-                ₹2585
-                </td>
-            </tr>
+           )})}
         </tbody>
     </table>
 </div>
