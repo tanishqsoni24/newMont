@@ -4,8 +4,13 @@ import '../../App.css';
 import { CSSTransition } from "react-transition-group";
 import "../../pages/animate.css";
 import axios from "axios";
-export default function Card(props) {
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
+import { useEffect } from "react";
 
+
+export default function Card(props) {
+  const [isAlert , setIsAlert] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const showPopup = () => {
@@ -21,6 +26,17 @@ export default function Card(props) {
 
     // check wallet balance elegible for purchase
 
+    const token = Cookies.get("session_id");
+    const decoded = await jwt_decode(token);
+
+    const response = await axios.post("http://localhost:8000/dashboard/purchase_product/",{phone_number : decoded.phone_number, product_id: props.id } , {"content": "application/json"});
+
+    console.log(response.data);
+
+    if(response.data.status === "Success"){
+
+      setIsAlert("Product Purchased Successfully");
+
 
 
 
@@ -28,14 +44,44 @@ export default function Card(props) {
 
     // purchase
 
-    const purchase = await axios.post("http://localhost:8000/dasboard/purchase", props.id , {"content": "application/json"});
-
   }
+  else{
+    setIsAlert(response.data.message);
+  }
+
+}
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setIsAlert("");
+  }, 3000);
+  return () => clearTimeout(timer);
+}, [isAlert]);
 
 
   return (
     <div className="w-full max-w-sm m-1 bg-white my-5 border  dark:bg-white dark:border dark:border-gray-100">
       <a  onClick={showPopup}>
+
+      { isAlert && <div id="toast-default"
+      style={{
+        "position": "fixed",
+        "top": "13%",
+        "right": "5px",
+      }}
+      className="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+    <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
+      
+    </div>
+    <div className="ml-3 text-sm font-normal">{isAlert}</div>
+    <button type="button" className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-default" aria-label="Close">
+        <span className="sr-only">Close</span>
+        <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+    </button>
+</div>
+}
         
         <img
         
@@ -111,14 +157,14 @@ export default function Card(props) {
         </div>
         <div className="flex flex-wrap items-center justify-between">
           <span className=" ml-7 md:ml-0 text-lg md:text-3xl font-thin col-p text-gray-900 dark:text-[#0E9F6E]">
-          ₹{props.total}
+          ₹{props.price}
           </span>
-          <a
+          <button
             onClick={showPopup}
             className="text-[#0E9F6E] ml-4 hover:text-black focus:ring-4 focus:outline-none font-medium border border-[#0E9F6E] text-sm px-5 py-2.5 text-center dark:bg-transparent dark:hover:bg-[#0E9F6E] hover:cursor:pointer "
           >
             Purchase
-          </a>
+          </button>
         </div>
       </div>
       <CSSTransition

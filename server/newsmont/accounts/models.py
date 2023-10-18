@@ -18,7 +18,7 @@ class Profile(BaseModel):
     forgot_password_token_start_time = models.DateTimeField(null=True, blank=True)
     vip_level = models.IntegerField(default=0)
     wallet = models.IntegerField(default=0)
-    recharge_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    recharge_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
     income = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     is_admin = models.BooleanField(default=False)
 

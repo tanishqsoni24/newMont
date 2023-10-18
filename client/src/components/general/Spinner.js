@@ -17,7 +17,7 @@ function Spinner() {
 
   return (
     <div style={containerStyle}>
-      <img src={Rhombus} alt="loading"  />
+      <img src={Rhombus} style={{width:'42px'}} alt="loading"  />
     </div>
   );
 }

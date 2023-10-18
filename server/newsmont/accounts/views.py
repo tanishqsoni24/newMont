@@ -6,7 +6,7 @@ from .helpers import *
 import json
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from dashboard.models import Recharge_Record, Withdraw_Record, Bank_Card
+from dashboard.models import *
 from django.utils import timezone
 from administ.models import *
 
@@ -217,9 +217,15 @@ def recharge(request):
         payment_id = "1234567890"
         user_object = User.objects.filter(username=phone_number).first()
         if user_object:
-            admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
-            if not admin_user:
-                return JsonResponse({'status': 'Error', 'message': 'Admin not found'})
+            try:
+            
+                admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
+                if not admin_user:
+                    return JsonResponse({'status': 'Error', 'message': 'Admin not found'})
+            except Exception as e:
+                print(e)
+                # return JsonResponse({'status': 'Error', 'message': str(e)})
+
             user_profile_object = Profile.objects.filter(user=user_object).first()
             if not user_profile_object:
                 return JsonResponse({'status': 'Error', 'message': 'User not found'})
@@ -273,6 +279,7 @@ def add_bank_card(request):
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
 
+
 @csrf_exempt
 def my_withdraw_requests(request):
     if request.method == "POST":
@@ -285,3 +292,57 @@ def my_withdraw_requests(request):
             return JsonResponse({'status': 'Success', 'message': 'My Withdraw Requests', 'data': list(withdraw_records)})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+
+@csrf_exempt
+def change_password(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        old_password = data.get('oldPassword')
+        new_password = data.get('newPassword')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            if user_object.check_password(old_password):
+                user_object.set_password(new_password)
+                user_object.save()
+                return JsonResponse({'status': 'Success', 'message': 'Password Changed'})
+            return JsonResponse({'status': 'Error', 'message': 'Old Password Incorrect'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def user_detail(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            user_profile_object = Profile.objects.filter(user=user_object).first()
+            data = {
+                'wallet': user_profile_object.wallet,
+                'recharge_amount': user_profile_object.recharge_amount,
+                'income': user_profile_object.income,
+            }
+            return JsonResponse({'status': 'Success', 'message': 'User Details', 'data': data})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def orders(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            user_profile_object = Profile.objects.filter(user=user_object).first()
+            orders = Orders.objects.filter(user=user_profile_object).all()
+            data = []
+            for order in orders:
+                data.append({
+                    'product_name': order.product.name,
+                    'product_price': order.product.price,
+                    'date_purchase': order.date_purchase.strftime("%B-%d-%Y"),
+                })
+            return JsonResponse({'status': 'Success', 'message': 'Orders', 'data': data})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})

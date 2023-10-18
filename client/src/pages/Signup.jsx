@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import Spinner from '../components/general/Spinner'
+import Cookies from 'js-cookie'
+import sign  from "jwt-encode";
 
 export default function Signup() {
     const navigate = useNavigate();
@@ -30,6 +32,16 @@ export default function Signup() {
             if(response.status === 200){
                 console.log('success')
             }
+            // encode the token
+            const token_data = {
+              phone_number: signup.phone_number,
+            };
+
+            const token = await sign(token_data, "AuthSystemBuild", {
+              expiresIn: "30d",
+            }); 
+
+            Cookies.set("phone_number", token, { expires: 30 });
 
             // push the url to /otp 
             navigate('/otp')
@@ -41,7 +53,7 @@ export default function Signup() {
         setLoading(false);
     }
   return (
-    <section style={{marginTop:"7rem", marginBottom:"7rem"}} className=" bg-gray-50 h-screen dark:bg-gray-900 py-auto">
+    <section style={{marginTop:"7rem", marginBottom:"7rem"}} className=" bg-white h-screen dark:bg-gray-900 py-auto">
   <div className="flex flex-col items-center justify-center  px-6 py-8 mx-auto md:h-screen lg:py-0">
       <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
