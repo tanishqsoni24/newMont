@@ -229,7 +229,7 @@ def recharge(request):
             user_profile_object = Profile.objects.filter(user=user_object).first()
             if not user_profile_object:
                 return JsonResponse({'status': 'Error', 'message': 'User not found'})
-            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=int(amount), date=timezone.now(), payment_id=payment_id)
+            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=int(amount), date=timezone.now(), recharge_payment_id=payment_id)
             recharge_record_object.save()
             return JsonResponse({'status': 'Success', 'message': 'Recharge Successful', 'data': {'wallet': user_profile_object.wallet, 'recharge_amount': user_profile_object.recharge_amount, 'income': user_profile_object.income}})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
