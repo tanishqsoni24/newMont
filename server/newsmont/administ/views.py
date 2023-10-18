@@ -33,7 +33,7 @@ def admin_index(request):
                             "amount": record.amount,
                             "status": record.status,
                             "date": record.date,
-                            "amount_left": record.amount_left
+                            "ref_num": record.ref_num,
                         })
                     for record in withdraw_records:
                         withdraw_records_details.append({
@@ -42,7 +42,9 @@ def admin_index(request):
                             "amount": record.amount,
                             "status": record.status,
                             "date": record.date,
-                            "bank_card": record.bank_card.card_number
+                            "bank_card": record.bank_card.card_number,
+                            "ifsc_code": record.bank_card.ifsc_code,
+                            "account_holder_name": record.bank_card.card_holder_name,
                         })
                     for user in users:
                         users_details.append({
