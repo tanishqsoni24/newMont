@@ -194,10 +194,13 @@ def delete_account(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         phone_number = data.get('phone_number')
+        password = data.get('password')
         user_object = User.objects.filter(username=phone_number).first()
         if user_object:
-            user_object.delete()
-            return JsonResponse({'status': 'Success', 'message': 'Account Deleted'})
+            if user_object.check_password(password):
+                user_object.delete()
+                return JsonResponse({'status': 'Success', 'message': 'Account Deleted'})
+            return JsonResponse({'status': 'Error', 'message': 'Password Incorrect'})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
 
@@ -248,7 +251,7 @@ def recharge(request):
             user_profile_object = Profile.objects.filter(user=user_object).first()
             if not user_profile_object:
                 return JsonResponse({'status': 'Error', 'message': 'User not found'})
-            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=int(amount), date=timezone.now(), recharge_payment_id=payment_id)
+            recharge_record_object = Recharge_Record.objects.create(user=user_profile_object, amount=int(amount), date=timezone.now(), user_recharge_payment_id=payment_id)
             recharge_record_object.save()
             return JsonResponse({'status': 'Success', 'message': 'Recharge Successful', 'data': {'wallet': user_profile_object.wallet, 'recharge_amount': user_profile_object.recharge_amount, 'income': user_profile_object.income}})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
