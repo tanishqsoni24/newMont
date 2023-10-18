@@ -18,4 +18,5 @@ urlpatterns = [
     path('myorders/', views.orders, name='my_orders'),
     path('resend-otp/', views.resend_otp, name='resend_otp'),
     path('myrechargerecord/', views.show_my_recharge_request, name='my_recharge'),
+    path('resend-otp/', views.resend_otp, name='resend_otp'),
 ]
