@@ -346,3 +346,26 @@ def orders(request):
                 })
             return JsonResponse({'status': 'Success', 'message': 'Orders', 'data': data})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def show_my_recharge_request(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            user_profile_object = Profile.objects.filter(user=user_object).first()
+            recharge_records = Recharge_Record.objects.filter(user=user_profile_object).values()
+            recharge = [
+                {
+                    'amount': recharge_record['amount'],
+                    'status': recharge_record['status'],
+                    'date': recharge_record['date'],
+                    'payment_id': recharge_record['recharge_payment_id'],
+                }
+                for recharge_record in recharge_records
+            ]
+            return JsonResponse({'status': 'Success', 'message': 'My Recharge Requests', 'data': list(recharge_records)})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
