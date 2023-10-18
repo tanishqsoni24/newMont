@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import Spinner from '../components/general/Spinner'
+import Cookies from 'js-cookie'
+import sign  from "jwt-encode";
 
 export default function Signup() {
     const navigate = useNavigate();
@@ -30,6 +32,16 @@ export default function Signup() {
             if(response.status === 200){
                 console.log('success')
             }
+            // encode the token
+            const token_data = {
+              phone_number: signup.phone_number,
+            };
+
+            const token = await sign(token_data, "AuthSystemBuild", {
+              expiresIn: "30d",
+            }); 
+
+            Cookies.set("phone_number", token, { expires: 30 });
 
             // push the url to /otp 
             navigate('/otp')

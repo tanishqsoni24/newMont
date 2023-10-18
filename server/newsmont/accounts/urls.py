@@ -13,4 +13,7 @@ urlpatterns = [
     path('recharge/', views.recharge, name='recharge'),
     path('withdraw/', views.withdrawl, name='withdraw'),
     path('add-bank-card/', views.add_bank_card, name='bank_card'),
+    path('changePassword/', views.change_password, name='change_password'),
+    path('userDetail/', views.user_detail, name='user_detail'),
+    path('myorders/', views.orders, name='my_orders'),
 ]

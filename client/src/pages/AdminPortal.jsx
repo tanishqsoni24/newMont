@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../components/Images/pngwing.com.png";
 import "../App.css";
 import { useState } from "react";
@@ -6,6 +6,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ApprovalModal from "../components/general/AdminModal";
+import axios from "axios";
 
 export default function AdminPortal() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -51,7 +52,59 @@ export default function AdminPortal() {
     navigate(`/administ/recharge/${user.User}`);
   };
 
-  const fakeRechargeRecords = [
+  useEffect(() => {
+    const dataFetch = async () => {
+      const response = await axios.get("http://localhost:8000/administ/");
+
+
+      const withdrawData = response.data.withdraw_records_details.map((item) => ({
+        Sno: item.id,
+        User: item.user,
+        Amount: item.amount,
+        Status: item.status,
+        Date: item.date,
+        Accountno: item.bank_card,
+        ifsc: item.ifsc_code,
+        name: item.account_holder_name,
+      }));
+      const rechargeData = responseRecharge.data.map((item) => ({
+        Sno: item.id,
+        User: item.user,
+        Amount: item.amount,
+        Status: item.status,
+        Date: item.date,
+        RemainingBalance: item.remaining_balance,
+      }));
+      const userData = responseUser.data.map((item) => ({
+        Sno: item.id,
+        Name: item.first_name + " " + item.last_name,
+        PhoneNumber: item.phone_number,
+        InviteCode: item.invite_code,
+        Verified: item.verified,
+        StartTime: item.start_time,
+        RecommendedBy: item.recommended_by,
+        VIPLevel: item.vip_level,
+        Wallet: item.wallet,
+        RechargeAmount: item.recharge_amount,
+        Income: item.income,
+        IsAdmin: item.is_admin,
+      }));
+      const productData = responseProduct.data.map((item) => ({
+        Sno: item.id,
+        Name: item.name,
+        Price: item.price,
+        Description: item.description,
+        Image: item.image,
+      }));
+
+      setDataArray(withdrawData);
+      setFakeRechargeRecords(rechargeData);
+      setFakeUserData(userData);
+    };
+    dataFetch();
+  }, []);
+
+  const [fakeRechargeRecords, setFakeRechargeRecords] = useState([
     {
       Sno: 1,
       User: "User 1",
@@ -59,26 +112,10 @@ export default function AdminPortal() {
       Status: "Paid",
       Date: "2023-10-09",
       RemainingBalance: "$2510",
-    },
-    {
-      Sno: 2,
-      User: "User 2",
-      Amount: "$50.00",
-      Status: "Unpaid",
-      Date: "2023-10-10",
-      RemainingBalance: "$8740",
-    },
-    {
-      Sno: 3,
-      User: "User 3",
-      Amount: "$75.00",
-      Status: "Paid",
-      Date: "2023-10-11",
-      RemainingBalance: "$1000",
-    },
-  ];
+    }
+  ]);
 
-  const fakeUserData = [
+  const [fakeUserData, setFakeUserData] = useState([
     {
       Sno: 1,
       Name: "User 1",
@@ -93,51 +130,9 @@ export default function AdminPortal() {
       Income: "$7000",
       IsAdmin: "No",
     },
-    {
-      Sno: 2,
-      Name: "User 2",
-      PhoneNumber: "1234567890",
-      InviteCode: "zxcvuycr5466",
-      Verified: "Yes",
-      StartTime: "25:00",
-      RecommendedBy: "Virat Kohli",
-      VIPLevel: 2,
-      Wallet: "$1000",
-      RechargeAmount: "$100",
-      Income: "$7000",
-      IsAdmin: "No",
-    },
-    {
-      Sno: 3,
-      Name: "User 3",
-      PhoneNumber: "1234567890",
-      InviteCode: "zxcvuycr5466",
-      Verified: "Yes",
-      StartTime: "25:00",
-      RecommendedBy: "Virat Kohli",
-      VIPLevel: 2,
-      Wallet: "$1000",
-      RechargeAmount: "$100",
-      Income: "$7000",
-      IsAdmin: "No",
-    },
-    {
-      Sno: 4,
-      Name: "User 4",
-      PhoneNumber: "1234567890",
-      InviteCode: "zxcvuycr5466",
-      Verified: "Yes",
-      StartTime: "25:00",
-      RecommendedBy: "Virat Kohli",
-      VIPLevel: 2,
-      Wallet: "$1000",
-      RechargeAmount: "$100",
-      Income: "$7000",
-      IsAdmin: "No",
-    },
-  ];
+  ]);
 
-  const DataArray = [
+  const [DataArray, setDataArray] = useState([
     {
       Sno: 1,
       User: "John Doe",
@@ -148,86 +143,9 @@ export default function AdminPortal() {
       Accountno: "1234567890",
       ifsc: "ABCD1234567",
       name: "John Doe",
-    },
-    {
-      Sno: 2,
-      User: "Jane Smith",
-      Amount: "₹300",
-      Status: "Unpaid",
-      Date: "2023-10-08",
-      Card: "**** **** **** 5678",
-      Accountno: "9876543210",
-      ifsc: "EFGH9876543",
-      name: "Jane Smith",
-    },
-    {
-      Sno: 3,
-      User: "Bob Johnson",
-      Amount: "₹700",
-      Status: "Paid",
-      Date: "2023-10-07",
-      Card: "**** **** **** 4321",
-      Accountno: "4567890123",
-      ifsc: "IJKL4567890",
-      name: "Bob Johnson",
-    },
-    {
-      Sno: 4,
-      User: "John Doe",
-      Amount: "₹500",
-      Status: "Unpaid",
-      Date: "2023-10-09",
-      Card: "**** **** **** 1234",
-      Accountno: "1234567890",
-      ifsc: "ABCD1234567",
-      name: "John Doe",
-    },
-    {
-      Sno: 5,
-      User: "John Doe",
-      Amount: "₹500",
-      Status: "Paid",
-      Date: "2023-10-09",
-      Card: "**** **** **** 1234",
-      Accountno: "1234567890",
-      ifsc: "ABCD1234567",
-      name: "John Doe",
-    },
-    {
-      Sno: 6,
-      User: "John Doe",
-      Amount: "₹500",
-      Status: "Paid",
-      Date: "2023-10-09",
-      Card: "**** **** **** 1234",
-      Accountno: "1234567890",
-      ifsc: "ABCD1234567",
-      name: "John Doe",
-    },
-    {
-      Sno: 7,
-      User: "John Doe",
-      Amount: "₹500",
-      Status: "Unpaid",
-      Date: "2023-10-09",
-      Card: "**** **** **** 1234",
-      Accountno: "1234567890",
-      ifsc: "ABCD1234567",
-      name: "John Doe",
-    },
-    {
-      Sno: 8,
-      User: "John Doe",
-      Amount: "₹500",
-      Status: "Unpaid",
-      Date: "2023-10-09",
-      Card: "**** **** **** 1234",
-      Accountno: "1234567890",
-      ifsc: "ABCD1234567",
-      name: "John Doe",
-    },
+    }
     // Add more fake data here as needed
-  ];
+  ]);
   return (
     <>
       <nav className="bg-white dark:bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
