@@ -10,14 +10,28 @@ export default function Otp() {
   const[loading,setLoading]=useState(false)
     const navigate = useNavigate();
     const [timer, setTimer] = useState("1:00");
-    const handelResendOtp = () => {
+    const handelResendOtp = async (e) => {
 
         // request for resend otp
+        e.preventDefault();
+        const token = Cookies.get("phone_number");
+        const decoded = jwtDecode(token);
+        const response = await axios.post('http://localhost:8000/accounts/resend-otp/', {
+            phone_number: decoded.phone_number
+        }, { headers: { 'Content-Type': 'application/json' } });
+
+        console.log(response.data)
+
+        // set timer to 1 minute
+
+        if (response.data.status === "Success") {
+          setTimer("1:00");
+        }
 
 
 
 
-        setTimer("1:00");
+        
 
     };
 
@@ -32,11 +46,11 @@ export default function Otp() {
           otp: otp
         }, { headers: { 'Content-Type': 'application/json' } });
 
-        console.log(response)
+        console.log(response.data)
 
-        if (response.status === "Success") {
+        if (response.data.status === "Success") {
             console.log('success')
-            window.location.href = "/"
+            navigate('/login')
         }
         setLoading(false);
     }
@@ -85,13 +99,17 @@ export default function Otp() {
                   </div>
                   <div className="flex flex-col items-center justify-center">
                     {/* 1 minute countdown */}
-                    <p className='text-sm text-gray-500'>Resend OTP in {timer}</p>
+                    <p className='text-sm text-gray-500'>OTP expires in {timer} mins</p>
                     {/* Resend OTP */}
-                    <p className='text-sm text-gray-500'>Didn't get OTP? <button onClick={handelResendOtp} className='text-emerald-600'>Resend OTP</button></p>
+                    
                   </div>
                   <button type="submit"
                   onClick={handelSubmit}
                   className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">{loading? 'Submitting...' : 'Submit'}</button>
+                  
+                  <div className="flex flex-col items-center justify-center">
+                  <p className='text-sm text-gray-500'>Didn't get OTP? <button onClick={handelResendOtp} className='text-emerald-600'>Resend OTP</button></p>
+                  </div>
               </form>
           </div>
       </div>
