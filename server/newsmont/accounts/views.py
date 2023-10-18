@@ -60,6 +60,25 @@ def signup(request):
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
 
 @csrf_exempt
+def resend_otp(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        user_profile_object = Profile.objects.filter(phone_number=phone_number).first()
+        if user_profile_object:
+            otp = generate_otp()
+            user_profile_object.otp = otp
+            user_profile_object.start_timer()
+            user_profile_object.save()
+            response = send_otp(phone_number, otp)
+            if response.status_code == 200:
+                return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
+            return JsonResponse({'status': 'Error', 'message': 'OTP Not Sent'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+
+@csrf_exempt
 def activate_account(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))

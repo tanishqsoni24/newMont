@@ -60,15 +60,17 @@ class Withdraw_Record(BaseModel):
         self.paid_date = timezone.now()
         self.save()
     
+
 class Recharge_Record(BaseModel):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="recharge_user")
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     status = models.BooleanField(default=False)
     date = models.DateTimeField(blank=True, null=True)
-    recharge_payment_id = models.CharField(max_length=15, blank=True, null=True)
+    payment_id = models.CharField(max_length=15, blank=True, null=True)
 
     def __str__(self):
-        return "Rs. " + str(self.amount) + " - " + str(self.user.user.first_name) + " : " + str(self.date.strftime("%B-%d-%Y"))
+        return "Rs. " + str(self.amount) + " - " + str(self.user.user.first)
+
     
 class Orders(BaseModel):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="orer_user")
