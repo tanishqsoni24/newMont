@@ -380,11 +380,11 @@ def show_my_recharge_request(request):
                 {
                     'amount': recharge_record['amount'],
                     'status': recharge_record['status'],
-                    'date': recharge_record['date'],
+                    'date': recharge_record['date'].strftime("%B-%d-%Y")+ " at " + recharge_record['date'].strftime("%H:%M:%S"),
                     'payment_id': recharge_record['recharge_payment_id'],
                 }
                 for recharge_record in recharge_records
             ]
-            return JsonResponse({'status': 'Success', 'message': 'My Recharge Requests', 'data': list(recharge_records)})
+            return JsonResponse({'status': 'Success', 'message': 'My Recharge Requests', 'data': recharge})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
