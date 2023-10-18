@@ -16,5 +16,6 @@ urlpatterns = [
     path('changePassword/', views.change_password, name='change_password'),
     path('userDetail/', views.user_detail, name='user_detail'),
     path('myorders/', views.orders, name='my_orders'),
+    path('resend-otp/', views.resend_otp, name='resend_otp'),
     path('myrechargerecord/', views.show_my_recharge_request, name='my_recharge'),
 ]
