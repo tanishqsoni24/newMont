@@ -34,13 +34,13 @@ export default function Profile() {
     const closeBankCardPopup = () => {
         setBankCardPopup(false)
     }
-    const handelWithdraw = async (e) => {
+    const handelWithdraw = (e) => {
         e.preventDefault()
         try{
             // popup close
-            await closeWithdrawPopup()
+            closeWithdrawPopup()
             // popup for select bank card
-            await setBankCardPopup(true)
+            setBankCardPopup(true)
         }
         catch(err){
             console.log(err)
@@ -50,14 +50,14 @@ export default function Profile() {
         const token = Cookies.get("session_id");
         const decoded = await jwt_decode(token);
         console.log(decoded)
-
+        const response = await axios.post('http://localhost:8000/accounts/userDetail/',{phone_number: decoded.phone_number}, { headers: { 'Content-Type': 'application/json' } });
         setUser({
             phone_number: decoded.phone_number,
             name: decoded.first_name + " " + decoded.last_name,
-            wallet: decoded.wallet,
-            recharge_amount: decoded.recharge_amount,
-            income: decoded.income,
             invite_code: decoded.invite_code,
+            wallet: response.data.data.wallet,
+            recharge_amount: response.data.data.recharge_amount,
+            income: response.data.data.income,
         })
         }
     useEffect(() => {
@@ -77,24 +77,6 @@ export default function Profile() {
                 console.log(response.data)
 
                 // decode the token
-
-                Cookies.remove("session_id")
-
-                const token_data = {
-                    first_name: user.name.split(" ")[0],
-                    last_name: user.name.split(" ")[1],
-                    phone_number: user.phone_number,
-                    invite_code: user.invite_code,
-                    wallet: response.data.data.wallet,
-                    recharge_amount: response.data.data.recharge_amount,
-                    income: response.data.data.income,
-                }
-                const token = await sign(token_data, "AuthSystemBuild", {
-                    expiresIn: "30d",
-                  });
-                Cookies.set("session_id", token, { expires: 30 });
-
-                console.log(token_data)
 
                 userDeatil()
 
@@ -132,11 +114,11 @@ export default function Profile() {
 
 
                     <div className="mx-4 flex flex-col item-center justify-center">
-                        <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹{user.income}.00</h2>
+                        <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹{user.income}</h2>
                         <p>Income</p>
                     </div>
                     <div className="teamSize flex mx-4 flex-col item-center justify-center">
-                    <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹{user.recharge_amount}.00</h2>
+                    <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹{user.recharge_amount}</h2>
                         <p>Recharge Amount</p>
                     </div>
                 </div>

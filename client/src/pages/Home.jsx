@@ -367,6 +367,7 @@ export default function Home() {
                 total={item.total_income}
                 price={item.price}
                 rate="4.5"
+                id={item.id}
                 src={"http://127.0.0.1:8000"+item.image}
               />
             </div>))}
@@ -387,6 +388,7 @@ export default function Home() {
                 total={item.total_income}
                 price={item.price}
                 rate="4.5"
+                id={item.id}
                 src={"http://127.0.0.1:8000"+item.image}
               />
             </div>))}
@@ -407,6 +409,7 @@ export default function Home() {
                 daily={item.daily_income}
                 total={item.total_income}
                 price={item.price}
+                id={item.id}
                 rate="4.5"
                 src={"http://127.0.0.1:8000"+item.image}
               />

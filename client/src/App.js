@@ -19,6 +19,10 @@ import AddBankCard from './pages/AddBankCard';
 import BankCard from './pages/BankCard';
 import Otp from './pages/Otp';
 import Cookies from 'js-cookie'
+import Admin from './pages/Admin';
+import AdminPortal from './pages/AdminPortal';
+import Viewuser from './pages/Viewuser';
+import Recharge from './pages/Recharge';
 
 function App() {
   return (
@@ -26,7 +30,11 @@ function App() {
       <Router>
         <Routes>
           {Cookies.get("session_id") && (<Route path="/" element={<React.Fragment><Navbar /><Home /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route path="/administ/portal" element={<React.Fragment><AdminPortal /><Footer /></React.Fragment>} />)}
           {!Cookies.get("session_id") && (<Route path='/login' element={<Login />} />)}
+          {Cookies.get("session_id") && (<Route path='/administ/viewuser/:userId' element={<Viewuser />} />)}
+          {Cookies.get("session_id") && (<Route path='/administ/recharge/:userId' element={<Recharge/>} />)}
+          {Cookies.get("session_id") && (<Route path='/administ/login' element={<Admin/>} />)}
           {!Cookies.get("session_id") && (<Route path='/signup' element={<Signup />} />)}
           {!Cookies.get("session_id") && (<Route path="/forgot-password" element={<ForgotPassword />}/>)}
           {Cookies.get("session_id") && (<Route path='/vip' element={<React.Fragment><Navbar /><VIP /><Footer /></React.Fragment>} />)}
