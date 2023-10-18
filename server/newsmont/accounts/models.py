@@ -13,13 +13,13 @@ class Profile(BaseModel):
     is_verified = models.BooleanField(default=False)
     otp = models.CharField(max_length=6, blank=True, unique=True)
     start_time = models.DateTimeField(null=True, blank=True)
-    recommended_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recommended_by", null=True, blank=True)
+    recommended_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="recommended_by", null=True, blank=True)
     forgot_password_token = models.CharField(max_length=6, blank=True, null=True, unique=True)
     forgot_password_token_start_time = models.DateTimeField(null=True, blank=True)
     vip_level = models.IntegerField(default=0)
     wallet = models.IntegerField(default=0)
     recharge_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
-    income = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    income = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
     is_admin = models.BooleanField(default=False)
 
     def __str__(self):

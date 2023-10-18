@@ -19,4 +19,5 @@ urlpatterns = [
     path('resend-otp/', views.resend_otp, name='resend_otp'),
     path('myrechargerecord/', views.show_my_recharge_request, name='my_recharge'),
     path('resend-otp/', views.resend_otp, name='resend_otp'),
+    path('deleteMyAccount/', views.delete_account, name='delete_my_account'),
 ]

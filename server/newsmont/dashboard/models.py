@@ -66,10 +66,10 @@ class Recharge_Record(BaseModel):
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     status = models.BooleanField(default=False)
     date = models.DateTimeField(blank=True, null=True)
-    recharge_payment_id = models.CharField(max_length=15, blank=True, null=True)
+    user_recharge_payment_id = models.CharField(max_length=15, blank=True, null=True)
 
     def __str__(self):
-        return "Rs. " + str(self.amount) + " - " + str(self.user.user.first)
+        return "Rs. " + str(self.amount) + " - " + str(self.user.user.first_name)
 
     
 class Orders(BaseModel):

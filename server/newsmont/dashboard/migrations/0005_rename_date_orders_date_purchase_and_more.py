@@ -22,9 +22,4 @@ class Migration(migrations.Migration):
             model_name='recharge_record',
             name='amount_left',
         ),
-        migrations.AddField(
-            model_name='recharge_record',
-            name='payment_id',
-            field=models.CharField(blank=True, max_length=15, null=True),
-        ),
     ]

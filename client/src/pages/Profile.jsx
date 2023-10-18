@@ -105,6 +105,40 @@ export default function Profile() {
             console.log(err)
         }
     }
+
+    const [deletePopUp, setDeletePopUp] = useState(false)
+
+    const handleDeletePopup = () => {
+        setDeletePopUp(true)
+    }
+
+    const closeDeleteAccountPopup = () => {
+        setDeletePopUp(false)
+    }
+
+    const [deletePassword, setDeletePassword] = useState({
+        password: ''
+    })
+
+    const handelDeleteAccount = async (e) => {
+        e.preventDefault()
+        try{
+            const token = Cookies.get("session_id");
+            const decoded = await jwt_decode(token);
+            const response = await axios.post('http://localhost:8000/accounts/deleteMyAccount/',{phone_number: decoded.phone_number, password: deletePassword.password}, { headers: { 'Content-Type': 'application/json' } });
+            console.log(response.data)
+            if(response.data.status === "Success"){
+                Cookies.remove("session_id")
+                window.location.href = "/login"
+            }
+            else{
+                setIsAlert(response.data.message);
+            }
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
     
     return (
         <React.Fragment>
@@ -185,7 +219,7 @@ export default function Profile() {
                     <p className='mx-auto text-center'>Change Password</p>
                     </Link>
                     </div>
-                    <div className="delete-account mx-auto my-3">
+                    <div onClick={handleDeletePopup} className="delete-account mx-auto my-3">
                     <img width="32" height="32" className='mx-auto' src="https://img.icons8.com/ios/50/0E9F6E/trash--v1.png" alt="trash--v1"/> 
                     <p className='mx-auto text-center'>Delete Account</p>
                     </div>
@@ -332,6 +366,46 @@ export default function Profile() {
       </div>
                 </div>
                 </div>
+            )}
+
+{deletePopUp && (
+            <div
+            id="pop"
+            className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20"
+          >
+            <div
+              style={{ width: "20rem", cursor: "pointer" }}
+              className="flex flex-col justify-center items-end"
+            >
+              <img
+                onClick={closeDeleteAccountPopup}
+                width="20"
+                height="20"
+                className="mb-1"
+                src="https://img.icons8.com/ios-glyphs/30/014737/delete-sign.png"
+                alt="delete-sign"
+              />
+      <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-emerald-900 md:text-2xl dark:text-white">
+                  Verify Account Details
+              </h1>
+              <form className="space-y-4 md:space-y-6" action="#">
+                  <div>
+                      <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter Password Here</label>
+                      <input type="password"
+                      onChange={(e)=>setDeletePassword({
+                                password: e.target.value
+                        })
+                      }
+                      name="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Password" required=""/>
+                  </div>
+                  <button type="submit" onClick={handelDeleteAccount} className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Process</button>
+              </form>
+          </div>
+      </div>
+            </div>
+            </div>
             )}
         </React.Fragment>
     )
