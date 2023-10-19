@@ -109,6 +109,10 @@ export default function Profile() {
             closeBankCardPopup()
             setIsAlert("Withdraw Request Sent Successfully of amount ₹" + withdraw + ".00 ");
         }
+        else{
+            closeBankCardPopup()
+            setIsAlert(response.data.message);
+        }
 
     }
 
