@@ -64,6 +64,7 @@ def admin_index(request):
                         "amount": record.amount,
                         "status": record.status,
                         "date": record.date.strftime("%B-%d-%Y") + " at " + record.date.strftime("%I:%M %p"),
+                        # "phone_number": record.user.user.phone_number,
                     })
                 for record in withdraw_records:
                     withdraw_records_details.append({
@@ -75,6 +76,7 @@ def admin_index(request):
                         "bank_card": record.bank_card.account_number,
                         "ifsc_code": record.bank_card.ifsc_code,
                         "account_holder_name": record.bank_card.card_holder_name,
+                        # "phone_number": record.user.phone_number,
                     })
                 for user in users:
                     users_details.append({

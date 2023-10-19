@@ -212,13 +212,45 @@ def my_teams(request):
                 level_2 += Profile.objects.filter(recommended_by=i['user_id']).values()
             for i in level_2:
                 level_3 += Profile.objects.filter(recommended_by=i['user_id']).values()
-            myteams = {
-                'level_1': list(level_1),
-                'level_2': list(level_2),
-                'level_3': list(level_3)
-            }
 
-            return JsonResponse({'status': 'Success', 'message': 'My Teams', 'myteams' : myteams })
+            level_1_name = []
+            for user in list(level_1):
+                user_detail =User.objects.filter(username=user.get("phone_number")).first()
+                level_1_name.append(user_detail.first_name + " " + user_detail.last_name)
+
+            level_2_name = []
+            for user in list(level_2):
+                user_detail = User.objects.filter(username=user.get("phone_number")).first()
+                level_2_name.append(user_detail.first_name + " " + user_detail.last_name)
+            
+            level_3_name = []
+            for user in list(level_3):
+                user_detail = User.objects.filter(username=user.get("phone_number")).first()
+                level_3_name.append(user_detail.first_name + " " + user_detail.last_name)
+
+            myteams = {
+                'level_1': level_1_name,
+                'level_2': level_2_name,
+                'level_3': level_3_name,
+            }
+            team_size = len(level_1) + len(level_2) + len(level_3)
+            team_withdrawal = 0
+            for user in level_1:
+                team_withdrawal += int(user.get("withdrawal_amount")) if user.get("withdrawal_amount") else 0 
+            for user in level_2:
+                team_withdrawal += int(user.get("withdrawal_amount")) if user.get("withdrawal_amount") else 0 
+            for user in level_3:
+                team_withdrawal += int(user.get("withdrawal_amount")) if user.get("withdrawal_amount") else 0 
+            team_recharge = 0
+            for user in level_1:
+                team_recharge += int(user.get("recharge_amount")) if user.get("recharge_amount") else 0
+            for user in level_2:
+                team_recharge += int(user.get("withdrawal_amount")) if user.get("withdrawal_amount") else 0
+            for user in level_3:
+                team_recharge += int(user.get("withdrawal_amount")) if user.get("withdrawal_amount") else 0
+
+            print(team_size, team_withdrawal, team_recharge)
+            return JsonResponse({'status': 'Success', 'message': 'My Teams', 'myteams' : myteams, "team_size": team_size, "team_withdrawal": team_withdrawal, "team_recharge": team_recharge}) 
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
 
