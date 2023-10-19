@@ -64,44 +64,7 @@ export default function AdminPortal() {
       ,{phone_number : decoded.phone_number} , {"content": "application/json"});
 
 
-      // const withdrawData = response.data.withdraw_records_details.map((item) => ({
-      //   Sno: item.id,
-      //   User: item.user,
-      //   Amount: item.amount,
-      //   Status: item.status,
-      //   Date: item.date,
-      //   Accountno: item.bank_card,
-      //   ifsc: item.ifsc_code,
-      //   name: item.account_holder_name,
-      // }));
-      // const rechargeData = response.data.recharge_records.map((item) => ({
-      //   Sno: item.id,
-      //   User: item.user,
-      //   Amount: item.amount,
-      //   Status: item.status,
-      //   Date: item.date,
-      // }));
-      // const userData = response.data.users_details.map((item) => ({
-      //   Sno: item.id,
-      //   Name: item.name,
-      //   PhoneNumber: item.phone_number,
-      //   InviteCode: item.invite_code,
-      //   Verified: item.is_verified,
-      //   StartTime: item.start_time,
-      //   RecommendedBy: item.recommended_by,
-      //   VIPLevel: item.vip_level,
-      //   Wallet: item.wallet,
-      //   RechargeAmount: item.recharge_amount,
-      //   Income: item.income,
-      //   IsAdmin: item.is_admin,
-      // }));
-      // const productData = response.data.products_details.map((item) => ({
-      //   Sno: item.id,
-      //   Name: item.name,
-      //   Price: item.price,
-      //   Description: item.description,
-      //   Image: item.image,
-      // }));
+       
 
       setDataArray(response.data.withdraw_records_details);
       setFakeRechargeRecords(response.data.recharge_records);

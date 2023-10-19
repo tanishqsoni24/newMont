@@ -32,14 +32,13 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     >
       <div className="text-center">
         <h2 className="text-emerald-500 font-bold text-center text-2xl mb-4">Approval Confirmation</h2>
-        <p>User: {item.User}</p>
-        <p>Amount: {item.Amount}</p>
-        <p>Status: {item.Status}</p>
-        <p>Date: {item.Date}</p>
-        <p>Card: {item.Card}</p>
-        <p>Account No: {item.Accountno}</p>
-        <p>IFSC Code: {item.ifsc}</p>
-        <p>Card Holder Name: {item.name}</p>
+        <p>User: {item.user}</p>
+        <p>Amount: {item.amount}</p>
+        <p>Status: {item.status?"Approved": "Pending"}</p>
+        <p>Date: {item.date}</p>
+        <p>Account No: {item.bank_card}</p>
+        <p>IFSC Code: {item.ifsc_code}</p>
+        <p>Card Holder Name: {item.account_holder_name}</p>
 
         <button
           onClick={() => onApprove(item)}
