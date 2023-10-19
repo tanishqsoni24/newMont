@@ -48,7 +48,7 @@ function App() {
           {Cookies.get("session_id") && (<Route path='/change-password' element={<React.Fragment><Navbar /><ChangePassword /><Footer /></React.Fragment>} />)}
           {Cookies.get("session_id") && (<Route path='/add-card' element={<React.Fragment><Navbar /><AddBankCard /><Footer /></React.Fragment>} />)}
           {Cookies.get("session_id") && (<Route path='/bank-card' element={<React.Fragment><Navbar /><BankCard /><Footer /></React.Fragment>} />)}
-          <Route path="/otp" element={<Otp/>} />
+          {!Cookies.get("session_id") && <Route path="/otp" element={<Otp/>} /> }
           <Route path="/*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </Router>
