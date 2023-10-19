@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ApprovalModal from "../components/general/AdminModal";
 import axios from "axios";
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
 
 export default function AdminPortal() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,7 +27,7 @@ export default function AdminPortal() {
   };
 
   const handleApprove = (item) => {
-    console.log("approve" + item.User);
+    console.log("approve" + item.user);
     //approval logic
     closeModal();
   };
@@ -53,53 +55,22 @@ export default function AdminPortal() {
   };
 
   useEffect(() => {
-    const dataFetch = async () => {
-      const response = await axios.get("http://localhost:8000/administ/");
+    
+    const dataFetch = async (e) => {
+      console.log("hello")
+      const token = Cookies.get("admin_session_id");
+      const decoded = await jwt_decode(token);
+      const response = await axios.post("http://localhost:8000/administ/"
+      ,{phone_number : decoded.phone_number} , {"content": "application/json"});
 
 
-      const withdrawData = response.data.withdraw_records_details.map((item) => ({
-        Sno: item.id,
-        User: item.user,
-        Amount: item.amount,
-        Status: item.status,
-        Date: item.date,
-        Accountno: item.bank_card,
-        ifsc: item.ifsc_code,
-        name: item.account_holder_name,
-      }));
-      const rechargeData = responseRecharge.data.map((item) => ({
-        Sno: item.id,
-        User: item.user,
-        Amount: item.amount,
-        Status: item.status,
-        Date: item.date,
-        RemainingBalance: item.remaining_balance,
-      }));
-      const userData = responseUser.data.map((item) => ({
-        Sno: item.id,
-        Name: item.first_name + " " + item.last_name,
-        PhoneNumber: item.phone_number,
-        InviteCode: item.invite_code,
-        Verified: item.verified,
-        StartTime: item.start_time,
-        RecommendedBy: item.recommended_by,
-        VIPLevel: item.vip_level,
-        Wallet: item.wallet,
-        RechargeAmount: item.recharge_amount,
-        Income: item.income,
-        IsAdmin: item.is_admin,
-      }));
-      const productData = responseProduct.data.map((item) => ({
-        Sno: item.id,
-        Name: item.name,
-        Price: item.price,
-        Description: item.description,
-        Image: item.image,
-      }));
+       
 
-      setDataArray(withdrawData);
-      setFakeRechargeRecords(rechargeData);
-      setFakeUserData(userData);
+      setDataArray(response.data.withdraw_records_details);
+      setFakeRechargeRecords(response.data.recharge_records);
+      setFakeUserData(response.data.users_details);
+      setFakeProductData(response.data.products_details);
+      console.log(response.data);
     };
     dataFetch();
   }, []);
@@ -145,6 +116,15 @@ export default function AdminPortal() {
       name: "John Doe",
     }
     // Add more fake data here as needed
+  ]);
+  const [fakeProductData, setFakeProductData] = useState([
+    {
+      Sno: 1,
+      Name: "Product 1",
+      Price: "$100",
+      Description: "This is a description",
+      Image: "https://picsum.photos/200",
+    },
   ]);
   return (
     <>
@@ -280,9 +260,6 @@ export default function AdminPortal() {
                   Date
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  bank card
-                </th>
-                <th scope="col" className="px-6 py-3">
                   Account No
                 </th>
                 <th scope="col" className="px-6 py-3">
@@ -308,7 +285,7 @@ export default function AdminPortal() {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {item.Sno}
+                    {index + 1}
                   </th>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     <button
@@ -317,25 +294,25 @@ export default function AdminPortal() {
                       }}
                       className="text-blue-600 hover:underline"
                     >
-                      {item.User}
+                      {item.user}
                     </button>
                   </td>
-                  <td className="px-6 py-4">{item.Amount}</td>
+                  <td className="px-6 py-4">₹{item.amount}</td>
                   <td className={`px-6 py-4 ${
-                      item.Status === "Paid"
+                      item.status
                         ? "text-green-600 dark:text-green-400"
                         : "text-red-600 dark:text-red-400"
-                    } whitespace-nowrap`}>{item.Status}</td>
-                  <td className="px-6 py-4">{item.Date}</td>
-                  <td className="px-6 py-4">{item.Card}</td>
-                  <td className="px-6 py-4">{item.Accountno}</td>
-                  <td className="px-6 py-4">{item.ifsc}</td>
-                  <td className="px-6 py-4">{item.name}</td>
+                    } whitespace-nowrap`}>{item.status? "Approved" :"Pending"}</td>
+                  <td className="px-6 py-4">{item.date}</td>
+                  
+                  <td className="px-6 py-4">{item.bank_card}</td>
+                  <td className="px-6 py-4">{item.ifsc_code}</td>
+                  <td className="px-6 py-4">{item.account_holder_name}</td>
                   <td className="px-6 py-4">
                     <button
                       onClick={() => openModal(item)}
                       className={`text-blue-500 ${
-                        item.Status === "Paid"
+                        item.status
                           ? "pointer-events-none text-gray-400"
                           : "hover:text-blue-700"
                       }`}
@@ -392,21 +369,22 @@ export default function AdminPortal() {
                   Date
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Remaining Balance
+                  Actions
                 </th>
+                
               </tr>
             </thead>
             <tbody>
-              {fakeRechargeRecords.map((record) => (
+              {fakeRechargeRecords.map((record, index) => (
                 <tr
-                  key={record.Sno}
+                  key={index+1}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {record.Sno}
+                    {index + 1}
                   </th>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     <button
@@ -415,26 +393,35 @@ export default function AdminPortal() {
                       }}
                       className="text-blue-600 hover:underline"
                     >
-                      {record.User}
+                      {record.user}
                     </button>
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {record.Amount}
+                  ₹{record.amount}
                   </td>
                   <td
                     className={`px-6 py-4 ${
-                      record.Status === "Paid"
+                      record.status
                         ? "text-green-600 dark:text-green-400"
                         : "text-red-600 dark:text-red-400"
                     } whitespace-nowrap`}
                   >
-                    {record.Status}
+                    {record.status? "Approved" :"Pending"} 
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {record.Date}
+                    {record.date}
                   </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {record.RemainingBalance}
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => openModal(record)}
+                      className={`text-blue-500 ${
+                        record.status
+                          ? "pointer-events-none text-gray-400"
+                          : "hover:text-blue-700"
+                      }`}
+                    >
+                      Approve
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -511,41 +498,41 @@ export default function AdminPortal() {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {user.Sno}
+                    {index+1}
                   </th>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                      {user.Name}
+                      {user.name}
                     
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.PhoneNumber}
+                    {user.phone_number}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-green-400">
-                    {user.InviteCode}
+                    {user.invite_code}
                   </td>
                   <td className="px-6 py-4 text-green-600 whitespace-nowrap dark:text-white">
-                    {user.Verified}
+                    {user.is_verified}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.StartTime}
+                    {user.start_time}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.RecommendedBy}
+                    {user.recommended_by}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.VIPLevel}
+                    {user.vip_level}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.Wallet}
+                  ₹{user.wallet}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.RechargeAmount}
+                  ₹{user.recharge_amount}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.Income}
+                  ₹{user.income}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.IsAdmin}
+                    {user.is_admin}
                   </td>
                 </tr>
               ))}
@@ -577,128 +564,31 @@ export default function AdminPortal() {
                   Sno.
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Slug
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Category
+                  Product name
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Price
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  VIP eligible
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Days
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Daily Income
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Total Income
-                </th>
+                
               </tr>
             </thead>
             <tbody>
+              {fakeProductData.map((product, index) => (
               <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  01
+                  {index+1}
                 </th>
                 <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  User 1
+                  {product.name}
                 </td>
                 <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  1234567890
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-green-400">
-                  zxcvuycr5466
-                </td>
-                <td className="px-6 py-4 text-green-600 whitespace-nowrap dark:text-white">
-                  Yes
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  25:00
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  Virat Kohli
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  2
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  $1000
+                ₹{product.price}
                 </td>
               </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  02
-                </th>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  User 2
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  1234567890
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-green-400">
-                  zxcvuycr5466
-                </td>
-                <td className="px-6 py-4 text-red-600 whitespace-nowrap dark:text-white">
-                  No
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  25:00
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  Virat Kohli
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  2
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  $1000
-                </td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  03
-                </th>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  User 3
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  1234567890
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-green-400">
-                  zxcvuycr5466
-                </td>
-                <td className="px-6 py-4 text-green-600 whitespace-nowrap dark:text-white">
-                  Yes
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  25:00
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  Virat Kohli
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  2
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  $1000
-                </td>
-              </tr>
+              ))}
             </tbody>
           </table>
         </div>
