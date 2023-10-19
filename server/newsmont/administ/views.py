@@ -64,7 +64,7 @@ def admin_index(request):
                         "amount": record.amount,
                         "status": record.status,
                         "date": record.date.strftime("%B-%d-%Y") + " at " + record.date.strftime("%I:%M %p"),
-                        # "phone_number": record.user.user.phone_number,
+                        "phone_number": record.user.phone_number,
                     })
                 for record in withdraw_records:
                     withdraw_records_details.append({
@@ -76,7 +76,7 @@ def admin_index(request):
                         "bank_card": record.bank_card.account_number,
                         "ifsc_code": record.bank_card.ifsc_code,
                         "account_holder_name": record.bank_card.card_holder_name,
-                        # "phone_number": record.user.phone_number,
+                        "phone_number": record.user.phone_number,
                     })
                 for user in users:
                     users_details.append({
@@ -116,7 +116,9 @@ def show_withdrawl_requests(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
         phone = data.get("phone_number")
-        withdraw_records = Withdraw_Record.objects.all()
+        user = Profile.objects.filter(phone_number=phone).first()
+        withdraw_records = Withdraw_Record.objects.filter(user=user).all()
+        # withdraw_records = Withdraw_Record.objects.filter(username=phone).all()
         withdraw_records_details = []
         for record in withdraw_records:
             withdraw_records_details.append({
@@ -125,12 +127,12 @@ def show_withdrawl_requests(request):
                 "phone": record.user.phone_number,
                 "amount": record.amount,
                 "status": record.status,
-                "date": str(record.date.strftime("%B-%d-%Y")),
+                "date": str(record.date.strftime("%B-%d-%Y")) + " at " + str(record.date.strftime("%I:%M %p")),
                 "account_number": record.bank_card.account_number,
                 "ifsc_code": record.bank_card.ifsc_code,
                 "card_holder_name": record.bank_card.card_holder_name
             })
-        return JsonResponse({"status": "Success", "logged in successfully and data is sent!": withdraw_records_details})
+        return JsonResponse({"status": "Success","message":  "logged in successfully and data is sent!","data": withdraw_records_details})
     return JsonResponse({"status": "Failed", "message": "Invalid Request"})
 
 @csrf_exempt
@@ -138,7 +140,10 @@ def show_recharge_requests(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
         phone = data.get("phone_number")
-        recharge_records = Recharge_Record.objects.all()
+        
+        user = Profile.objects.filter(phone_number=phone).first()
+        recharge_records = Recharge_Record.objects.filter(user=user).all()
+        # recharge_records = Recharge_Record.objects.all()
         recharge_records_details = []
         for record in recharge_records:
             recharge_records_details.append({
@@ -147,10 +152,9 @@ def show_recharge_requests(request):
                 "phone": record.user.phone_number,
                 "amount": record.amount,
                 "status": record.status,
-                "date": str(record.date.strftime("%B-%d-%Y")),
-                "amount_left": record.amount_left
+                "date": str(record.date.strftime("%B-%d-%Y")) + " at " + str(record.date.strftime("%I:%M %p")),
             })
-        return JsonResponse({"status": "Success", "logged in successfully and data is sent!": recharge_records_details})
+        return JsonResponse({"status": "Success", "messsage":"logged in successfully and data is sent!","data": recharge_records_details})
     return JsonResponse({"status": "Failed", "message": "Invalid Request"})
 
 @csrf_exempt
@@ -158,7 +162,7 @@ def show_users(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
         phone = data.get("phone_number")
-        users = Profile.objects.all()
+        users = Profile.objects.filter(username=phone).all()
         users_details = []
         for user in users:
             users_details.append({
@@ -200,6 +204,8 @@ def show_products(request):
             })
         return JsonResponse({"status": "Success", "logged in successfully and data is sent!": products_details})
     return JsonResponse({"status": "Failed", "message": "Invalid Request"})
+
+
 
 @csrf_exempt
 def userwise_recharge_records(request):

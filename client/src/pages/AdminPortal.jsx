@@ -76,10 +76,10 @@ export default function AdminPortal() {
   };
   const [rechargePopUP, setRechargePopUP] = useState(false);
   const viewuser = (user) => {
-    navigate(`/administ/viewuser/${user.user}`);
+    navigate(`/administ/viewuser/${user.user}-${user.phone_number}`);
   };
   const viewrecharge = (user) => {
-    setRechargePopUP(true);
+    navigate(`/administ/recharge/${user.user}-${user.phone_number}`);
   };
 
   useEffect(() => {

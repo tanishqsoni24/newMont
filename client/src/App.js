@@ -32,8 +32,8 @@ function App() {
           {Cookies.get("session_id") && (<Route path="/" element={<React.Fragment><Navbar /><Home /><Footer /></React.Fragment>} />)}
           {Cookies.get("admin_session_id") && (<Route path="/administ/portal" element={<React.Fragment><AdminPortal /><Footer /></React.Fragment>} />)}
           {!Cookies.get("session_id") && (<Route path='/login' element={<Login />} />)}
-          {Cookies.get("session_id") && (<Route path='/administ/viewuser/:userId' element={<Viewuser />} />)}
-          {Cookies.get("session_id") && (<Route path='/administ/recharge/:userId' element={<Recharge/>} />)}
+          {Cookies.get("admin_session_id") && (<Route path='/administ/viewuser/:userId' element={<Viewuser />} />)}
+          {Cookies.get("admin_session_id") && (<Route path='/administ/recharge/:userId' element={<Recharge/>} />)}
           {!Cookies.get("session_id") && (<Route path='/administ/login' element={<Admin/>} />)}
           {!Cookies.get("session_id") && (<Route path='/signup' element={<Signup />} />)}
           {!Cookies.get("session_id") && (<Route path="/forgot-password" element={<ForgotPassword />}/>)}
