@@ -29,7 +29,7 @@ export default function Card(props) {
     const token = Cookies.get("session_id");
     const decoded = await jwt_decode(token);
 
-    const response = await axios.post("http://localhost:8000/dashboard/purchase_product/",{phone_number : decoded.phone_number, product_id: props.id } , {"content": "application/json"});
+    const response = await axios.post("http://139.59.32.207/dashboard/purchase_product/",{phone_number : decoded.phone_number, product_id: props.id } , {"content": "application/json"});
 
     console.log(response.data);
 

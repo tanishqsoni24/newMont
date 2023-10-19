@@ -25,7 +25,7 @@ export default function AdminPortal() {
   const handelDistributeIncome = async (e) => {
     e.preventDefault();
     const response = await axios.post(
-      "http://localhost:8000/administ/distribute_income/",
+      "http://139.59.32.207/administ/distribute_income/",
       {},
       { headers: { "Content-Type": "application/json" } }
 
@@ -88,7 +88,7 @@ export default function AdminPortal() {
       console.log("hello")
       const token = Cookies.get("admin_session_id");
       const decoded = await jwt_decode(token);
-      const response = await axios.post("http://localhost:8000/administ/"
+      const response = await axios.post("http://139.59.32.207/administ/"
       ,{phone_number : decoded.phone_number} , {"content": "application/json"});
 
 

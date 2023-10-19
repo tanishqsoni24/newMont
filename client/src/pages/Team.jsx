@@ -27,7 +27,7 @@ export default function Team() {
         setUser({
             invite_code: decoded.invite_code,
         })
-        const response = await axios.post('http://localhost:8000/accounts/my-teams/',{phone_number : decoded.phone_number} ,{"content": "application/json"});
+        const response = await axios.post('http://139.59.32.207/accounts/my-teams/',{phone_number : decoded.phone_number} ,{"content": "application/json"});
         console.log(response.data.myteams.level_1)
         console.log(response.data.myteams.level_2)
         console.log(response.data.myteams.level_3)
