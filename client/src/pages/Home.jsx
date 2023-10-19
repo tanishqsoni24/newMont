@@ -10,10 +10,23 @@ import "../App.css";
 import { Carousel } from "react-responsive-carousel";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import "./animate.css";
 import axios from "axios";
 
 export default function Home() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const checkSession_id = async () => {
+      const token = Cookies.get("session_id");
+      if (!token) {
+        navigate("/login");
+      } 
+    };
+    checkSession_id();
+  }, []);
+
   const [exclusive, setExclusive] = useState([]);
   const [upgrade, setUpgrade] = useState([]);
   const [gift, setGift] = useState([]);
