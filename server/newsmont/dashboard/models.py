@@ -54,7 +54,7 @@ class Withdraw_Record(BaseModel):
     paid_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return self.name 
+        return str(self.user) + " - " + str(self.amount)
     
     def update_paid_date(self):
         self.paid_date = timezone.now()
