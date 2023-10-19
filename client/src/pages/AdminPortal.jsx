@@ -76,10 +76,10 @@ export default function AdminPortal() {
   };
   const [rechargePopUP, setRechargePopUP] = useState(false);
   const viewuser = (user) => {
-    navigate(`/administ/viewuser/${user.user}`);
+    navigate(`/administ/viewuser/${user.user}-${user.phone_number}`);
   };
   const viewrecharge = (user) => {
-    setRechargePopUP(true);
+    navigate(`/administ/recharge/${user.user}-${user.phone_number}`);
   };
 
   useEffect(() => {
@@ -179,7 +179,7 @@ export default function AdminPortal() {
           <Link to="/" className="flex items-center">
             <img src={logo} className="w-20 mr-2" alt="Flowbite Logo" />
             <span className="self-center text-2xl col-p md:text-3xl font-bold whitespace-nowrap dark:text-[#0E9F6E]">
-              New Mont
+              My Gold Malls
             </span>
           </Link>
           <div className="flex md:order-2">

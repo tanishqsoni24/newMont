@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ApprovalModal from "../components/general/AdminModal";
+import axios from 'axios'
 export default function Viewuser() {
   const { userId} = useParams();
     const [sortByStatus, setSortByStatus] = useState(null);
@@ -16,13 +17,22 @@ export default function Viewuser() {
         setSelectedItem(null);
         setModalIsOpen(false);
       };
+      useEffect(() => {
+        const withdrawDetail = async () => {
+        const response = await axios.post('http://localhost:8000/administ/withdrawal_detail/',{phone_number : userId.split("-")[1]} ,{"content": "application/json"});
+        console.log(response.data.data)
+        
+        setDataArray(response.data.data)
+        }
+        withdrawDetail()
+    }, [])
     
       const handleApprove = (item) => {
         console.log("approve" + item.User);
         //approval logic
         closeModal();
       };
-      const DataArray = [
+      const [DataArray, setDataArray] = useState([
         {
           Sno: 1,
           Amount: "₹500",
@@ -104,7 +114,7 @@ export default function Viewuser() {
           name: "John Doe",
         },
         // Add more fake data here as needed
-      ];
+      ]);
   return (
     <div
     style={{ marginTop: "1rem" }}
@@ -152,9 +162,6 @@ export default function Viewuser() {
               Date
             </th>
             <th scope="col" className="px-6 py-3">
-              bank card
-            </th>
-            <th scope="col" className="px-6 py-3">
               Account No
             </th>
             <th scope="col" className="px-6 py-3">
@@ -180,26 +187,32 @@ export default function Viewuser() {
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
-                {item.Sno}
+                {index + 1}
               </th>
-              <td className="px-6 py-4">{item.Amount}</td>
-              <td className="px-6 py-4">{item.Status}</td>
-              <td className="px-6 py-4">{item.Date}</td>
-              <td className="px-6 py-4">{item.Card}</td>
-              <td className="px-6 py-4">{item.Accountno}</td>
-              <td className="px-6 py-4">{item.ifsc}</td>
-              <td className="px-6 py-4">{item.name}</td>
+              <td className="px-6 py-4">₹{item.amount}</td>
+              <td className="px-6 py-4">{item.status? 
+              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+              Approved
+            </span> :
+              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+              Pending
+            </span>  
+            }</td>
+              <td className="px-6 py-4">{item.date}</td>
+              <td className="px-6 py-4">{item.account_number}</td>
+              <td className="px-6 py-4">{item.ifsc_code}</td>
+              <td className="px-6 py-4">{item.card_holder_name}</td>
               <td className="px-6 py-4">
-                <button
-                  onClick={() => openModal(item)}
-                  className={`text-blue-500 ${
-                    item.Status === "Paid"
-                      ? "pointer-events-none text-gray-400"
-                      : "hover:text-blue-700"
-                  }`}
-                >
-                  Approve
-                </button>
+              <button
+                      onClick={() => openModal(item)}
+                      className={`text-blue-500 ${
+                        item.status
+                          ? "pointer-events-none text-gray-400"
+                          : "hover:text-blue-700"
+                      }`}
+                    >
+                      Approve
+                    </button>
               </td>
             </tr>
           ))}
