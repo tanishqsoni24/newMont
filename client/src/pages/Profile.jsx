@@ -219,7 +219,7 @@ export default function Profile() {
 
 
                     <div className="mx-4 flex flex-col item-center justify-center">
-                        <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹{user.income}</h2>
+                        <h2 className='mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white'>₹{user.income}.00</h2>
                         <p>Income</p>
                     </div>
                     <div className="teamSize flex mx-4 flex-col item-center justify-center">

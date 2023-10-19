@@ -74,7 +74,7 @@ export default function RechargeRecord() {
     </table>
 
     <div className="noice flex justify-center my-5">
-        <p className='text-red-500'>*Note: Withdrawal will be processed within 24 hours</p>
+        <p className='text-red-500'>*Note: Recharge will be processed within 24 hours</p>
     </div>
 </div>
 </div>

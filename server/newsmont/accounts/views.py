@@ -311,7 +311,16 @@ def my_withdraw_requests(request):
         if user_object:
             user_profile_object = Profile.objects.filter(user=user_object).first()
             withdraw_records = Withdraw_Record.objects.filter(user=user_profile_object).values()
-            return JsonResponse({'status': 'Success', 'message': 'My Withdraw Requests', 'data': list(withdraw_records)})
+            withdraw_records = [
+                {
+                    'amount': withdraw_record['amount'],
+                    'status': withdraw_record['status'],
+                    'date': withdraw_record['date'].strftime("%B-%d-%Y")+ " at " + withdraw_record['date'].strftime("%H:%M:%S"),
+                }
+                for withdraw_record in withdraw_records
+            ]
+            withdraw_records = sorted(withdraw_records, key=lambda k: k['date'], reverse=True)
+            return JsonResponse({'status': 'Success', 'message': 'My Withdraw Requests', 'data': withdraw_records})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
 
@@ -384,7 +393,7 @@ def show_my_recharge_request(request):
                     'amount': recharge_record['amount'],
                     'status': recharge_record['status'],
                     'date': recharge_record['date'].strftime("%B-%d-%Y")+ " at " + recharge_record['date'].strftime("%H:%M:%S"),
-                    'payment_id': recharge_record['recharge_payment_id'],
+                    'payment_id': recharge_record['user_recharge_payment_id'],
                 }
                 for recharge_record in recharge_records
             ]
