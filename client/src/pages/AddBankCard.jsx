@@ -23,14 +23,20 @@ export default function AddBankCard() {
             const token = Cookies.get("session_id");
             const decoded = await jwt_decode(token);
             console.log(decoded.phone_number)
-            await setBankCard({...bankCard, phone_number: decoded.phone_number})
 
-            const response = await axios.post('http://localhost:8000/accounts/add-bank-card/',bankCard, { headers: { 'Content-Type': 'application/json' } });
+            const response = await axios.post('http://localhost:8000/accounts/add-bank-card/',{
+                phone_number: decoded.phone_number,
+                card_holder_name: bankCard.card_holder_name,
+                bank_name: bankCard.bank_name,
+                card_number: bankCard.card_number,
+                ifsc_code: bankCard.ifsc_code
+
+            }, { headers: { 'Content-Type': 'application/json' } });
 
             if(response.data.status === "Success"){
                 console.log('success')
 
-                navigate('/bank_card')
+                navigate('/bank-card')
             }
 
 

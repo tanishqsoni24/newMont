@@ -1,6 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useState } from 'react'
+import axios from 'axios'
+import Cookies from 'js-cookie'
+import jwt_decode from 'jwt-decode'
+
 
 export default function WithdrawRecord() {
+    const [withdrawRecord, setWithdrawRecord] = useState([])
+    useEffect(() => {
+        const withdrawRecord = async () => {
+            const token = Cookies.get("session_id");
+            const decoded = await jwt_decode(token);
+            const response = await axios.post('http://localhost:8000/accounts/mywithdrawrecord/', {
+                phone_number: decoded.phone_number
+            }, { headers: { 'Content-Type': 'application/json' } });
+            if (response.data.status === "Success") {
+                setWithdrawRecord(response.data.data)
+            }
+            console.log(response.data.data)
+        }
+        withdrawRecord()
+    }, [])
     return (
 
         <div style={{ marginTop: "7rem" }} className="container flex flex-col mx-auto justify-center item-center">
@@ -23,46 +43,34 @@ export default function WithdrawRecord() {
                     Withdraw Amount
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Remain Amount
+                    Status
                 </th>
             </tr>
         </thead>
         <tbody>
+        { withdrawRecord.length>0 && withdrawRecord.map((withdraw, index) => {
+                return (
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    2021-08-01
+                    {withdraw.date}
                 </th>
                 <td class="px-6 py-4">
-                    ₹234
+                    ₹{withdraw.amount}
                 </td>
                 <td class="px-6 py-4">
-                    ₹434
+                    {withdraw.status? 
+                    (<p className='text-green-500'>Success</p>) : 
+                    (<p className='text-red-500'>Pending</p>)
+                    }
                 </td>
             </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    2021-08-01
-                </th>
-                <td class="px-6 py-4">
-                    ₹234
-                </td>
-                <td class="px-6 py-4">
-                    ₹434
-                </td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    2021-08-01
-                </th>
-                <td class="px-6 py-4">
-                    ₹234
-                </td>
-                <td class="px-6 py-4">
-                    ₹434
-                </td>
-            </tr>
+            )})}
+            
         </tbody>
     </table>
+    <div className="noice flex justify-center my-5">
+        <p className='text-red-500'>*Note: Withdrawal will be processed within 24 hours</p>
+    </div>
 </div>
 </div>
     )
