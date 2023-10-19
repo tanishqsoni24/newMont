@@ -23,8 +23,6 @@ def signup(request):
         password = data.get('password')
         country_code = data.get('country_code')
 
-        print(data)
-
         if not phone_number:
             return JsonResponse({'status': 'Error', 'message': 'Phone Number not provided'})
         if not password:
@@ -41,13 +39,9 @@ def signup(request):
         user_create_object.save()
 
         otp = generate_otp()
-        print(otp)
         user_profile_object = Profile.objects.create(user=user_create_object, phone_number=phone_number, otp=otp)
-        print("here")
         user_profile_object.start_timer()
-        print("here 2")
         user_profile_object.save()
-        print("here 3")
 
         response = send_otp(phone_number, otp)
         if response.status_code == 200:
@@ -420,17 +414,5 @@ def show_my_bank_cards(request):
                 for bank_card in bank_cards
             ]
             return JsonResponse({'status': 'Success', 'message': 'My Bank Cards', 'data': bank_cards})
-def generate_income(request):
-    if request.method == "POST":
-        days_of_income_generation = "2"
-        purchased_products = Orders.objects.all()
-        for product in purchased_products:
-            user_profile_object = product.user
-            if(days_of_income_generation=="2"):
-                if product.date_purchase + timezone.timedelta(days=product.product.days) < timezone.now():
-                    user_profile_object.income += product.product.daily_income
-                    user_profile_object.save()
-                return JsonResponse({'status': 'Success', 'message': 'Income Generated'})
-            return JsonResponse({'status': 'Error', 'message': 'User not found'})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
