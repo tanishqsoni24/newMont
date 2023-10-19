@@ -6,6 +6,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ApprovalModal from "../components/general/AdminModal";
+import RechargeModal from "../components/general/RechargeModal";
 import axios from "axios";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
@@ -21,11 +22,37 @@ export default function AdminPortal() {
     setModalIsOpen(true);
   };
 
+  const handelDistributeIncome = async (e) => {
+    e.preventDefault();
+    const response = await axios.post(
+      "http://localhost:8000/administ/distribute_income/",
+      {},
+      { headers: { "Content-Type": "application/json" } }
+
+    );
+    alert(response.data.message);
+  };
+
+  const openRechargeModal = (item) => {
+    setSelectedItem(item);
+    setrechargeModalIsOpen(true);
+  };
+
+  const closeRechargeModal = () => {
+    setSelectedItem(null);
+    setrechargeModalIsOpen(false);
+  };
+
   const closeModal = () => {
     setSelectedItem(null);
     setModalIsOpen(false);
   };
 
+  const handelApproveRecharge =  (item) => {
+    console.log("approve" + item.user);
+    //approval logic
+    closeRechargeModal();
+  };
   const handleApprove = (item) => {
     console.log("approve" + item.user);
     //approval logic
@@ -70,10 +97,16 @@ export default function AdminPortal() {
       setFakeRechargeRecords(response.data.recharge_records);
       setFakeUserData(response.data.users_details);
       setFakeProductData(response.data.products_details);
+      setFakeOrders(response.data.order_details);
+      setAdmin_wallet(response.data.admin_wallet);
+      console.log(response.data.orders_details);
       console.log(response.data);
     };
     dataFetch();
   }, []);
+
+  const [admin_wallet, setAdmin_wallet] = useState("0");
+  const [rechargeModalIsOpen, setrechargeModalIsOpen] = useState(false);
 
   const [fakeRechargeRecords, setFakeRechargeRecords] = useState([
     {
@@ -85,6 +118,8 @@ export default function AdminPortal() {
       RemainingBalance: "$2510",
     }
   ]);
+
+  
 
   const [fakeUserData, setFakeUserData] = useState([
     {
@@ -117,6 +152,16 @@ export default function AdminPortal() {
     }
     // Add more fake data here as needed
   ]);
+  const [fakeOrders, setFakeOrders] = useState([
+    {
+      sno: 1,
+      user: "User 1",
+      product: "Product 1",
+      amount: "$100",
+      date_of_purchase: "2023-10-09",
+
+    },
+  ])
   const [fakeProductData, setFakeProductData] = useState([
     {
       Sno: 1,
@@ -332,6 +377,19 @@ export default function AdminPortal() {
               onApprove={handleApprove}
             />
           )}
+
+          {/* Withdrawal approval modal */}
+          {rechargeModalIsOpen && (
+            <RechargeModal
+              item={selectedItem}
+              isOpen={rechargeModalIsOpen}
+              onRequestClose={closeRechargeModal}
+              onApprove={handelApproveRecharge}
+            />
+            
+          )}
+
+
         </div>
       </div>
       <div
@@ -413,7 +471,7 @@ export default function AdminPortal() {
                   </td>
                   <td className="px-6 py-4">
                     <button
-                      onClick={() => openModal(record)}
+                      onClick={() => openRechargeModal(record)}
                       className={`text-blue-500 ${
                         record.status
                           ? "pointer-events-none text-gray-400"
@@ -511,13 +569,13 @@ export default function AdminPortal() {
                     {user.invite_code}
                   </td>
                   <td className="px-6 py-4 text-green-600 whitespace-nowrap dark:text-white">
-                    {user.is_verified}
+                    {user.is_verified? "Yes" : "No"}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {user.start_time}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.recommended_by}
+                    {user.recommended_by? user.recommended_by : "None"}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {user.vip_level}
@@ -532,7 +590,7 @@ export default function AdminPortal() {
                   ₹{user.income}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.is_admin}
+                    {user.is_admin? "Yes" : "No"}
                   </td>
                 </tr>
               ))}
@@ -592,6 +650,83 @@ export default function AdminPortal() {
             </tbody>
           </table>
         </div>
+
+        <div
+        id="products"
+        style={{ marginTop: "8rem", marginBottom: "7rem" }}
+        className="container flex flex-col mx-auto justify-center item-center"
+      >
+        <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
+          <div className="withdrawals flex flex-col item-center justify-center">
+            <h2
+              id="users"
+              className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"
+            >
+              Order Details
+            </h2>
+          </div>
+        </div>
+
+        <div className="relative overflow-x-auto mx-2 my-4">
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Sno.
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  User
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Product
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Amount
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Date_of_order
+                </th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              {fakeOrders.map((orders, index) =>  (
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  {index+1}
+                </th>
+                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                  {orders.user}
+                </td>
+                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                {orders.product}
+                </td>
+                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                ₹{orders.amount}
+                </td>
+                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                {orders.date_purchase}
+                </td>
+
+              </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="flex mb-5 justify-center">
+        <p className="text-2xl font-semibold text-gray-900 dark:text-white">
+          Admin Wallet Balance : ₹{admin_wallet}
+        </p>
+      </div>
+        <div className="flex justify-center">
+          <button onClick={handelDistributeIncome} className="bg-[#0E9F6E] hover:bg-[#03543F] text-white font-semibold py-2 px-4 rounded-full">
+            Distribute Income
+          </button>
+          </div>
       </div>
     </>
   );
