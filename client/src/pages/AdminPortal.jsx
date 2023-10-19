@@ -74,11 +74,12 @@ export default function AdminPortal() {
       });
     }
   };
+  const [rechargePopUP, setRechargePopUP] = useState(false);
   const viewuser = (user) => {
-    navigate(`/administ/viewuser/${user.User}`);
+    navigate(`/administ/viewuser/${user.user}`);
   };
   const viewrecharge = (user) => {
-    navigate(`/administ/recharge/${user.User}`);
+    setRechargePopUP(true);
   };
 
   useEffect(() => {
@@ -388,6 +389,8 @@ export default function AdminPortal() {
             />
             
           )}
+
+          
 
 
         </div>
