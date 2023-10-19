@@ -33,7 +33,7 @@ export default function Home() {
   useEffect(() => {
 
     const fetching = async () => {
-      const response = await axios.get("http://127.0.0.1:8000/dashboard/all_products/");
+      const response = await axios.get("http://139.59.32.207/dashboard/all_products/");
       console.log(response.data);
       setExclusive(response.data.exclusive_product_details);
       setUpgrade(response.data.upgrade_product_details);
@@ -381,7 +381,7 @@ export default function Home() {
                 price={item.price}
                 rate="4.5"
                 id={item.id}
-                src={"http://127.0.0.1:8000"+item.image}
+                src={"http://139.59.32.207"+item.image}
               />
             </div>))}
         </div>
@@ -402,7 +402,7 @@ export default function Home() {
                 price={item.price}
                 rate="4.5"
                 id={item.id}
-                src={"http://127.0.0.1:8000"+item.image}
+                src={"http://139.59.32.207"+item.image}
               />
             </div>))}
         </div>
@@ -424,7 +424,7 @@ export default function Home() {
                 price={item.price}
                 id={item.id}
                 rate="4.5"
-                src={"http://127.0.0.1:8000"+item.image}
+                src={"http://139.59.32.207"+item.image}
               />
             </div>))}
         </div>

@@ -11,7 +11,7 @@ export default function RechargeRecord() {
         const userRechargeRecords = async () => {
             const token = Cookies.get("session_id");
             const decoded = await jwt_decode(token);
-            const response = await axios.post('http://localhost:8000/accounts/myrechargerecord/', {
+            const response = await axios.post('http://139.59.32.207/accounts/myrechargerecord/', {
                 phone_number: decoded.phone_number
             }, { headers: { 'Content-Type': 'application/json' } });
 

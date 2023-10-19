@@ -11,7 +11,7 @@ export default function WithdrawRecord() {
         const withdrawRecord = async () => {
             const token = Cookies.get("session_id");
             const decoded = await jwt_decode(token);
-            const response = await axios.post('http://localhost:8000/accounts/mywithdrawrecord/', {
+            const response = await axios.post('http://139.59.32.207/accounts/mywithdrawrecord/', {
                 phone_number: decoded.phone_number
             }, { headers: { 'Content-Type': 'application/json' } });
             if (response.data.status === "Success") {

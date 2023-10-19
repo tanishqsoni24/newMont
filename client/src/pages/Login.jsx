@@ -31,7 +31,7 @@ export default function Login() {
         return;
       }
       const response = await axios.post(
-        "http://localhost:8000/accounts/login/",
+        "http://139.59.32.207/accounts/login/",
         login,
         { headers: { "Content-Type": "application/json" } }
       );
