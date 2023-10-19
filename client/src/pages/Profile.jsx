@@ -60,10 +60,18 @@ export default function Profile() {
             income: response.data.data.income,
         })
         }
+        const [bankCard, setBankCard] = useState([])
     useEffect(() => {
-        userDeatil()
+        const bankCard = async () => {
+            const response = await axios.post('http://localhost:8000/accounts/showmybankcard/',{phone_number: user.phone_number}, { headers: { 'Content-Type': 'application/json' } });
+            if(response.data.status === "Success"){
+                console.log(response.data.data)
+                setBankCard(response.data.data)
+            }
+        }
+        bankCard()
 
-    }, [])
+    }, [bankCardPopup])
 
     const [isAlert, setIsAlert] = useState("");
 
@@ -74,8 +82,35 @@ export default function Profile() {
         return () => clearTimeout(timer);
     }, [isAlert]);
 
-
+    useEffect(() => {
+        userDeatil()
+    }, [])
     const [recharge, setRecharge] = useState(0)
+
+    const [selectBankCard, setSelectBankCard] = useState({
+        card_holder_name: '',
+        bank_name: '',
+        card_number: '',
+        ifsc_code: ''
+    })
+
+    const handelWithdrawRequest = async (e) => {
+        e.preventDefault()
+        const token = Cookies.get("session_id");
+        const decoded = jwt_decode(token);
+        const response = await axios.post('http://localhost:8000/accounts/withdraw/',{
+            phone_number: decoded.phone_number, 
+            amount: withdraw, 
+            bank_card_number: selectBankCard.card_number
+        }, { headers: { 'Content-Type': 'application/json' } });
+
+        if(response.data.status === "Success"){
+            console.log(response.data)
+            closeBankCardPopup()
+            setIsAlert("Withdraw Request Sent Successfully of amount ₹" + withdraw + ".00 ");
+        }
+
+    }
 
     const handelRecharge = async (e) => {
         e.preventDefault()
@@ -352,15 +387,26 @@ export default function Profile() {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-emerald-900 md:text-2xl dark:text-white">
                   Select Bank Card
               </h1>
-              <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-    <p className="font-normal text-gray-700 dark:text-gray-400">
-        Bank Name: Punjab National Bank <br />
-        Account Holder Name: Rajesh <br />
-        Account Number: 756xxxx5452 <br />
-        IFSC Code : PUNB8244 <br />
-    </p>
-</a>
-                  <button type="submit" onClick={handelWithdraw} className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Process</button>
+              {bankCard.length > 0 && bankCard.map((card, index) => {
+                return (
+              
+            <button
+                onClick={() => setSelectBankCard(card)}
+                className={
+                    selectBankCard.card_number === card.card_number
+                        ? "block max-w-sm p-6 bg-emerald-100 border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+                        : "block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+                }
+            >
+                <p className="font-normal text-gray-700 dark:text-gray-400">
+                    Bank Name: {card.bank_name} <br />
+                    Account Number: {card.card_number} <br />
+                    IFSC Code: {card.ifsc_code} <br />
+                    Account Holder Name: {card.account_holder_name} <br />
+                </p>
+            </button>
+                )})}
+                  <button type="submit" onClick={handelWithdrawRequest} className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Process</button>
               
           </div>
       </div>

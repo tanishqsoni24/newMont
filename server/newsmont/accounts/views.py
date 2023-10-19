@@ -263,7 +263,7 @@ def withdrawl(request):
         data = json.loads(request.body.decode('utf-8'))
         phone_number = data.get('phone_number')
         amount = data.get('amount')
-        bank_card_number = data.get('bank_card_id')
+        bank_card_number = data.get('bank_card_number')
         user_object = User.objects.filter(username=phone_number).first()
         if user_object:
             user_profile_object = Profile.objects.filter(user=user_object).first()
@@ -294,7 +294,7 @@ def add_bank_card(request):
         if user_object:
             user_profile_object = Profile.objects.filter(user=user_object).first()
             print(data)
-            bank_card_object = Bank_Card.objects.create(user=user_profile_object, card_holder_name=card_holder_name, card_number=card_number, ifsc_code=ifsc_code, bank_name=bank_name)
+            bank_card_object = Bank_Card.objects.create(user=user_profile_object, card_holder_name=card_holder_name, account_number=card_number, ifsc_code=ifsc_code, bank_name=bank_name)
             bank_card_object.save()
             print(bank_card_object)
             return JsonResponse({'status': 'Success', 'message': 'Bank Card Added'})
@@ -389,5 +389,27 @@ def show_my_recharge_request(request):
                 for recharge_record in recharge_records
             ]
             return JsonResponse({'status': 'Success', 'message': 'My Recharge Requests', 'data': recharge})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def show_my_bank_cards(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        user_object = User.objects.filter(username=phone_number).first()
+        if user_object:
+            user_profile_object = Profile.objects.filter(user=user_object).first()
+            bank_cards = Bank_Card.objects.filter(user=user_profile_object).values()
+            bank_cards = [
+                {
+                    'card_holder_name': bank_card['card_holder_name'],
+                    'card_number': bank_card['account_number'],
+                    'ifsc_code': bank_card['ifsc_code'],
+                    'bank_name': bank_card['bank_name'],
+                }
+                for bank_card in bank_cards
+            ]
+            return JsonResponse({'status': 'Success', 'message': 'My Bank Cards', 'data': bank_cards})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
