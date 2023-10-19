@@ -420,5 +420,17 @@ def show_my_bank_cards(request):
                 for bank_card in bank_cards
             ]
             return JsonResponse({'status': 'Success', 'message': 'My Bank Cards', 'data': bank_cards})
+def generate_income(request):
+    if request.method == "POST":
+        days_of_income_generation = "2"
+        purchased_products = Orders.objects.all()
+        for product in purchased_products:
+            user_profile_object = product.user
+            if(days_of_income_generation=="2"):
+                if product.date_purchase + timezone.timedelta(days=product.product.days) < timezone.now():
+                    user_profile_object.income += product.product.daily_income
+                    user_profile_object.save()
+                return JsonResponse({'status': 'Success', 'message': 'Income Generated'})
+            return JsonResponse({'status': 'Error', 'message': 'User not found'})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
