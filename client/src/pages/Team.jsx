@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import axios from 'axios'
 
 
+
 export default function Team() {
     const [user, setUser] = useState({
         invite_code: '',
