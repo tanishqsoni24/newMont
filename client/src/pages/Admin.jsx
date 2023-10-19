@@ -1,9 +1,9 @@
 import React,{useState} from 'react'
 import { Link } from 'react-router-dom'
-// import axios from 'axios'
+import axios from 'axios'
 import Spinner from '../components/general/Spinner'
-// import sign  from "jwt-encode";
-// import Cookies from 'js-cookie'
+import sign  from "jwt-encode";
+import Cookies from 'js-cookie'
 import "../App.css";
 // import { useNavigate } from 'react-router-dom'
 export default function Admin() {
@@ -20,6 +20,34 @@ export default function Admin() {
     const handleSubmit = async (e)=>{
         setLoading(true);
         e.preventDefault()
+
+        try{
+            const response = await axios.post('http://localhost:8000/administ/login/',login, { headers: { 'Content-Type': 'application/json' } });
+            console.log(response)
+            console.log(response.data)
+
+            if(response.data.status === "Success"){
+
+                // decode the token
+                console.log(response.data.data)
+                const token_data = {
+                    first_name: response.data.data.first_name,
+                    last_name: response.data.data.last_name,
+                    phone_number: response.data.data.phone_number,
+                    invite_code: response.data.data.invite_code,
+                }
+                const token = await sign(token_data, "AuthSystemBuild", {
+                    expiresIn: "30d",
+                  });
+                Cookies.set("admin_session_id", token, { expires: 30 });
+
+                // redirect to home page
+                window.location.href = "/administ/portal"   
+            }
+        }
+        catch(err){
+            console.log(err)
+        }
         setLoading(false);
     }
   return (
@@ -54,7 +82,7 @@ export default function Admin() {
                   </div>
                   <div className="flex items-center justify-end">
                       
-                      {/* <Link to="/forgot-password" className="text-sm font-medium text-emerald-600 hover:underline dark:text-emerald-500">Forgot password?</Link> */}
+                      <Link to="/forgot-password" className="text-sm font-medium text-emerald-600 hover:underline dark:text-emerald-500">Forgot password?</Link>
                   </div>
                   <button
                     onClick={handleSubmit}

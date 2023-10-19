@@ -9,6 +9,28 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 @csrf_exempt
+def admin_login(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone = data.get("phone_number")
+        password = data.get("password")
+        admin = Profile.objects.filter(phone_number=phone).first()
+        if admin:
+            if admin.is_admin:
+                if admin.user.check_password(password):
+                    data = {
+                        "first_name": admin.user.first_name,
+                        "last_name": admin.user.last_name,
+                        "phone_number": admin.phone_number,
+                        "invite_code": admin.invite_code,
+                    }
+                    return JsonResponse({"status": "Success", "message": "logged in successfully", "data": data})
+                return JsonResponse({"status": "Failed", "message": "Invalid Password"})
+            return JsonResponse({"status": "Failed", "message": "You are not an admin"})
+        return JsonResponse({"status": "Failed", "message": "Invalid Phone Number"})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
+
+@csrf_exempt
 def admin_index(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
@@ -286,3 +308,19 @@ def approve_recharge_record(request):
             return JsonResponse({"status": "Success", "message": "Recharge Approved"})
         return JsonResponse({"status": "Failed", "message": "Invalid Recharge Record"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request"})
+
+@csrf_exempt
+def generate_income(request):
+    if request.method == "POST":
+        days_of_income_generation = "2"
+        purchased_products = Orders.objects.all()
+        for product in purchased_products:
+            user_profile_object = product.user
+            if(days_of_income_generation=="2"):
+                if product.date_purchase + timezone.timedelta(days=product.product.days) < timezone.now():
+                    user_profile_object.income += product.product.daily_income
+                    user_profile_object.save()
+                return JsonResponse({'status': 'Success', 'message': 'Income Generated'})
+            return JsonResponse({'status': 'Error', 'message': 'User not found'})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})

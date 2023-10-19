@@ -41,8 +41,7 @@ export default function Login() {
                 Cookies.set("session_id", token, { expires: 30 });
 
                 // redirect to home page
-                window.location.href = "/"
-                
+                window.location.href = "/"   
             }
         }
         catch(err){
