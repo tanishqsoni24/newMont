@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 
 // Create a Modal component
-const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
+const RechargeModal = ({ item, isOpen, onRequestClose, onApprove }) => {
   const customStyles = {
     content: {
       top: "50%",
@@ -26,13 +26,10 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
   };
 
   const approveWithdrawal = async (item) => {
-    const token = Cookies.get("admin_session_id");
-    const decoded = jwt_decode(token);
     const response = await axios.post(
-      "http://localhost:8000/administ/approve_withdraw/",
+      "http://localhost:8000/administ/approve_recharge/",
       {
-        phone_number: decoded.phone_number,
-        withdrawal_id: item.id,
+        recharge_id: item.id,
       },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -54,9 +51,6 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
         <p>Amount: {item.amount}</p>
         <p>Status: {item.status?"Approved": "Pending"}</p>
         <p>Date: {item.date}</p>
-        <p>Account No: {item.bank_card}</p>
-        <p>IFSC Code: {item.ifsc_code}</p>
-        <p>Card Holder Name: {item.account_holder_name}</p>
 
         <button
           onClick={() => {
@@ -77,4 +71,5 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
   );
 };
 
-export default ApprovalModal;
+
+export default RechargeModal;

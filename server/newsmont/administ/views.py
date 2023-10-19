@@ -46,14 +46,25 @@ def admin_index(request):
                 withdraw_records_details = []
                 users_details = []
                 products_details = []
+                order_details = []
+                admin = Profile.objects.filter(is_admin=True).first()
+                admin_wallet = Admin_wallet.objects.filter(user=admin).first()
+                for order in Orders.objects.all():
+                    order_details.append({
+                        "id": order.uid,
+                        "user": order.user.user.first_name,
+                        "product": order.product.name,
+                        "amount": order.amount,
+                        "date_purchase": order.date_purchase.strftime("%B-%d-%Y") + " at " + order.date_purchase.strftime("%I:%M %p"),
+                    })
                 for record in recharge_records:
                     recharge_records_details.append({
                         "id": record.uid,
                         "user": record.user.user.first_name,
                         "amount": record.amount,
                         "status": record.status,
-                        "date": record.date,
-                        # "ref_num": record.ref_num,
+                        "date": record.date.strftime("%B-%d-%Y") + " at " + record.date.strftime("%I:%M %p"),
+                        # "phone_number": record.user.user.phone_number,
                     })
                 for record in withdraw_records:
                     withdraw_records_details.append({
@@ -65,6 +76,7 @@ def admin_index(request):
                         "bank_card": record.bank_card.account_number,
                         "ifsc_code": record.bank_card.ifsc_code,
                         "account_holder_name": record.bank_card.card_holder_name,
+                        # "phone_number": record.user.phone_number,
                     })
                 for user in users:
                     users_details.append({
@@ -74,7 +86,7 @@ def admin_index(request):
                         "invite_code": user.invite_code,
                         "is_verified": user.is_verified,
                         "start_time": user.start_time,
-                        "recommended_by": user.recommended_by.user.first_name if user.recommended_by else None,
+                        "recommended_by": user.recommended_by.first_name if user.recommended_by else None,
                         "vip_level": user.vip_level,
                         "wallet": user.wallet,
                         "recharge_amount": user.recharge_amount,
@@ -94,7 +106,7 @@ def admin_index(request):
                         "daily_income": product.daily_income,
                         "total_income": product.total_income
                     })
-                return JsonResponse({"status": "Success", "message": "logged in successfully and data is sent!", "recharge_records": recharge_records_details, "withdraw_records_details": withdraw_records_details, "users_details": users_details, "products_details": products_details})
+                return JsonResponse({"status": "Success", "message": "logged in successfully and data is sent!", "recharge_records": recharge_records_details, "withdraw_records_details": withdraw_records_details, "users_details": users_details, "products_details": products_details, "order_details": order_details, "admin_wallet": admin_wallet.amount})
             return JsonResponse({"status": "Failed", "message": "You are not an admin"})
         return JsonResponse({"status": "Failed", "message": "Invalid Phone Number"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
@@ -282,6 +294,30 @@ def approved_recharge_records(request):
     return JsonResponse({"status": "Failed", "message": "Invalid Request"})
 
 @csrf_exempt
+def approve_withdraw_records(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        uid = data.get("withdrawal_id")
+        admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
+        admin_wallet = Admin_wallet.objects.filter(user=admin_user).first()
+        withdraw_record = Withdraw_Record.objects.filter(uid=uid).first()
+        if withdraw_record:
+            if withdraw_record.amount < admin_wallet.amount:
+                withdraw_record.status = True
+                withdraw_record.save()
+                # subtract the amount from admin wallet
+                admin_wallet.amount = admin_wallet.amount - withdraw_record.amount
+                admin_wallet.save()
+                # subtract the amount from user wallet
+                user = withdraw_record.user
+                user.wallet = user.wallet - withdraw_record.amount
+                user.save()
+                return JsonResponse({"status": "Success", "message": "Withdraw Approved"})
+            return JsonResponse({"status": "Failed", "message": "Insufficient Balance"})
+        return JsonResponse({"status": "Failed", "message": "Invalid Withdraw Record"})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})
+
+@csrf_exempt
 def approve_recharge_record(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
@@ -299,6 +335,7 @@ def approve_recharge_record(request):
 
             # update user wallet
             user = recharge_record.user
+            user.recharge_amount = user.recharge_amount + recharge_record.amount
             user.wallet = user.wallet + recharge_record.amount
             user.save() 
 
@@ -317,7 +354,7 @@ def generate_income(request):
                 if product.date_purchase + timezone.timedelta(days=product.product.days) < timezone.now():
                     user_profile_object.income += product.product.daily_income
                     user_profile_object.save()
-                return JsonResponse({'status': 'Success', 'message': 'Income Generated'})
+                return JsonResponse({'status': 'Success', 'message': 'Income Generated successfully'})
             return JsonResponse({'status': 'Error', 'message': 'User not found'})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
