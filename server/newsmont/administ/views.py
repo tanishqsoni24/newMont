@@ -35,69 +35,66 @@ def admin_index(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
         phone = data.get("phone_number")
-        password = data.get("password")
         admin = Profile.objects.filter(phone_number=phone).first()
         if admin:
             if admin.is_admin:
-                if admin.user.check_password(password):
-                    recharge_records = Recharge_Record.objects.all()
-                    withdraw_records = Withdraw_Record.objects.all()
-                    users = Profile.objects.all()
-                    products = Product.objects.all()
-                    recharge_records_details = []
-                    withdraw_records_details = []
-                    users_details = []
-                    products_details = []
-                    for record in recharge_records:
-                        recharge_records_details.append({
-                            "id": record.uid,
-                            "user": record.user.user.first_name,
-                            "amount": record.amount,
-                            "status": record.status,
-                            "date": record.date,
-                            "ref_num": record.ref_num,
-                        })
-                    for record in withdraw_records:
-                        withdraw_records_details.append({
-                            "id": record.uid,
-                            "user": record.user.user.first_name,
-                            "amount": record.amount,
-                            "status": record.status,
-                            "date": record.date,
-                            "bank_card": record.bank_card.card_number,
-                            "ifsc_code": record.bank_card.ifsc_code,
-                            "account_holder_name": record.bank_card.card_holder_name,
-                        })
-                    for user in users:
-                        users_details.append({
-                            "id": user.uid,
-                            "name": user.user.first_name,
-                            "phone_number": user.phone_number,
-                            "invite_code": user.invite_code,
-                            "is_verified": user.is_verified,
-                            "start_time": user.start_time,
-                            "recommended_by": user.recommended_by.user.first_name,
-                            "vip_level": user.vip_level,
-                            "wallet": user.wallet,
-                            "recharge_amount": user.recharge_amount,
-                            "income": user.income,
-                            "is_admin": user.is_admin
-                        })
-                    for product in products:
-                        products_details.append({
-                            "id": product.uid,
-                            "name": product.name,
-                            "slug": product.slug,
-                            "category": product.category.name,
-                            "price": product.price,
-                            "eligible_for_vip_number": product.eligible_for_vip_number,
-                            "image": product.image.url,
-                            "days": product.days,
-                            "daily_income": product.daily_income,
-                            "total_income": product.total_income
-                        })
-                    return JsonResponse({"status": "Success", "message": "logged in successfully and data is sent!", "recharge_records": recharge_records_details, "withdraw_records_details": withdraw_records_details, "users_details": users_details, "products_details": products_details})
-                return JsonResponse({"status": "Failed", "message": "Invalid Password"})
+                recharge_records = Recharge_Record.objects.all()
+                withdraw_records = Withdraw_Record.objects.all()
+                users = Profile.objects.all()
+                products = Product.objects.all()
+                recharge_records_details = []
+                withdraw_records_details = []
+                users_details = []
+                products_details = []
+                for record in recharge_records:
+                    recharge_records_details.append({
+                        "id": record.uid,
+                        "user": record.user.user.first_name,
+                        "amount": record.amount,
+                        "status": record.status,
+                        "date": record.date,
+                        # "ref_num": record.ref_num,
+                    })
+                for record in withdraw_records:
+                    withdraw_records_details.append({
+                        "id": record.uid,
+                        "user": record.user.user.first_name,
+                        "amount": record.amount,
+                        "status": record.status,
+                        "date": record.date.strftime("%B-%d-%Y") + " at " + record.date.strftime("%I:%M %p"),
+                        "bank_card": record.bank_card.account_number,
+                        "ifsc_code": record.bank_card.ifsc_code,
+                        "account_holder_name": record.bank_card.card_holder_name,
+                    })
+                for user in users:
+                    users_details.append({
+                        "id": user.uid,
+                        "name": user.user.first_name,
+                        "phone_number": user.phone_number,
+                        "invite_code": user.invite_code,
+                        "is_verified": user.is_verified,
+                        "start_time": user.start_time,
+                        "recommended_by": user.recommended_by.user.first_name if user.recommended_by else None,
+                        "vip_level": user.vip_level,
+                        "wallet": user.wallet,
+                        "recharge_amount": user.recharge_amount,
+                        "income": user.income,
+                        "is_admin": user.is_admin
+                    })
+                for product in products:
+                    products_details.append({
+                        "id": product.uid,
+                        "name": product.name,
+                        "slug": product.slug,
+                        "category": product.category.name,
+                        "price": product.price,
+                        "eligible_for_vip_number": product.eligible_for_vip_number,
+                        "image": product.image.url,
+                        "days": product.days,
+                        "daily_income": product.daily_income,
+                        "total_income": product.total_income
+                    })
+                return JsonResponse({"status": "Success", "message": "logged in successfully and data is sent!", "recharge_records": recharge_records_details, "withdraw_records_details": withdraw_records_details, "users_details": users_details, "products_details": products_details})
             return JsonResponse({"status": "Failed", "message": "You are not an admin"})
         return JsonResponse({"status": "Failed", "message": "Invalid Phone Number"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
