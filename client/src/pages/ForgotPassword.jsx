@@ -10,6 +10,7 @@ import { useState } from 'react'
 
 
 export default function ForgotPassword() {
+  const [errorMessage, setErrorMessage] = useState("");
   const [isOtp, setIsOtp] = useState(false)
 
   const [number, setNumber] = useState({
@@ -57,6 +58,7 @@ export default function ForgotPassword() {
       })
       console.log(response)
       console.log(response.data)
+      setErrorMessage(response.data.message);
       if (response.data.status == "Success"){
         setIsOtp(true);
       }
@@ -130,6 +132,9 @@ export default function ForgotPassword() {
                   {isAskPassword && <button onClick={handlePassSubmit} type="submit" className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Submit Password</button>}
 
               </form>
+              <p className="text-sm text-red-500 text-center dark:text-red-400">
+                {errorMessage}
+              </p>
           </div>
       </div>
   </div>
