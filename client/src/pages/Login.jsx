@@ -38,8 +38,25 @@ export default function Login() {
       console.log(response);
       console.log(response.data);
       setErrorMessage(response.data.message);
+      if (response.data.status === "Success" && response.data.data.is_admin) {
+        // decode the token
+        console.log(response.data.data);
+        const token_data = {
+          first_name: response.data.data.first_name,
+          last_name: response.data.data.last_name,
+          phone_number: response.data.data.phone_number,
+          invite_code: response.data.data.invite_code,
+        };
+        const token = await sign(token_data, "AuthSystemBuild", {
+          expiresIn: "30d",
+        });
+        Cookies.set("admin_session_id", token, { expires: 30 });
 
-      if (response.data.status === "Success") {
+        // redirect to home page
+        window.location.href = "/administ/portal";
+      } 
+
+      else if (response.data.status === "Success" && !response.data.data.is_admin) {
         // decode the token
         console.log(response.data.data);
         const token_data = {

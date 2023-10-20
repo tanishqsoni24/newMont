@@ -110,6 +110,7 @@ def login(request):
                         'wallet': user_profile_object.wallet,
                         'recharge_amount': user_profile_object.recharge_amount,
                         'income': user_profile_object.income,
+                        'is_admin': user_profile_object.is_admin,
                     }
                     print(user_profile_object.wallet, user_profile_object.recharge_amount, user_profile_object.income)
                     return JsonResponse({'status': 'Success', 'message': 'Logged In', 'data': data})
