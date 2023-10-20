@@ -396,7 +396,7 @@ export default function Profile() {
             <button
               onClick={() => {
                 Cookies.remove("session_id");
-                window.location.href = "/login";
+                window.location.href = "/";
               }}
             >
               <img
