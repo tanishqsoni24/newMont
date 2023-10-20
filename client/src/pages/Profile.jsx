@@ -56,7 +56,7 @@ export default function Profile() {
     const decoded = await jwt_decode(token);
     console.log(decoded);
     const response = await axios.post(
-      "http://localhost:8000/accounts/userDetail/",
+      "http://139.59.32.207/accounts/userDetail/",
       { phone_number: decoded.phone_number },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -73,7 +73,7 @@ export default function Profile() {
   useEffect(() => {
     const bankCard = async () => {
       const response = await axios.post(
-        "http://localhost:8000/accounts/showmybankcard/",
+        "http://139.59.32.207/accounts/showmybankcard/",
         { phone_number: user.phone_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -111,7 +111,7 @@ export default function Profile() {
     const token = Cookies.get("session_id");
     const decoded = jwt_decode(token);
     const response = await axios.post(
-      "http://localhost:8000/accounts/withdraw/",
+      "http://139.59.32.207/accounts/withdraw/",
       {
         phone_number: decoded.phone_number,
         amount: withdraw,
@@ -136,7 +136,7 @@ export default function Profile() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/accounts/recharge/",
+        "http://139.59.32.207/accounts/recharge/",
         { amount: recharge, phone_number: user.phone_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -182,7 +182,7 @@ export default function Profile() {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "http://localhost:8000/accounts/deleteMyAccount/",
+        "http://139.59.32.207/accounts/deleteMyAccount/",
         {
           phone_number: decoded.phone_number,
           password: deletePassword.password,

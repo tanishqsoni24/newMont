@@ -29,7 +29,7 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     const token = Cookies.get("admin_session_id");
     const decoded = jwt_decode(token);
     const response = await axios.post(
-      "http://localhost:8000/administ/approve_withdraw/",
+      "http://139.59.32.207/administ/approve_withdraw/",
       {
         phone_number: decoded.phone_number,
         withdrawal_id: item.id,

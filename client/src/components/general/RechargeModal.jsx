@@ -27,7 +27,7 @@ const RechargeModal = ({ item, isOpen, onRequestClose, onApprove }) => {
 
   const approveWithdrawal = async (item) => {
     const response = await axios.post(
-      "http://localhost:8000/administ/approve_recharge/",
+      "http://139.59.32.207/administ/approve_recharge/",
       {
         recharge_id: item.id,
       },

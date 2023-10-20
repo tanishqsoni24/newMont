@@ -53,7 +53,7 @@ export default function ForgotPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try{
-      const response = await axios.post('http://localhost:8000/accounts/forgot-password/', number, {
+      const response = await axios.post('http://139.59.32.207/accounts/forgot-password/', number, {
         headers: { 'Content-Type': 'application/json' },
       })
       console.log(response)
@@ -71,7 +71,7 @@ export default function ForgotPassword() {
   const handleOtpSubmit = async (e) => {
     e.preventDefault()
     try{
-      const response = await axios.post('http://localhost:8000/accounts/verify-forgot-password-token/', otp, {
+      const response = await axios.post('http://139.59.32.207/accounts/verify-forgot-password-token/', otp, {
         headers: { 'Content-Type': 'application/json' },
       })
       console.log(response)
@@ -89,7 +89,7 @@ export default function ForgotPassword() {
   const handlePassSubmit = async (e) => {
     e.preventDefault()
     try{
-      const response = await axios.post('http://localhost:8000/accounts/reset-password/', newPass, {
+      const response = await axios.post('http://139.59.32.207/accounts/reset-password/', newPass, {
         headers: { 'Content-Type': 'application/json' },
       })
       console.log(response)
