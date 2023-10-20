@@ -65,7 +65,7 @@ export default function Signup() {
       
       console.log(signup);
       const response = await axios.post(
-        "http://127.0.0.1:8000/accounts/signup/",
+        "http://139.59.32.207/accounts/signup/",
         signup,
         { headers: { "Content-Type": "application/json" } }
       );
