@@ -30,25 +30,25 @@ function App() {
       <Router>
         <Routes>
         <Route exact path='/administ/login' element={<Admin/>} />
-          {Cookies.get("admin_session_id") && (<Route path="/administ/portal" element={<React.Fragment><AdminPortal /><Footer /></React.Fragment>} />)}
-          {!Cookies.get("session_id") && (<Route path='/login' element={<Login />} />)}
+          {Cookies.get("admin_session_id") && (<Route exact path="/administ/portal" element={<React.Fragment><AdminPortal /><Footer /></React.Fragment>} />)}
+          {!Cookies.get("session_id") && (<Route exact path='/login' element={<Login />} />)}
           {Cookies.get("admin_session_id") && (<Route path='/administ/viewuser/:userId' element={<Viewuser />} />)}
           {Cookies.get("admin_session_id") && (<Route path='/administ/recharge/:userId' element={<Recharge/>} />)}
  
-          {!Cookies.get("session_id") && (<Route path='/signup' element={<Signup />} />)}
-          {!Cookies.get("session_id") && (<Route path="/forgot-password" element={<ForgotPassword />}/>)}
-          {Cookies.get("session_id") && (<Route path='/vip' element={<React.Fragment><Navbar /><VIP /><Footer /></React.Fragment>} />)}
-          {Cookies.get("session_id") && (<Route path='/task' element={<React.Fragment><Navbar /><Task /><Footer /></React.Fragment>} />)}
-          {Cookies.get("session_id") && (<Route path='/team' element={<React.Fragment><Navbar /><Team /><Footer /></React.Fragment>} />)}
-          {Cookies.get("session_id") && (<Route path='/profile' element={<React.Fragment><Navbar /><Profile /><Footer /></React.Fragment>} />)}
-          {Cookies.get("session_id") && (<Route path='/orders' element={<React.Fragment><Navbar /><Orders /><Footer /></React.Fragment>} />)}
-          {Cookies.get("session_id") && (<Route path='/income' element={<React.Fragment><Navbar /><IncomingDetails /><Footer /></React.Fragment>} />)}
-          {Cookies.get("session_id") && (<Route path='/withdraw-record' element={<React.Fragment><Navbar /><WithdrawRecord /><Footer /></React.Fragment>} />)}
-          {Cookies.get("session_id") && (<Route path='/recharge-record' element={<React.Fragment><Navbar /><RechargeRecord /><Footer /></React.Fragment>} />)}
-          {Cookies.get("session_id") && (<Route path='/change-password' element={<React.Fragment><Navbar /><ChangePassword /><Footer /></React.Fragment>} />)}
-          {Cookies.get("session_id") && (<Route path='/add-card' element={<React.Fragment><Navbar /><AddBankCard /><Footer /></React.Fragment>} />)}
-          {Cookies.get("session_id") && (<Route path='/bank-card' element={<React.Fragment><Navbar /><BankCard /><Footer /></React.Fragment>} />)}
-          {!Cookies.get("session_id") && <Route path="/otp" element={<Otp/>} /> }
+          {!Cookies.get("session_id") && (<Route exact path='/signup' element={<Signup />} />)}
+          {!Cookies.get("session_id") && (<Route exact path="/forgot-password" element={<ForgotPassword />}/>)}
+          {Cookies.get("session_id") && (<Route exact path='/vip' element={<React.Fragment><Navbar /><VIP /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route exact path='/task' element={<React.Fragment><Navbar /><Task /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route exact path='/team' element={<React.Fragment><Navbar /><Team /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route exact path='/profile' element={<React.Fragment><Navbar /><Profile /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route exact path='/orders' element={<React.Fragment><Navbar /><Orders /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route exact path='/income' element={<React.Fragment><Navbar /><IncomingDetails /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route exact path='/withdraw-record' element={<React.Fragment><Navbar /><WithdrawRecord /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route exact path='/recharge-record' element={<React.Fragment><Navbar /><RechargeRecord /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route exact path='/change-password' element={<React.Fragment><Navbar /><ChangePassword /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route exact path='/add-card' element={<React.Fragment><Navbar /><AddBankCard /><Footer /></React.Fragment>} />)}
+          {Cookies.get("session_id") && (<Route exact path='/bank-card' element={<React.Fragment><Navbar /><BankCard /><Footer /></React.Fragment>} />)}
+          {!Cookies.get("session_id") && <Route exact path="/otp" element={<Otp/>} /> }
           <Route exact path="/" element={<React.Fragment><Navbar /><Home /><Footer /></React.Fragment>} />
           <Route path="/*" element={<h1>404 Not Found</h1>} />
         </Routes>
