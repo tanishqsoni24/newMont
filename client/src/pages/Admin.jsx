@@ -5,10 +5,10 @@ import Spinner from '../components/general/Spinner'
 import sign  from "jwt-encode";
 import Cookies from 'js-cookie'
 import "../App.css";
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 export default function Admin() {
     const[loading,setLoading]=useState(false)
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     const [login , setLogin] = useState({
         phone_number:'',
         password:''
@@ -41,8 +41,8 @@ export default function Admin() {
                   });
                 Cookies.set("admin_session_id", token, { expires: 30 });
 
-                // redirect to home page
-                window.location.href = "/administ/portal"   
+                // reload using navigate
+                navigate('/administ/portal',{replace:true})
             }
         }
         catch(err){

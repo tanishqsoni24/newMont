@@ -53,7 +53,7 @@ export default function Login() {
         Cookies.set("admin_session_id", token, { expires: 30 });
 
         // redirect to home page
-        window.location.href = "/administ/portal"
+        navigate("/administ/portal", { replace: true })
         ;
       } 
 
