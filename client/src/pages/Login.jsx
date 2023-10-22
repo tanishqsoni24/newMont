@@ -114,7 +114,6 @@ export default function Login() {
                   className={`${
                     ismobEmpty ? "border-red-500" : "border-gray-300"
                   } bg-gray-50 border sm:text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
-                  
                   placeholder="7565889452"
                   required=""
                 />
@@ -124,7 +123,6 @@ export default function Login() {
                   for="password"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   required
-                  
                 >
                   Password
                 </label>
@@ -142,8 +140,8 @@ export default function Login() {
                 />
               </div>
               <p className="text-sm text-red-500 dark:text-red-400">
-    {isPasswordEmpty ? 'credentials required' : ''}
-</p>
+                {isPasswordEmpty ? "credentials required" : ""}
+              </p>
 
               <p className="text-sm text-red-500 text-center dark:text-red-400">
                 {errorMessage}
