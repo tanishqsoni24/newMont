@@ -12,7 +12,6 @@ import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import img from '../components/Images/pngegg.png';
 import "./animate.css";
 import axios from "axios";
 
@@ -27,7 +26,15 @@ export default function Home() {
     };
     checkSession_id();
   }, []);
-
+  useEffect(() => {
+    // Set the background color for the body element
+    document.body.classList.add('body-bg-color');
+  
+    // Clean up by removing the class when the component unmounts
+    return () => {
+      document.body.classList.remove('body-bg-color');
+    };
+  }, []);
   const [exclusive, setExclusive] = useState([]);
   const [upgrade, setUpgrade] = useState([]);
   const [gift, setGift] = useState([]);
@@ -54,12 +61,25 @@ export default function Home() {
   };
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isMainPopupOpen, setIsMainPopupOpen] = useState(true);
+  const [isMainPopupOpen, setIsMainPopupOpen] = useState(false);
   const [isWPopupOpen, setIsWPopupOpen] = useState(false);
   const [isexclusive, setIsExclusive] = useState(false);
   const [isupgrade, setIsUpgrade] = useState(true);
   const [isgift, setIsGift] = useState(false);
+  useEffect(() => {
+    // Check if the popup has been displayed before using localStorage
+    const hasPopupBeenDisplayed = localStorage.getItem('popupDisplayed');
+    console.log(hasPopupBeenDisplayed)
+    // If the popup hasn't been displayed before, show it
+    if (hasPopupBeenDisplayed) {
+      setIsMainPopupOpen(true);
+  
+      // Mark the popup as displayed in localStorage
+      localStorage.setItem('popupDisplayed', 'true');
+    }
+  }, []);
 
+  
   const showPopup = () => {
     setIsPopupOpen(true);
   };
@@ -96,7 +116,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div id="top" className="carousel-container bg-[#d4d7fb]">
+    <div id="top" className="carousel-container bg-[#e0e8ff]">
       <Carousel
         showThumbs={false}
         showStatus={false}
@@ -147,7 +167,7 @@ export default function Home() {
           </div>
           <div
             style={{ width: "20rem" }}
-            className=" p-9 bg-[#d4d7fb] rounded-lg shadow-md "
+            className=" p-9 bg-[#e0e8ff] rounded-lg shadow-md "
           >
             <h3 className="font-bold text-xl text-black text-center mb-7">
               Announcement
@@ -177,12 +197,13 @@ export default function Home() {
       )}
       </div>
       </CSSTransition>
-      <div className="container flex justify-center bg-[#d4d7fb] rounded-lg">
+      <div className="container flex justify-center bg-[#e0e8ff] rounded-lg">
         <div className="first">
-          <div className="item p-2 m-8 cursor-pointer " onClick={showPopup}>
+          <div className="item p-2 m-8 text-center cursor-pointer " onClick={showPopup}>
             <img
               width="50"
               height="50"
+              className="ml-3"
               src="https://img.icons8.com/ios/50/00032c/telegram-app.png"
               alt="telegram-app"
             />
@@ -191,6 +212,7 @@ export default function Home() {
           <div className="item p-2 m-8 cursor-pointer" onClick={showWPopup}>
             <img
               width="50"
+              className="ml-3"
               height="50"
               src="https://img.icons8.com/ios/50/00032c/whatsapp--v1.png"
               alt="whatsapp--v1"
@@ -244,7 +266,7 @@ export default function Home() {
                     alt="delete-sign"
                   />
                 </div>
-                <div className=" p-9 bg-[#d4d7fb] rounded-lg shadow-md">
+                <div className=" p-9 bg-[#e0e8ff] rounded-lg shadow-md">
                   <img
                     className="m-auto"
                     width="50"
@@ -289,7 +311,7 @@ export default function Home() {
                 alt="delete-sign"
               />
             </div>
-            <div className=" p-9 bg-[#d4d7fb] rounded-lg shadow-md ">
+            <div className=" p-9 bg-[#e0e8ff] rounded-lg shadow-md ">
               <img
                 className="m-auto"
                 width="50"
@@ -314,8 +336,8 @@ export default function Home() {
         All Investable Products
       </h2>
 
-      <div className="card-nav mt-11  ">
-        <ul className="flex justify-around my-5 rounded-full bg-white md:mx-9 mx-3 ">
+      <div className="card-nav mt-0  ">
+        <ul className="flex justify-between my-0 rounded-full bg-white md:mx-9 mx-3 ">
           <li
             onClick={() => {
               setIsExclusive(false);
@@ -324,9 +346,9 @@ export default function Home() {
             }}
             className={`cursor-pointer  ${
               isupgrade
-                ? "text-white bg-[#00032c] rounded-full p-5 "
+                ? "text-white bg-[#00032c] rounded-full  "
                 : ""
-            }  text-lg md:text-2xl font-light pb-2 pt-2 transition-colors 150ms ease-in-out`}
+            }  text-lg md:text-2xl font-semibold pb-2 pt-2 p-5 transition-colors 150ms ease-in-out`}
           >
             Upgrade
           </li>
@@ -340,7 +362,7 @@ export default function Home() {
               isexclusive
                 ? "text-white bg-[#00032c] rounded-full p-5"
                 : ""
-            }  text-lg md:text-2xl pb-2 font-light pt-2 transition-colors 150ms ease-in-out`}
+            }  text-lg md:text-2xl pb-2 font-semibold pt-2 transition-colors 150ms ease-in-out`}
           >
             Exclusive
           </li>
@@ -352,9 +374,9 @@ export default function Home() {
             }}
             className={`cursor-pointer  ${
               isgift
-                ? "text-white bg-[#00032c] rounded-full p-5"
+                ? "text-white bg-[#00032c] rounded-full "
                 : ""
-            }   text-lg md:text-2xl pb-2 font-light pt-2 transition-colors 150ms ease-in-out`}
+            }   text-lg md:text-2xl pb-2 font-semibold pt-2 p-5 transition-colors 150ms ease-in-out`}
           >
             Gift
           </li>
@@ -372,7 +394,7 @@ export default function Home() {
         >
           {/* Set the width of each card for large screens */}
           {upgrade && upgrade.map((item) => (
-            <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-2">
+            <div className=" w-1/2 md:w-1/3 lg:w-1/3 px-1 ">
               <Card
               vip={item.eligible_for_vip_number}
                 desc={item.name}
