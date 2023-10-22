@@ -55,7 +55,7 @@ export default function Card(props) {
   }, [isAlert]);
 
   return (
-    <div className="w-full max-w-sm m-1 rounded-2xl bg-white my-5 border  dark:bg-white dark:border dark:border-gray-100">
+    <div className="w-full max-w-sm m-1 rounded-2xl  bg-white mt-0 mb-11 border  dark:bg-white dark:border dark:border-gray-100">
       <a onClick={showPopup}>
         {isAlert && (
           <div
@@ -100,7 +100,7 @@ export default function Card(props) {
       </a>
       <div className="px-5 pb-1">
         <a onClick={showPopup}>
-          <h5 className="text-lg tracking-tight text-gray-900 p-0 dark:text-[#00032c]">
+          <h5 className="text-2xl font-semibold tracking-tight text-gray-900 p-0 dark:text-[#00032c]">
             {props.desc}
           </h5>
           <h5 className="text-sm tracking-tight text-gray-900 p-0 dark:text-[#00032c]">
@@ -163,11 +163,11 @@ export default function Card(props) {
             {props.rate}
           </span>
         </div>
-        <div className="flex flex-row  ">
-          <span className=" md:ml-0 text-lg md:text-3xl font-bold text-[#353d95]">
+        <div className="flex flex-row mb-3 ">
+          <span className=" md:ml-0 text-sm md:text-3xl font-bold text-[#353d95]">
             ₹{props.price}
           </span>
-          <span className="text-slate-600 text-lg md:text-xl" >
+          <span className="text-slate-600 text-sm md:text-xl" >
            /₹{props.total}
           </span>
   
@@ -185,12 +185,12 @@ export default function Card(props) {
               <div className="flex w-96 justify-end">
                 <img
                   onClick={closePopup}
-                  className="-mx-9"
+                  className="mx-11 cursor-pointer"
                   src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC"
                   alt=".."
                 />
               </div>
-              <div className=" p-9 bg-[#d4d7fb] rounded-lg shadow-md ">
+              <div className=" p-9 bg-[#e0e8ff] rounded-lg shadow-md ">
                 <p className="text-center text-xl font-semibold text-black">
                   Good Details
                 </p>
