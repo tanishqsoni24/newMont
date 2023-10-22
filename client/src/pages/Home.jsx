@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import img from '../components/Images/pngegg.png';
 import "./animate.css";
 import axios from "axios";
 
@@ -95,7 +96,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div id="top" className="carousel-container mt-20">
+    <div id="top" className="carousel-container bg-[#d4d7fb]">
       <Carousel
         showThumbs={false}
         showStatus={false}
@@ -105,7 +106,7 @@ export default function Home() {
           <div
             onClick={clickHandler}
             className={`inline-block h-1 w-10 mx-2 rounded-full cursor-pointer ${
-              isSelected ? "bg-[#0E9F6E]" : "bg-gray-300"
+              isSelected ? "bg-[#00032c]" : "bg-gray-300"
             }`}
             key={index}
             title={label}
@@ -139,14 +140,14 @@ export default function Home() {
               onClick={closemainPopup}
               width="20"
               height="20"
-              className="mb-1"
-              src="https://img.icons8.com/ios-glyphs/30/0E9F6E/delete-sign.png"
+              className="mb-1 cursor-pointer "
+              src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
               alt="delete-sign"
             />
           </div>
           <div
             style={{ width: "20rem" }}
-            className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md "
+            className=" p-9 bg-[#d4d7fb] rounded-lg shadow-md "
           >
             <h3 className="font-bold text-xl text-black text-center mb-7">
               Announcement
@@ -176,13 +177,13 @@ export default function Home() {
       )}
       </div>
       </CSSTransition>
-      <div className="container flex justify-center bg-[#F3FAF7] rounded-lg">
+      <div className="container flex justify-center bg-[#d4d7fb] rounded-lg">
         <div className="first">
           <div className="item p-2 m-8 cursor-pointer " onClick={showPopup}>
             <img
               width="50"
               height="50"
-              src="https://img.icons8.com/ios/50/0E9F6E/telegram-app.png"
+              src="https://img.icons8.com/ios/50/00032c/telegram-app.png"
               alt="telegram-app"
             />
             <p>Telegram</p>
@@ -191,7 +192,7 @@ export default function Home() {
             <img
               width="50"
               height="50"
-              src="https://img.icons8.com/ios/50/0E9F6E/whatsapp--v1.png"
+              src="https://img.icons8.com/ios/50/00032c/whatsapp--v1.png"
               alt="whatsapp--v1"
             />
             <p>Whatsapp</p>
@@ -203,7 +204,7 @@ export default function Home() {
               <img
                 width="50"
                 height="50"
-                src="https://img.icons8.com/ios/50/0E9F6E/crown.png"
+                src="https://img.icons8.com/ios/50/00032c/crown.png"
                 alt="crown"
               />
               <p>VIP User</p>
@@ -214,7 +215,7 @@ export default function Home() {
               <img
                 width="50"
                 height="50"
-                src="https://img.icons8.com/ios/50/0E9F6E/conference-call--v1.png"
+                src="https://img.icons8.com/ios/50/00032c/conference-call--v1.png"
                 alt="conference-call--v1"
               />
               <p>My Team</p>
@@ -239,22 +240,22 @@ export default function Home() {
                     width="20"
                     height="20"
                     className="mb-1"
-                    src="https://img.icons8.com/ios-glyphs/30/0E9F6E/delete-sign.png"
+                    src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
                     alt="delete-sign"
                   />
                 </div>
-                <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md">
+                <div className=" p-9 bg-[#d4d7fb] rounded-lg shadow-md">
                   <img
                     className="m-auto"
                     width="50"
                     height="50"
-                    src="https://img.icons8.com/ios/50/014737/telegram-app.png"
+                    src="https://img.icons8.com/ios/50/00032c/telegram-app.png"
                     alt="telegram-app"
                   />
                   <p className="font-bold pb-3 pl-9 pr-9 justify-self-center">
                     Telegram
                   </p>
-                  <button className="mt-4 px-5 py-2 md:ml-5 ml-5 bg-[#057A55] text-white rounded-3xl hover:bg-[#03543F] transition-colors 100ms ease-in-out">
+                  <button className="mt-4 px-5 py-2 md:ml-5 ml-5 bg-[#00032c] text-white rounded-3xl hover:bg-[#03543F] transition-colors 100ms ease-in-out">
                     Join Now
                   </button>
                 </div>
@@ -284,22 +285,22 @@ export default function Home() {
                 width="20"
                 height="20"
                 className="mb-1"
-                src="https://img.icons8.com/ios-glyphs/30/014737/delete-sign.png"
+                src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
                 alt="delete-sign"
               />
             </div>
-            <div className=" p-9 bg-[#DEF7EC] rounded-lg shadow-md ">
+            <div className=" p-9 bg-[#d4d7fb] rounded-lg shadow-md ">
               <img
                 className="m-auto"
                 width="50"
                 height="50"
-                src="https://img.icons8.com/ios/50/0E9F6E/whatsapp--v1.png"
+                src="https://img.icons8.com/ios/50/00032c/whatsapp--v1.png"
                 alt="whatsapp--v1"
               />
               <p className="font-bold pb-3 pl-9 pr-9 justify-self-center">
                 Whatsapp
               </p>
-              <button className="mt-4 px-8 py-2 md:ml-3 ml-5  bg-[#057A55] text-white rounded-3xl hover:bg-[#03543F] transition-colors 100ms ease-in-out ">
+              <button className="mt-4 px-8 py-2 md:ml-3 ml-5  bg-[#00032c] text-white rounded-3xl hover:bg-[#03543F] transition-colors 100ms ease-in-out ">
                 Join Now
               </button>
             </div>
@@ -309,12 +310,12 @@ export default function Home() {
         </CSSTransition>
       </div>
 
-      <h2 className="text-[#0E9F6E] text-center col-p m-7 md:text-4xl text-3xl">
-        Start Investing Today!
+      <h2 className="text-[#00032c]  text-center col-p m-7 md:text-4xl text-3xl">
+        All Investable Products
       </h2>
 
-      <div className="card-nav mt-24 ">
-        <ul className="flex justify-around my-5 ">
+      <div className="card-nav mt-11  ">
+        <ul className="flex justify-around my-5 rounded-full bg-white md:mx-9 mx-3 ">
           <li
             onClick={() => {
               setIsExclusive(false);
@@ -323,9 +324,9 @@ export default function Home() {
             }}
             className={`cursor-pointer  ${
               isupgrade
-                ? "text-emerald-700 border-b-2 pb-2 border-emerald-700"
+                ? "text-white bg-[#00032c] rounded-full p-5 "
                 : ""
-            }  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out`}
+            }   text-2xl font-light pb-2 pt-2 transition-colors 150ms ease-in-out`}
           >
             Upgrade
           </li>
@@ -337,9 +338,9 @@ export default function Home() {
             }}
             className={`cursor-pointer  ${
               isexclusive
-                ? "text-emerald-700 border-b-2 pb-2 border-emerald-700 "
+                ? "text-white bg-[#00032c] rounded-full p-5"
                 : ""
-            }  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out`}
+            }  text-2xl pb-2 font-light pt-2 transition-colors 150ms ease-in-out`}
           >
             Exclusive
           </li>
@@ -351,9 +352,9 @@ export default function Home() {
             }}
             className={`cursor-pointer  ${
               isgift
-                ? "text-emerald-700 border-b-2 pb-2 border-emerald-700"
+                ? "text-white bg-[#00032c] rounded-full p-5"
                 : ""
-            }  hover:text-[#0E9F6E] text-2xl font-light transition-colors 150ms ease-in-out`}
+            }   text-2xl pb-2 font-light pt-2 transition-colors 150ms ease-in-out`}
           >
             Gift
           </li>

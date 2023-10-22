@@ -203,7 +203,7 @@ export default function Profile() {
 
   return (
     <React.Fragment>
-      <div style={{ marginTop: "7rem" }} className="md:w-5/6 w-full mx-auto">
+      <div  className="md:w-5/6 w-full mx-auto">
         {isAlert && (
           <div
             id="toast-default"
@@ -261,14 +261,14 @@ export default function Profile() {
           <div className="teamSize flex mx-4 flex-col item-center justify-center">
             <button
               type="button"
-              className="text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+              className="text-white bg-[#00032c] hover:bg-[#363c7b] focus:outline-none focus:ring-4 focus:ring-[#d4d7fb] font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-[#00032c] dark:hover:bg-[#d4d7fb] "
               onClick={openPopup}
             >
               Recharge
             </button>
             <button
               type="button"
-              class="text-emerald-900 bg-white border border-emerald-700 focus:outline-none hover:bg-emerald-100 focus:ring-4 focus:ring-emerald-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-emerald-600 dark:hover:bg-emerald-700 dark:hover:border-emerald-600 dark:focus:ring-emerald-700"
+              class="text-[#00032c] bg-white border border-[#00032c] focus:outline-none hover:bg-[#d4d7fb] focus:ring-4 focus:ring-[#d4d7fb] font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white"
               onClick={openWithdrawPopup}
             >
               Withdraw
@@ -303,7 +303,7 @@ export default function Profile() {
                 width="32"
                 height="32"
                 className="mx-auto"
-                src="https://img.icons8.com/ios/50/0E9F6E/expensive-2--v1.png"
+                src="https://img.icons8.com/ios/50/00032c/expensive-2--v1.png"
                 alt="expensive-2--v1"
               />
               <p className="mx-auto text-center">Income Details</p>
@@ -315,7 +315,7 @@ export default function Profile() {
                 width="32"
                 height="32"
                 className="mx-auto"
-                src="https://img.icons8.com/ios/50/0E9F6E/add-shopping-cart--v1.png"
+                src="https://img.icons8.com/ios/50/00032c/add-shopping-cart--v1.png"
                 alt="add-shopping-cart--v1"
               />
               <p className="mx-auto text-center">Order</p>
@@ -327,7 +327,7 @@ export default function Profile() {
                 width="32"
                 height="32"
                 className="mx-auto"
-                src="https://img.icons8.com/ios/50/0E9F6E/card-verification-value.png"
+                src="https://img.icons8.com/ios/50/00032c/card-verification-value.png"
                 alt="card-verification-value"
               />
               <p className="mx-auto text-center">Bank Card</p>
@@ -339,7 +339,7 @@ export default function Profile() {
                 width="32"
                 height="32"
                 className="mx-auto"
-                src="https://img.icons8.com/ios/50/0E9F6E/lock--v1.png"
+                src="https://img.icons8.com/ios/50/00032c/lock--v1.png"
                 alt="lock--v1"
               />
               <p className="mx-auto text-center">Change Password</p>
@@ -353,7 +353,7 @@ export default function Profile() {
               width="32"
               height="32"
               className="mx-auto"
-              src="https://img.icons8.com/ios/50/0E9F6E/trash--v1.png"
+              src="https://img.icons8.com/ios/50/00032c/trash--v1.png"
               alt="trash--v1"
             />
             <p className="mx-auto text-center">Delete Account</p>
@@ -363,7 +363,7 @@ export default function Profile() {
               width="32"
               height="32"
               className="mx-auto"
-              src="https://img.icons8.com/ios/50/0E9F6E/downloads-folder--v1.png"
+              src="https://img.icons8.com/ios/50/00032c/downloads-folder--v1.png"
               alt="downloads-folder--v1"
             />
             <p className="mx-auto text-center">Download</p>
@@ -374,7 +374,7 @@ export default function Profile() {
                 width="32"
                 height="32"
                 className="mx-auto"
-                src="https://img.icons8.com/ios/50/0E9F6E/money-bag.png"
+                src="https://img.icons8.com/ios/50/00032c/money-bag.png"
                 alt="money-bag"
               />
               <p className="mx-auto text-center">Recharge Record</p>
@@ -386,7 +386,7 @@ export default function Profile() {
                 width="32"
                 height="32"
                 className="mx-auto"
-                src="https://img.icons8.com/ios/50/0E9F6E/banknotes.png"
+                src="https://img.icons8.com/ios/50/00032c/banknotes.png"
                 alt="banknotes"
               />
               <p className="mx-auto text-center">Withdraw Record</p>
@@ -403,7 +403,7 @@ export default function Profile() {
                 width="32"
                 height="32"
                 className="mx-auto"
-                src="https://img.icons8.com/windows/32/0E9F6E/exit.png"
+                src="https://img.icons8.com/windows/32/00032c/exit.png"
                 alt="exit"
               />
               <p className="mx-auto text-center">logout</p>
