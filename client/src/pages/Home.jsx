@@ -326,7 +326,7 @@ export default function Home() {
               isupgrade
                 ? "text-white bg-[#00032c] rounded-full p-5 "
                 : ""
-            }   text-2xl font-light pb-2 pt-2 transition-colors 150ms ease-in-out`}
+            }  text-lg md:text-2xl font-light pb-2 pt-2 transition-colors 150ms ease-in-out`}
           >
             Upgrade
           </li>
@@ -340,7 +340,7 @@ export default function Home() {
               isexclusive
                 ? "text-white bg-[#00032c] rounded-full p-5"
                 : ""
-            }  text-2xl pb-2 font-light pt-2 transition-colors 150ms ease-in-out`}
+            }  text-lg md:text-2xl pb-2 font-light pt-2 transition-colors 150ms ease-in-out`}
           >
             Exclusive
           </li>
@@ -354,7 +354,7 @@ export default function Home() {
               isgift
                 ? "text-white bg-[#00032c] rounded-full p-5"
                 : ""
-            }   text-2xl pb-2 font-light pt-2 transition-colors 150ms ease-in-out`}
+            }   text-lg md:text-2xl pb-2 font-light pt-2 transition-colors 150ms ease-in-out`}
           >
             Gift
           </li>
