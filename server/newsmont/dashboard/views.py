@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import *
+from accounts.models import *
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -76,4 +77,24 @@ def purchase_product(request):
         order.save()
         order.set_date_purchase()
         return JsonResponse({'status': 'Success', 'message': 'Product purchased successfully'})
+    return JsonResponse({'status': 'Error', 'message': 'Something went wrong'})
+
+@csrf_exempt
+def income_details(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone = data.get('phone_number')
+        user = Profile.objects.filter(phone_number=phone).first()
+        if user:
+            income = Income.objects.filter(user=user.user).all()
+            income_details = []
+            for inc in income:
+                income_details.append({
+                    'id': inc.uid,
+                    'amount': inc.amount,
+                    'income_type': inc.income_type,
+                    'income_date': inc.income_date.strftime("%d-%m-%Y")
+                })
+            return JsonResponse({'status': 'Success', 'income_details': income_details})
+        return JsonResponse({'status': 'Error', 'message': 'User not found'})
     return JsonResponse({'status': 'Error', 'message': 'Something went wrong'})
