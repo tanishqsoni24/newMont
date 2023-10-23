@@ -352,15 +352,28 @@ def approve_recharge_record(request):
 @csrf_exempt
 def generate_income(request):
     if request.method == "POST":
-        days_of_income_generation = "2"
         purchased_products = Orders.objects.all()
         for product in purchased_products:
             user_profile_object = product.user
-            if(days_of_income_generation=="2"):
-                if product.date_purchase + timezone.timedelta(days=product.product.days) < timezone.now():
-                    user_profile_object.income += product.product.daily_income
+            if product.date_purchase + timezone.timedelta(days=product.product.days) < timezone.now():
+                if product.product.category.name == "exclusive":
+                    # Add Daily Income to wallet
+                    user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
                     user_profile_object.save()
-                return JsonResponse({'status': 'Success', 'message': 'Income Generated successfully'})
-            return JsonResponse({'status': 'Error', 'message': 'User not found'})
-        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+                    income_object = Income.objects.create(user=user_profile_object.user, amount=product.product.daily_income, income_type="Exclusive Product", income_date=timezone.now())
+                    income_object.save()
+                elif product.product.category.name == "upgrade":
+                    # Add Daily Income to wallet
+                    user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
+                    user_profile_object.save()
+                    income_object = Income.objects.create(user=user_profile_object.user, amount=product.product.daily_income, income_type="Upgrade Product", income_date=timezone.now())
+                    income_object.save()
+                elif product.product.category.name == "gift":
+                    # Add Daily Income to wallet
+                    user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
+                    user_profile_object.save()
+                    income_object = Income.objects.create(user=user_profile_object.user, amount=product.product.daily_income, income_type="Gift Product", income_date=timezone.now())
+                    income_object.save()
+            return JsonResponse({'status': 'Success', 'message': 'Income Generated successfully'})
+        return JsonResponse({'status': 'Error', 'message': 'No Orders Yet to Generate Income'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})

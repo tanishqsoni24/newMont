@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .models import Profile
+from .models import *
 from django.contrib.auth.models import User
 from .helpers import *
 import json
@@ -21,7 +21,7 @@ def signup(request):
         phone_number = data.get('phone_number')
         invite_code = data.get('invite_code')
         password = data.get('password')
-        country_code = data.get('country_code')
+        # country_code = data.get('country_code')
 
         if not phone_number:
             return JsonResponse({'status': 'Error', 'message': 'Phone Number not provided'})
@@ -46,11 +46,18 @@ def signup(request):
         response = send_otp(phone_number, otp)
         if response.status_code == 200:
             if invite_code:
-                user_profile_object.recommended_by = Profile.objects.filter(invite_code=invite_code).first().user
-                user_profile_object.save()
+                recommend_profile = Profile.objects.filter(invite_code=invite_code).first()
+                if recommend_profile:
+                    user_profile_object.recommended_by = recommend_profile.user
+                    user_profile_object.save()
+                    recommend_profile.wallet += 50
+                    recommend_profile.save()
+                    income_object = Income.objects.create(user=recommend_profile, amount=50, income_type="Referral", income_date=timezone.now())
+                    income_object.save()
+                    return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
+                return JsonResponse({'status': 'Error', 'message': 'Invalid Invite Code'})
             return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
-        else:
-            return JsonResponse({'status': 'Error', 'message': 'OTP Not Sent'})
+        return JsonResponse({'status': 'Error', 'message': 'OTP Not Sent'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
 
 @csrf_exempt
@@ -112,7 +119,6 @@ def login(request):
                         'income': user_profile_object.income,
                         'is_admin': user_profile_object.is_admin,
                     }
-                    print(user_profile_object.wallet, user_profile_object.recharge_amount, user_profile_object.income)
                     return JsonResponse({'status': 'Success', 'message': 'Logged In', 'data': data})
                 return JsonResponse({'status': 'Error', 'message': 'Account not activated'})
             return JsonResponse({'status': 'Error', 'message': 'Password Incorrect'})
