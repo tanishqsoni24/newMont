@@ -355,7 +355,12 @@ def generate_income(request):
         purchased_products = Orders.objects.all()
         for product in purchased_products:
             user_profile_object = product.user
-            if product.date_purchase + timezone.timedelta(days=product.product.days) < timezone.now():
+            print(product.date_purchase + timezone.timedelta(days=product.product.days))
+            print(product.date_purchase) 
+            print(timezone.timedelta(days=product.product.days))
+            print(timezone.now())
+            if product.date_purchase + timezone.timedelta(days=product.product.days) > timezone.now():
+                print("here")
                 if product.product.category.name == "exclusive":
                     # Add Daily Income to wallet
                     user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
