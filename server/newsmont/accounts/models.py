@@ -37,3 +37,12 @@ class Profile(BaseModel):
         if not self.invite_code:
             self.invite_code = helpers.generate_ref_code()
         super().save(*args, **kwargs)
+
+class Income(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="income_user")
+    amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
+    income_type = models.CharField(max_length=20, blank=True, null=True)
+    income_date = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return self.user.first_name + " " + str(self.amount) + " " + self.income_type + " on " + str(self.income_date.strftime("%d-%m-%Y"))
