@@ -14,7 +14,7 @@ export default function Task() {
   }, []);
   return (
     <React.Fragment>
-<div style={{marginTop: "6rem"}} className="container mx-auto flex flex-wrap justify-around">
+<div style={{marginTop: "2rem"}} className="container mx-auto flex flex-wrap justify-around">
     <TaskCard  level="0"/>
     <TaskCard level="1"/>
     <TaskCard level="2"/>

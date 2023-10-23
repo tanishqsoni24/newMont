@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import '../App.css';
 import axios from "axios";
-import { useState } from "react";
 import Cookies from "js-cookie";
+import staticImage from '../components/Images/bank-card-static.png';
+import gif from '../components/Images/icons8-bank-card.gif'; // Replace with your static image
 import jwt_decode from "jwt-decode";
 
 export default function BankCard() {
@@ -16,6 +18,7 @@ export default function BankCard() {
       document.body.classList.remove('body-bg-color');
     };
   }, []);
+  const [showGif, setShowGif] = useState(true);
 
   useEffect(() => {
     const showmybankcard = async () => {
@@ -30,21 +33,33 @@ export default function BankCard() {
       }
     };
     showmybankcard();
+
+    // Stop the GIF after 2 seconds
+    setTimeout(() => {
+      setShowGif(false);
+    }, 1100);
   }, []);
+
   return (
     <div
       style={{ marginTop: "7rem" }}
-      className="container flex flex-col mx-auto justify-center item-center"
+      className="container flex flex-col mx-auto justify-center items-center"
     >
       <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
-        <div className="withdrawals flex flex-col item-center justify-center">
+        <div className="withdrawals flex flex-col items-center justify-center">
+          {showGif ? (
+            <img src={gif} className="w-11" alt="bank-card" />
+          ) : (
+            <img src={staticImage} className="w-11" alt="bank-card" />
+          )}
+
           <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
             Bank Card
           </h2>
           {bankCard.length > 0 &&
             bankCard.map((bankCard, index) => {
               return (
-                <div className="max-w-sm w:full-screen my-3 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <div className="max-w-sm w-full my-3 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                   <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                     <span className="font-bold">Card Holder Name:</span>{" "}
                     {bankCard.card_holder_name} <br />

@@ -61,7 +61,7 @@ export default function Home() {
   };
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isMainPopupOpen, setIsMainPopupOpen] = useState(false);
+  const [isMainPopupOpen, setIsMainPopupOpen] = useState(true);
   const [isWPopupOpen, setIsWPopupOpen] = useState(false);
   const [isexclusive, setIsExclusive] = useState(false);
   const [isupgrade, setIsUpgrade] = useState(true);
@@ -71,10 +71,8 @@ export default function Home() {
     const hasPopupBeenDisplayed = localStorage.getItem('popupDisplayed');
     console.log(hasPopupBeenDisplayed)
     // If the popup hasn't been displayed before, show it
-    if (hasPopupBeenDisplayed) {
+    if (!hasPopupBeenDisplayed) {
       setIsMainPopupOpen(true);
-  
-      // Mark the popup as displayed in localStorage
       localStorage.setItem('popupDisplayed', 'true');
     }
   }, []);
