@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/general/Spinner";
@@ -7,6 +7,13 @@ import Cookies from "js-cookie";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
 export default function Login() {
+  useEffect(() => {
+    // Set the background color for the body element
+    document.body.classList.add("body-bg-color");
+    // Clean up by removing the class when the component unmounts
+    return () => {
+      document.body.classList.remove("body-bg-color");
+    }}, []);
   const [isPasswordEmpty, setPasswordEmpty] = useState(false);
   const [ismobEmpty, setmobEmpty] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -81,8 +88,8 @@ export default function Login() {
   };
   return (
     <section
-      style={{ marginTop: "0rem" }}
-      className="bg-gray-50 h-screen dark:bg-gray-900 py-auto"
+      style={{ marginTop: "6rem" }}
+      className="body-bg-color h-screen dark:bg-gray-900 py-auto"
     >
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         {/* <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">

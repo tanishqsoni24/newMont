@@ -1,6 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default function IncomingDetails() {
+    useEffect(() => {
+        // Set the background color for the body element
+        document.body.classList.add("body-bg-color");
+      
+        // Clean up by removing the class when the component unmounts
+        return () => {
+          document.body.classList.remove("body-bg-color");
+        };
+      }, []);
     return (
 
         <div style={{ marginTop: "7rem" }} className="container flex flex-col mx-auto justify-center item-center">

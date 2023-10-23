@@ -23,32 +23,7 @@ export default function Viewuser() {
     setSelectedItem(null);
     setrechargeModalIsOpen(false);
   };
-      const [fakeRechargeRecords, setFakeRechargeRecords] =useState([
-        {
-          Sno: 1,
-          User: "User 1",
-          Amount: "$100.00",
-          Status: "Paid",
-          Date: "2023-10-09",
-          RemainingBalance: "$2510",
-        },
-        {
-          Sno: 2,
-          User: "User 2",
-          Amount: "$50.00",
-          Status: "Unpaid",
-          Date: "2023-10-10",
-          RemainingBalance: "$8740",
-        },
-        {
-          Sno: 3,
-          User: "User 3",
-          Amount: "$75.00",
-          Status: "Paid",
-          Date: "2023-10-11",
-          RemainingBalance: "$1000",
-        },
-      ]);
+      const [fakeRechargeRecords, setFakeRechargeRecords] =useState([]);
       useEffect(() => {
         const rechargeDetail = async () => {
         const response = await axios.post('http://139.59.32.207/administ/recharge_detail/',{phone_number : userId.split("-")[1]} ,{"content": "application/json"});
