@@ -570,7 +570,6 @@ export default function AdminPortal() {
                     {user.start_time}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.recommended_by}
                     {user.recommended_by ? user.recommended_by : "None"}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
