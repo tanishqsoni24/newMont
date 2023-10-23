@@ -78,7 +78,7 @@ export default function Signup() {
         );
         //(response);
   
-        if (response.data.status === "success") {
+        if (response.data.status === "Success") {
           //("success");
           // encode the token
           const token_data = {
