@@ -224,6 +224,7 @@ export default function Home() {
               <img
                 width="50"
                 height="50"
+                className="ml-1"
                 src="https://img.icons8.com/ios/50/00032c/crown.png"
                 alt="crown"
               />
@@ -234,6 +235,7 @@ export default function Home() {
             <div className="item p-2 m-8 cursor-pointer">
               <img
                 width="50"
+                className="ml-2"
                 height="50"
                 src="https://img.icons8.com/ios/50/00032c/conference-call--v1.png"
                 alt="conference-call--v1"
