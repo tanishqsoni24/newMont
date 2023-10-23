@@ -7,6 +7,15 @@ import jwt_decode from "jwt-decode";
 
 export default function BankCard() {
   const [bankCard, setBankCard] = useState([]);
+  useEffect(() => {
+    // Set the background color for the body element
+    document.body.classList.add('body-bg-color');
+  
+    // Clean up by removing the class when the component unmounts
+    return () => {
+      document.body.classList.remove('body-bg-color');
+    };
+  }, []);
 
   useEffect(() => {
     const showmybankcard = async () => {

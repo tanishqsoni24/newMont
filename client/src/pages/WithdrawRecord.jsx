@@ -6,6 +6,15 @@ import jwt_decode from 'jwt-decode'
 
 
 export default function WithdrawRecord() {
+    useEffect(() => {
+        // Set the background color for the body element
+        document.body.classList.add("body-bg-color");
+      
+        // Clean up by removing the class when the component unmounts
+        return () => {
+          document.body.classList.remove("body-bg-color");
+        };
+      }, []);
     const [withdrawRecord, setWithdrawRecord] = useState([])
     useEffect(() => {
         const withdrawRecord = async () => {
@@ -68,7 +77,15 @@ export default function WithdrawRecord() {
             
         </tbody>
     </table>
-    <div className="noice flex justify-center my-5">
+    <div className="noice flex flex-col justify-center my-5">
+
+        {
+            withdrawRecord.length === 0 ? (
+                <p className='text-red-500 text-center'>No Withdraw Record Found</p>
+            ):
+            ""
+        }
+
         <p className='text-red-500'>*Note: Withdrawal will be processed within 24 hours</p>
     </div>
 </div>

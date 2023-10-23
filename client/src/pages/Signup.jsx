@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,15 @@ import Cookies from "js-cookie";
 import sign from "jwt-encode";
 
 export default function Signup() {
+  useEffect(() => {
+    // Set the background color for the body element
+    document.body.classList.add("body-bg-color");
+    // Clean up by removing the class when the component unmounts
+    return () => {
+      document.body.classList.remove("body-bg-color");
+    };
+  }, []);
+  
   const validateForm = () => {
     const errors = {};
 
@@ -97,7 +106,7 @@ export default function Signup() {
   return (
     <section
       style={{ marginTop: "7rem", marginBottom: "7rem" }}
-      className=" bg-white h-screen dark:bg-gray-900 py-auto"
+      className="body-bg-color h-screen dark:bg-gray-900 py-auto"
     >
       <div className="flex flex-col items-center justify-center  px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
+import { useEffect } from 'react';
 
 
 export default function AddBankCard() {
@@ -17,6 +18,15 @@ export default function AddBankCard() {
     const handleChange = text => e => {
         setBankCard({...bankCard, [text]: e.target.value})
     }
+    useEffect(() => {
+        // Set the background color for the body element
+        document.body.classList.add('body-bg-color');
+      
+        // Clean up by removing the class when the component unmounts
+        return () => {
+          document.body.classList.remove('body-bg-color');
+        };
+      }, []);
     const handleSubmit = async (e) => {
         e.preventDefault()
         try{
@@ -46,7 +56,7 @@ export default function AddBankCard() {
         }
     }
   return (
-    <section style={{marginTop:"8rem"}} className=" bg-gray-50 h-screen dark:bg-gray-900 py-auto">
+    <section style={{marginTop:"8rem"}} className=" body-bg-color h-screen dark:bg-gray-900 py-auto">
     <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

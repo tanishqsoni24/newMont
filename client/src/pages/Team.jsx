@@ -5,6 +5,15 @@ import Cookies from "js-cookie";
 import axios from "axios";
 
 export default function Team() {
+  useEffect(() => {
+    // Set the background color for the body element
+    document.body.classList.add("body-bg-color");
+
+    // Clean up by removing the class when the component unmounts
+    return () => {
+      document.body.classList.remove("body-bg-color");
+    };
+  }, []);
   const [user, setUser] = useState({
     invite_code: "",
   });
@@ -40,6 +49,7 @@ export default function Team() {
       setLevel_2(response.data.myteams.level_2);
       setLevel_3(response.data.myteams.level_3);
     };
+
     userDeatil();
   }, []);
   const [copy, setCopy] = useState("Copy Link");
@@ -54,8 +64,13 @@ export default function Team() {
   };
   return (
     <React.Fragment>
-      <div style={{ marginTop: "7rem" }} className="md:w-5/6 w-full mx-auto">
-        <div className="border mx-1 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex justify-around">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <h2 className="mb-2 mx-1 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
+          My Team
+        </h2>
+        </div>
+      <div className="md:w-5/6 w-full mx-auto">
+        <div className="border mx-1 py-4 border-gray-200 rounded-lg shadow  bg-white dark:bg-gray-800 dark:border-gray-700 flex justify-around">
           <div className="teamRecharge flex flex-col item-center justify-center">
             <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
               ₹{team_recharge}.00
@@ -72,7 +87,7 @@ export default function Team() {
         <h2 className="mb-2 mx-1 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
           Invitation Code
         </h2>
-        <div className="border mx-1 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div className="border  bg-white mx-1 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
           <div className="mb-6 mx-3">
             <label
               for="success"
@@ -100,8 +115,13 @@ export default function Team() {
           Team Member
         </h2>
 
-        <div className="relative overflow-x-auto mx-1">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <div className="relative  bg-white overflow-x-auto mx-1">
+    
+         
+          {
+            level_1.length>0 && level_2.length>0 && level_3.length>0 ?
+          
+          (<table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <tbody>
               {level_1.length > 0 &&
                 level_1.map((member, index) => {
@@ -206,7 +226,7 @@ export default function Team() {
                   );
                 })}
             </tbody>
-          </table>
+          </table>) : (<p className="text-lg text-center body-bg-color">No Team Member</p>)}
         </div>
       </div>
     </React.Fragment>

@@ -5,6 +5,15 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 
 export default function RechargeRecord() {
+  useEffect(() => {
+    // Set the background color for the body element
+    document.body.classList.add("body-bg-color");
+  
+    // Clean up by removing the class when the component unmounts
+    return () => {
+      document.body.classList.remove("body-bg-color");
+    };
+  }, []);
     const [rechargeRecord, setRechargeRecord] = useState([])
     useEffect(() => {
         const userRechargeRecords = async () => {
@@ -28,7 +37,7 @@ export default function RechargeRecord() {
       <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
         <div className="withdrawals flex flex-col item-center justify-center">
           <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            Withdraw Records
+            Recharge Records
           </h2>
         </div>
       </div>
@@ -49,7 +58,7 @@ export default function RechargeRecord() {
             </tr>
           </thead>
           <tbody>
-            {rechargeRecord.length > 0 &&
+            {rechargeRecord.length > 0 ? (
               rechargeRecord.map((recharge, index) => {
                 return (
                   <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -69,14 +78,21 @@ export default function RechargeRecord() {
                     </td>
                   </tr>
                 );
-              })}
+              })):""}
           </tbody>
         </table>
 
-        <div className="noice flex justify-center my-5">
-          <p className="text-red-500">
-            *Note: Recharge will be processed within 24 hours
-          </p>
+        <div className="noice flex flex-col justify-center my-5">
+          {rechargeRecord.length > 0 ? (
+            <p className="text-red-500">
+              *Note: Recharge will be processed within 24 hours
+            </p>
+          ) : (
+            <p className="text-red-500 text-center">
+              *No Recharge Record Found
+            </p>
+          )  
+          }
         </div>
       </div>
     </div>

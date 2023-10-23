@@ -5,6 +5,15 @@ import Cookies from 'js-cookie'
 import jwt_decode from 'jwt-decode'
 
 export default function Orders() {
+    useEffect(() => {
+        // Set the background color for the body element
+        document.body.classList.add('body-bg-color');
+      
+        // Clean up by removing the class when the component unmounts
+        return () => {
+          document.body.classList.remove('body-bg-color');
+        };
+      }, []);
 
     const [orders, setOrders] = useState([]);
 
@@ -68,6 +77,9 @@ export default function Orders() {
            )})}
         </tbody>
     </table>
+    <div className='flex justify-center'>
+        {orders.length === 0 && <p className='text-2xl text-gray-500'>No orders yet</p>}
+        </div>
 </div>
 </div>
     )
