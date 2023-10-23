@@ -69,52 +69,56 @@ export default function Signup() {
     e.preventDefault();
     setLoading(true);
     if (validateForm()) {
-    
-    try {
-      
-      console.log(signup);
-      const response = await axios.post(
-        "http://139.59.32.207/accounts/signup/",
-        signup,
-        { headers: { "Content-Type": "application/json" } }
-      );
-      console.log(response);
-      setErrorMessage(response);
-
-      if (response.status === 200) {
-        console.log("success");
+      try {
+        //(signup);
+        const response = await axios.post(
+          "http://139.59.32.207/accounts/signup/",
+          signup,
+          { headers: { "Content-Type": "application/json" } }
+        );
+        //(response);
+  
+        if (response.data.status === "success") {
+          //("success");
+          // encode the token
+          const token_data = {
+            phone_number: signup.phone_number,
+          };
+  
+          const token = await sign(token_data, "AuthSystemBuild", {
+            expiresIn: "30d",
+          });
+  
+          Cookies.set("phone_number", token, { expires: 30 });
+          navigate("/otp");
+        } else {
+          if (response.data && response.data.status === "Error") {
+            setErrorMessage(response.data.message);
+          } else {
+            setErrorMessage("An error occurred while signing up. Please try again later.");
+          }
+        }
+      } catch (err) {
+        //(err);
+        setErrorMessage("An error occurred while signing up. Please try again later.");
       }
-      // encode the token
-      const token_data = {
-        phone_number: signup.phone_number,
-      };
-
-      const token = await sign(token_data, "AuthSystemBuild", {
-        expiresIn: "30d",
-      });
-
-      Cookies.set("phone_number", token, { expires: 30 });
-
-      // push the url to /otp
-      navigate("/otp");
-    } catch (err) {
-      console.log(err);
     }
-  }
-  setLoading(false);
+    setLoading(false);
   };
+  
+  
   return (
     <section
-      style={{ marginTop: "7rem", marginBottom: "7rem" }}
+      style={{ marginTop: "1rem", marginBottom: "7rem" }}
       className="body-bg-color h-screen dark:bg-gray-900 py-auto"
     >
       <div className="flex flex-col items-center justify-center  px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-2xl font-semibold leading-tight tracking-tight text-emerald-900 md:text-4xl dark:text-white">
+            <h1 className="text-2xl font-semibold leading-tight tracking-tight text-blue-900 md:text-4xl dark:text-white">
               New Mont
             </h1>
-            <h1 className="text-xl font-light leading-tight tracking-tight text-emerald-900 md:text-2xl dark:text-white">
+            <h1 className="text-xl font-light leading-tight tracking-tight text-blue-900 md:text-2xl dark:text-white">
               Sign up to new account
             </h1>
             <form className="space-y-4 md:space-y-6">
@@ -131,7 +135,7 @@ export default function Signup() {
                   value={signup.first_name}
                   name="first_name"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Rajesh"
                 />
               </div>
@@ -151,7 +155,7 @@ export default function Signup() {
                   value={signup.last_name}
                   name="last_name"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Singh"
                 />
               </div>
@@ -171,7 +175,7 @@ export default function Signup() {
                   value={signup.phone_number}
                   name="phone_number"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="7565889452"
                 />
               </div>
@@ -192,7 +196,7 @@ export default function Signup() {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
               </div>
               {formErrors.password && (
@@ -212,7 +216,7 @@ export default function Signup() {
                   name="confirmPassword"
                   id="password"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
               </div>
               
@@ -229,7 +233,7 @@ export default function Signup() {
                   value={signup.invite_code}
                   name="invite_code"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="75fhweb52"
                 />
               </div>
@@ -239,7 +243,7 @@ export default function Signup() {
               <button
                 type="submit"
                 onClick={handleSubmit}
-                className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+                className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 {loading ? "Signing up..." : "Sign up"}
               </button>
@@ -247,7 +251,7 @@ export default function Signup() {
                 Have an account?{" "}
                 <Link
                   to="/login"
-                  className="font-medium text-emerald-600 hover:underline dark:text-emerald-500"
+                  className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                 >
                   Sign in
                 </Link>

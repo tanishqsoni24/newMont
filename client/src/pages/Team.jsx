@@ -29,7 +29,7 @@ export default function Team() {
     const userDeatil = async () => {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
-      console.log(decoded);
+      //(decoded);
 
       setUser({
         invite_code: decoded.invite_code,
@@ -39,9 +39,9 @@ export default function Team() {
         { phone_number: decoded.phone_number },
         { content: "application/json" }
       );
-      console.log(response.data.myteams.level_1);
-      console.log(response.data.myteams.level_2);
-      console.log(response.data.myteams.level_3);
+      //(response.data.myteams.level_1);
+      //(response.data.myteams.level_2);
+      //(response.data.myteams.level_3);
       setLevel_1(response.data.myteams.level_1);
       setTeam_size(response.data.team_size);
       setTeam_recharge(response.data.team_recharge);
@@ -64,8 +64,8 @@ export default function Team() {
   };
   return (
     <React.Fragment>
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <h2 className="mb-2 mx-1 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
+      <h2 className="mb-5 mx-1 text-3xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
           My Team
         </h2>
         </div>

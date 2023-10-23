@@ -23,13 +23,13 @@ export default function Admin() {
 
         try{
             const response = await axios.post('http://139.59.32.207/administ/login/',login, { headers: { 'Content-Type': 'application/json' } });
-            console.log(response)
-            console.log(response.data)
+            //(response)
+            //(response.data)
 
             if(response.data.status === "Success"){
 
                 // decode the token
-                console.log(response.data.data)
+                //(response.data.data)
                 const token_data = {
                     first_name: response.data.data.first_name,
                     last_name: response.data.data.last_name,
@@ -46,7 +46,7 @@ export default function Admin() {
             }
         }
         catch(err){
-            console.log(err)
+            //(err)
         }
         setLoading(false);
     }

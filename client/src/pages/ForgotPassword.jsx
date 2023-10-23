@@ -34,13 +34,13 @@ export default function ForgotPassword() {
     setNewPass({
       ...newPass, [name]:value, phone_number:number.phone_number 
     })
-    console.log(newPass)
+    //(newPass)
   }
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setNumber({ ...number, [name]: value })
-    console.log(number)
+    //(number)
   }
 
   const handleOtpChange = (e) => {
@@ -56,15 +56,15 @@ export default function ForgotPassword() {
       const response = await axios.post('http://139.59.32.207/accounts/forgot-password/', number, {
         headers: { 'Content-Type': 'application/json' },
       })
-      console.log(response)
-      console.log(response.data)
+      //(response)
+      //(response.data)
       setErrorMessage(response.data.message);
       if (response.data.status == "Success"){
         setIsOtp(true);
       }
     }
     catch(err){
-      console.log(err)
+      //(err)
     }
   }
 
@@ -74,15 +74,15 @@ export default function ForgotPassword() {
       const response = await axios.post('http://139.59.32.207/accounts/verify-forgot-password-token/', otp, {
         headers: { 'Content-Type': 'application/json' },
       })
-      console.log(response)
-      console.log(response.data)
+      //(response)
+      //(response.data)
       if (response.data.status == "Success"){
         setIsOtp(false);
         setIsAskPassword(true);
       }
     }
     catch(err){
-      console.log(err)
+      //(err)
     }
   }
 
@@ -92,14 +92,14 @@ export default function ForgotPassword() {
       const response = await axios.post('http://139.59.32.207/accounts/reset-password/', newPass, {
         headers: { 'Content-Type': 'application/json' },
       })
-      console.log(response)
-      console.log(response.data)
+      //(response)
+      //(response.data)
       if (response.data.status == "Success"){
         window.location.href = "/login";
       }
     }
     catch(err){
-      console.log(err)
+      //(err)
     }
   }
 

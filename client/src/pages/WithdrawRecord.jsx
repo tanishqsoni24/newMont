@@ -26,7 +26,7 @@ export default function WithdrawRecord() {
             if (response.data.status === "Success") {
                 setWithdrawRecord(response.data.data)
             }
-            console.log(response.data.data)
+            //(response.data.data)
         }
         withdrawRecord()
     }, [])

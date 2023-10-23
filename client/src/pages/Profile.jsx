@@ -49,13 +49,13 @@ export default function Profile() {
       // popup for select bank card
       setBankCardPopup(true);
     } catch (err) {
-      console.log(err);
+      //(err);
     }
   };
   const userDeatil = async () => {
     const token = Cookies.get("session_id");
     const decoded = await jwt_decode(token);
-    console.log(decoded);
+    //(decoded);
     const response = await axios.post(
       "http://139.59.32.207/accounts/userDetail/",
       { phone_number: decoded.phone_number },
@@ -79,7 +79,7 @@ export default function Profile() {
         { headers: { "Content-Type": "application/json" } }
       );
       if (response.data.status === "Success") {
-        console.log(response.data.data);
+        //(response.data.data);
         setBankCard(response.data.data);
       }
     };
@@ -122,7 +122,7 @@ export default function Profile() {
     );
 
     if (response.data.status === "Success") {
-      console.log(response.data);
+      //(response.data);
       closeBankCardPopup();
       setIsAlert(
         "Withdraw Request Sent Successfully of amount ₹" + withdraw + ".00 "
@@ -143,7 +143,7 @@ export default function Profile() {
       );
 
       if (response.data.status === "Success") {
-        console.log(response.data);
+        //(response.data);
 
         // decode the token
 
@@ -159,7 +159,7 @@ export default function Profile() {
         setIsAlert(response.data.message);
       }
     } catch (err) {
-      console.log(err);
+      //(err);
     }
   };
   useEffect(() => {
@@ -198,7 +198,7 @@ export default function Profile() {
         },
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log(response.data);
+      //(response.data);
       if (response.data.status === "Success") {
         Cookies.remove("session_id");
         window.location.href = "/login";
@@ -206,7 +206,7 @@ export default function Profile() {
         setIsAlert(response.data.message);
       }
     } catch (err) {
-      console.log(err);
+      //(err);
     }
   };
 

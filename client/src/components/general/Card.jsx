@@ -34,7 +34,7 @@ export default function Card(props) {
       { content: "application/json" }
     );
 
-    console.log(response.data);
+    //(response.data);
 
     if (response.data.status === "Success") {
       setIsAlert("Product Purchased Successfully");

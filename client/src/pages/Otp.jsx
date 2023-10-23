@@ -20,7 +20,7 @@ export default function Otp() {
             phone_number: decoded.phone_number
         }, { headers: { 'Content-Type': 'application/json' } });
 
-        console.log(response.data)
+        //(response.data)
 
         // set timer to 1 minute
 
@@ -46,10 +46,10 @@ export default function Otp() {
           otp: otp
         }, { headers: { 'Content-Type': 'application/json' } });
 
-        console.log(response.data)
+        //(response.data)
 
         if (response.data.status === "Success") {
-            console.log('success')
+            //('success')
             navigate('/login')
         }
         setLoading(false);
