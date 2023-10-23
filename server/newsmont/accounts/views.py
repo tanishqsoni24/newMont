@@ -35,16 +35,21 @@ def signup(request):
         user_obj = Profile.objects.filter(phone_number=phone_number).first()
         if user_obj:
             return JsonResponse({'status': 'Error', 'message': 'Phone Number already registered'})
-        user_create_object = User.objects.create_user(username=phone_number, password=password, first_name=first_name, last_name=last_name)
-        user_create_object.save()
+        if invite_code:
+            invite_code_obj = Profile.objects.filter(invite_code=invite_code).first()
+            if not invite_code_obj:
+                return JsonResponse({'status': 'Error', 'message': 'Invalid Invite Code'})
 
         otp = generate_otp()
-        user_profile_object = Profile.objects.create(user=user_create_object, phone_number=phone_number, otp=otp)
-        user_profile_object.start_timer()
-        user_profile_object.save()
-
         response = send_otp(phone_number, otp)
         if response.status_code == 200:
+            user_create_object = User.objects.create_user(username=phone_number, password=password, first_name=first_name, last_name=last_name)
+            user_create_object.save()
+
+            user_profile_object = Profile.objects.create(user=user_create_object, phone_number=phone_number, otp=otp)
+            user_profile_object.start_timer()
+            user_profile_object.save()
+
             if invite_code:
                 recommend_profile = Profile.objects.filter(invite_code=invite_code).first()
                 if recommend_profile:
@@ -52,7 +57,7 @@ def signup(request):
                     user_profile_object.save()
                     recommend_profile.wallet += 50
                     recommend_profile.save()
-                    income_object = Income.objects.create(user=recommend_profile, amount=50, income_type="Referral", income_date=timezone.now())
+                    income_object = Income.objects.create(user=recommend_profile.user, amount=50, income_type="Referral", income_date=timezone.now())
                     income_object.save()
                     return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
                 return JsonResponse({'status': 'Error', 'message': 'Invalid Invite Code'})
