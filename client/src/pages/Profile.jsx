@@ -397,7 +397,7 @@ export default function Profile() {
                 </p>
               </Link>
             </div>
-            <div className="logout mx-auto my-3 bg-white py-7 px-36 rounded-2xl">
+            <div className="logout mx-auto my-3 bg-white py-7 px-40 rounded-2xl">
               <button
                 onClick={() => {
                   Cookies.remove("session_id");

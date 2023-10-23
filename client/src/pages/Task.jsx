@@ -15,6 +15,7 @@ export default function Task() {
   return (
     <React.Fragment>
 <div style={{marginTop: "2rem"}} className="container mx-auto flex flex-wrap justify-around">
+  <h2 className='font-semibold text-3xl tracking-tight mb-7' >Do Tasks And Earn!</h2>
     <TaskCard  level="0"/>
     <TaskCard level="1"/>
     <TaskCard level="2"/>

@@ -52,25 +52,25 @@ export default function Team() {
 
     userDeatil();
   }, []);
-  const [copy, setCopy] = useState("Copy Link");
+  const [copy, setCopy] = useState("Copy Code");
   const handelCopy = () => {
     setCopy("Copied...");
 
     navigator.clipboard.writeText(user.invite_code);
 
     setTimeout(() => {
-      setCopy("Copy Link");
+      setCopy("Copy Code");
     }, 2000);
   };
   return (
     <React.Fragment>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-      <h2 className="mb-5 mx-1 text-3xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
+        <h2 className="mb-5 mx-1 text-3xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
           My Team
         </h2>
-        </div>
+      </div>
       <div className="md:w-5/6 w-full mx-auto">
-        <div className="border mx-1 py-4 border-gray-200 rounded-lg shadow  bg-white dark:bg-gray-800 dark:border-gray-700 flex justify-around">
+        <div className="border mx-3 py-4 border-gray-200 rounded-lg shadow  bg-white dark:bg-gray-800 dark:border-gray-700 flex justify-around">
           <div className="teamRecharge flex flex-col item-center justify-center">
             <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
               ₹{team_recharge}.00
@@ -87,7 +87,7 @@ export default function Team() {
         <h2 className="mb-2 mx-1 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
           Invitation Code
         </h2>
-        <div className="border  bg-white mx-1 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div className="border  bg-white mx-3 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
           <div className="mb-6 mx-3">
             <label
               for="success"
@@ -112,121 +112,120 @@ export default function Team() {
           </button>
         </div>
         <h2 className="mb-2 mx-1 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
-          Team Member
+          Team Members
         </h2>
 
         <div className="relative  bg-white overflow-x-auto mx-1">
-    
-         
-          {
-            level_1.length>0 && level_2.length>0 && level_3.length>0 ?
-          
-          (<table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <tbody>
-              {level_1.length > 0 &&
-                level_1.map((member, index) => {
-                  return (
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                      <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        1st
-                      </th>
-                      <td className="px-6 py-4">{member}</td>
-                      <td className="px-6 py-4 flex">
-                        <svg
-                          class="w-4 h-4 text-yellow-300"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 22 20"
+          {level_1.length > 0 ? (
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <tbody>
+                {level_1.length > 0 &&
+                  level_1.map((member, index) => {
+                    return (
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                        <svg
-                          class="w-4 h-4 text-yellow-300"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 22 20"
+                          1st
+                        </th>
+                        <td className="px-6 py-4">{member}</td>
+                        <td className="px-6 py-4 flex">
+                          <svg
+                            class="w-4 h-4 text-yellow-300"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 22 20"
+                          >
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                          <svg
+                            class="w-4 h-4 text-yellow-300"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 22 20"
+                          >
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                {level_2.length > 0 &&
+                  level_2.map((member, index) => {
+                    return (
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                      </td>
-                    </tr>
-                  );
-                })}
-              {level_2.length > 0 &&
-                level_2.map((member, index) => {
-                  return (
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                      <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        2nd
-                      </th>
-                      <td className="px-6 py-4">{member}</td>
-                      <td className="px-6 py-4 flex">
-                        <svg
-                          class="w-4 h-4 text-yellow-300"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 22 20"
+                          2nd
+                        </th>
+                        <td className="px-6 py-4">{member}</td>
+                        <td className="px-6 py-4 flex">
+                          <svg
+                            class="w-4 h-4 text-yellow-300"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 22 20"
+                          >
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                          <svg
+                            class="w-4 h-4 text-yellow-300"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 22 20"
+                          >
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                {level_3.length > 0 &&
+                  level_3.map((member, index) => {
+                    return (
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                        <svg
-                          class="w-4 h-4 text-yellow-300"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 22 20"
-                        >
-                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                      </td>
-                    </tr>
-                  );
-                })}
-              {level_3.length > 0 &&
-                level_3.map((member, index) => {
-                  return (
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                      <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        3rd
-                      </th>
-                      <td className="px-6 py-4">{member}</td>
-                      <td className="px-6 py-4 flex">
-                        <svg
-                          class="w-4 h-4 text-yellow-300"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 22 20"
-                        >
-                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                        <svg
-                          class="w-4 h-4 text-yellow-300"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 22 20"
-                        >
-                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>) : (<p className="text-lg text-center body-bg-color">No Team Member</p>)}
+                          3rd
+                        </th>
+                        <td className="px-6 py-4">{member}</td>
+                        <td className="px-6 py-4 flex">
+                          <svg
+                            class="w-4 h-4 text-yellow-300"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 22 20"
+                          >
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                          <svg
+                            class="w-4 h-4 text-yellow-300"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 22 20"
+                          >
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          ) : (
+            <p className="text-lg text-center body-bg-color">No Team Member</p>
+          )}
         </div>
       </div>
     </React.Fragment>
