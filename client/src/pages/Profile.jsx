@@ -291,7 +291,7 @@ export default function Profile() {
           </div>
         </div>
         <div className="bg-[#e0e8ff] mt-5 rounded-t-3xl ">
-          <div className="border mx-3 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 grid grid-cols-2 gap-2 md:flex md:flex-wrap md:justify-around">
+          <div className="mx-3 py-4 rounded-lg grid grid-cols-2 gap-2 md:flex md:flex-wrap md:justify-around">
             <div className="income-details my-3 mx-auto bg-white p-7 rounded-2xl ">
               <Link to="/income">
                 <img
@@ -397,7 +397,7 @@ export default function Profile() {
                 </p>
               </Link>
             </div>
-            <div className="logout mx-auto my-3 bg-white py-7 px-40 rounded-2xl">
+            <div className="logout mx-auto my-3 bg-white py-7 px-36 rounded-2xl">
               <button
                 onClick={() => {
                   Cookies.remove("session_id");
@@ -430,7 +430,7 @@ export default function Profile() {
                 onClick={closePopup}
                 width="20"
                 height="20"
-                className="mb-1"
+                className="mb-1 cursor-pointer "
                 src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
                 alt="delete-sign"
               />
@@ -461,7 +461,7 @@ export default function Profile() {
                     <button
                       type="submit"
                       onClick={handelRecharge}
-                      className="w-full text-white bg-[#4160bd] hover:bg-[#313d64] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="w-full text-white bg-[#26439b] hover:bg-[#2d4286] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
                       Process
                     </button>
@@ -485,7 +485,7 @@ export default function Profile() {
                 onClick={closeWithdrawPopup}
                 width="20"
                 height="20"
-                className="mb-1"
+                className="mb-1 cursor-pointer "
                 src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
                 alt="delete-sign"
               />
@@ -517,7 +517,7 @@ export default function Profile() {
                     <button
                       type="submit"
                       onClick={handelWithdraw}
-                      className="w-full text-white bg-[#4160bd] hover:bg-[#313d64] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center0"
+                      className="w-full text-white bg-[#26439b] hover:bg-[#2d4286] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center0"
                     >
                       Process
                     </button>

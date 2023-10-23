@@ -47,11 +47,9 @@ export default function BankCard() {
     >
       <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
         <div className="withdrawals flex flex-col items-center justify-center">
-          {showGif ? (
-            <img src={gif} className="w-11" alt="bank-card" />
-          ) : (
+          
             <img src={staticImage} className="w-11" alt="bank-card" />
-          )}
+          
 
           <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
             Bank Card

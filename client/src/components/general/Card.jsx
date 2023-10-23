@@ -167,10 +167,9 @@ export default function Card(props) {
           <span className=" md:ml-0 text-sm md:text-3xl font-bold text-[#353d95]">
             ₹{props.price}
           </span>
-          <span className="text-slate-600 text-sm md:text-xl" >
-           /₹{props.total}
+          <span className="text-slate-600 text-sm md:text-xl">
+            /₹{props.total}
           </span>
-  
         </div>
       </div>
       <CSSTransition
@@ -183,12 +182,14 @@ export default function Card(props) {
           {isPopupOpen && (
             <div className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20">
               <div className="flex w-96 justify-end">
-                <img
-                  onClick={closePopup}
-                  className="mx-11 cursor-pointer"
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAh5JREFUSEuVV9F1wyAMPG2SbJJM0niSjpJ2EnuTehP3YWQkgQSEj7YPY51OOh0uoSwCcAD2F9IG4UhPznU+lh/lvDyUiOW83SpHa+grvJOEE2F6ixkpAuVPzayJZ9+LCuWn4VZxImPBdNCjLd0OhwX5RCJ6Uf/i81HSaV/L5vO+MjO/TSzMoCpusf1KzZV6Rh+KcdxsDTfXBBmMKIkZ4BuAbwC/ALaBuB8A3gTc86zbMddGkIH7NFYAKeAOYEngwfkHCCuD7Qdwt/LpzLGkaNJ9JRYcJIMTNmtlZ2IpwWs9zRkr38xVW6Aos6lTAScgscnM82pBy7NIHUnt86thzmEtU9B2Vs5ZxuJnFKvO1OBJeFJeqcKAzoixLzoGNw+fBGyGZ8OoveVK67uXhMi/7ukO0EI4GNgC+HNMLC4OGgGr5GvQK66MmrmzPTnLfLvj5limp94bCG/WEoNH4hrNse8oDFpefqpxEsERdhx61Pq31migHgSsSjga9Hr3RcCbbXInYDlOhbcs9SeULXXblj8AqaRpPD3QAq4c7oftNSSlDMRx9byVZnUFYcFR3Mr/CARS2b+AM8HmjM7COJffkX65PI+ajaO/WW1pHGmPBJF5+qZZe8owVhOof40O453JfRYjvm00x6ZQTuX64opyd/DHBEIDiXoTi8v34Tjb+l+h0afPNRnNB4qYXNSCeoBkBtpSN/PXtz3/yq+k7VjEP6P49iXq8pJnAAAAAElFTkSuQmCC"
-                  alt=".."
-                />
+                 <img
+                onClick={closePopup}
+                width="20"
+                height="20"
+                className="mx-12 cursor-pointer "
+                src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
+                alt="delete-sign"
+              />
               </div>
               <div className=" p-9 bg-[#e0e8ff] rounded-lg shadow-md ">
                 <p className="text-center text-xl font-semibold text-black">

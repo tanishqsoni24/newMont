@@ -26,6 +26,7 @@ export default function Home() {
     };
     checkSession_id();
   }, []);
+
   useEffect(() => {
     // Set the background color for the body element
     document.body.classList.add('body-bg-color');
@@ -66,18 +67,6 @@ export default function Home() {
   const [isexclusive, setIsExclusive] = useState(false);
   const [isupgrade, setIsUpgrade] = useState(true);
   const [isgift, setIsGift] = useState(false);
-  useEffect(() => {
-    // Check if the popup has been displayed before using localStorage
-    const hasPopupBeenDisplayed = localStorage.getItem('popupDisplayed');
-    //(hasPopupBeenDisplayed)
-    // If the popup hasn't been displayed before, show it
-    if (!hasPopupBeenDisplayed) {
-      setIsMainPopupOpen(true);
-      localStorage.setItem('popupDisplayed', 'true');
-    }
-  }, []);
-
-  
   const showPopup = () => {
     setIsPopupOpen(true);
   };
@@ -201,7 +190,7 @@ export default function Home() {
             <img
               width="50"
               height="50"
-              className="ml-3"
+              className="ml-3  "
               src="https://img.icons8.com/ios/50/00032c/telegram-app.png"
               alt="telegram-app"
             />
@@ -261,7 +250,7 @@ export default function Home() {
                     onClick={closePopup}
                     width="20"
                     height="20"
-                    className="mb-1"
+                    className="mb-1 cursor-pointer "
                     src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
                     alt="delete-sign"
                   />
@@ -306,7 +295,7 @@ export default function Home() {
                 onClick={closeWPopup}
                 width="20"
                 height="20"
-                className="mb-1"
+                className="mb-1 cursor-pointer"
                 src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
                 alt="delete-sign"
               />
