@@ -28,7 +28,7 @@ export default function BankCard() {
         phone_number: decoded.phone_number
       }, { headers: { 'Content-Type': 'application/json' } });
       if (response.data.status === "Success") {
-        console.log(response.data.data);
+        //(response.data.data);
         setBankCard(response.data.data);
       }
     };

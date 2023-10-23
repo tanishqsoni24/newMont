@@ -42,7 +42,7 @@ export default function Home() {
 
     const fetching = async () => {
       const response = await axios.get("http://139.59.32.207/dashboard/all_products/");
-      console.log(response.data);
+      //(response.data);
       setExclusive(response.data.exclusive_product_details);
       setUpgrade(response.data.upgrade_product_details);
       setGift(response.data.gift_product_details);
@@ -69,7 +69,7 @@ export default function Home() {
   useEffect(() => {
     // Check if the popup has been displayed before using localStorage
     const hasPopupBeenDisplayed = localStorage.getItem('popupDisplayed');
-    console.log(hasPopupBeenDisplayed)
+    //(hasPopupBeenDisplayed)
     // If the popup hasn't been displayed before, show it
     if (!hasPopupBeenDisplayed) {
       setIsMainPopupOpen(true);

@@ -38,7 +38,7 @@ export default function ChangePassword() {
                 oldPassword: changePassword.oldPassword,
                 newPassword: changePassword.newPassword
             }, {"content": "application/json"})
-            console.log(response)
+            //(response)
             if(response.data.status === "Success"){
                 alert("password changed")
             }

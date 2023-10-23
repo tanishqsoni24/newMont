@@ -25,7 +25,7 @@ export default function RechargeRecord() {
 
       setRechargeRecord(response.data.data);
 
-      console.log(response.data.data);
+      //(response.data.data);
     };
     userRechargeRecords();
   }, []);

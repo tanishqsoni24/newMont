@@ -31,7 +31,7 @@ export default function AddBankCard() {
         try{
             const token = Cookies.get("session_id");
             const decoded = await jwt_decode(token);
-            console.log(decoded.phone_number)
+            //(decoded.phone_number)
 
             const response = await axios.post('http://139.59.32.207/accounts/add-bank-card/',{
                 phone_number: decoded.phone_number,
@@ -43,7 +43,7 @@ export default function AddBankCard() {
             }, { headers: { 'Content-Type': 'application/json' } });
 
             if(response.data.status === "Success"){
-                console.log('success')
+                //('success')
 
                 navigate('/bank-card')
             }
@@ -51,7 +51,7 @@ export default function AddBankCard() {
 
         }
         catch(err){
-            console.log(err)
+            //(err)
         }
     
   };

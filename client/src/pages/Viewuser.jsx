@@ -20,7 +20,7 @@ export default function Viewuser() {
       useEffect(() => {
         const withdrawDetail = async () => {
         const response = await axios.post('http://139.59.32.207/administ/withdrawal_detail/',{phone_number : userId.split("-")[1]} ,{"content": "application/json"});
-        console.log(response.data.data)
+        //(response.data.data)
         
         setDataArray(response.data.data)
         }
@@ -28,7 +28,7 @@ export default function Viewuser() {
     }, [])
     
       const handleApprove = (item) => {
-        console.log("approve" + item.User);
+        //("approve" + item.User);
         //approval logic
         closeModal();
       };

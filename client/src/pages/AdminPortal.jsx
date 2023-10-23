@@ -28,7 +28,6 @@ export default function AdminPortal() {
       "http://139.59.32.207/administ/distribute_income/",
       {},
       { headers: { "Content-Type": "application/json" } }
-
     );
     alert(response.data.message);
   };
@@ -48,13 +47,13 @@ export default function AdminPortal() {
     setModalIsOpen(false);
   };
 
-  const handelApproveRecharge =  (item) => {
-    console.log("approve" + item.user);
+  const handelApproveRecharge = (item) => {
+    //("approve" + item.user);
     //approval logic
     closeRechargeModal();
   };
   const handleApprove = (item) => {
-    console.log("approve" + item.user);
+    //("approve" + item.user);
     //approval logic
     closeModal();
   };
@@ -83,16 +82,15 @@ export default function AdminPortal() {
   };
 
   useEffect(() => {
-    
     const dataFetch = async (e) => {
-      console.log("hello")
+      //("hello");
       const token = Cookies.get("admin_session_id");
       const decoded = await jwt_decode(token);
-      const response = await axios.post("http://139.59.32.207/administ/"
-      ,{phone_number : decoded.phone_number} , {"content": "application/json"});
-
-
-       
+      const response = await axios.post(
+        "http://139.59.32.207/administ/",
+        { phone_number: decoded.phone_number },
+        { content: "application/json" }
+      );
 
       setDataArray(response.data.withdraw_records_details);
       setFakeRechargeRecords(response.data.recharge_records);
@@ -100,8 +98,8 @@ export default function AdminPortal() {
       setFakeProductData(response.data.products_details);
       setFakeOrders(response.data.order_details);
       setAdmin_wallet(response.data.admin_wallet);
-      console.log(response.data.orders_details);
-      console.log(response.data);
+      //(response.data.orders_details);
+      //(response.data);
     };
     dataFetch();
   }, []);
@@ -117,10 +115,8 @@ export default function AdminPortal() {
       Status: "Paid",
       Date: "2023-10-09",
       RemainingBalance: "$2510",
-    }
+    },
   ]);
-
-  
 
   const [fakeUserData, setFakeUserData] = useState([
     {
@@ -150,7 +146,7 @@ export default function AdminPortal() {
       Accountno: "1234567890",
       ifsc: "ABCD1234567",
       name: "John Doe",
-    }
+    },
     // Add more fake data here as needed
   ]);
   const [fakeOrders, setFakeOrders] = useState([
@@ -160,9 +156,8 @@ export default function AdminPortal() {
       product: "Product 1",
       amount: "$100",
       date_of_purchase: "2023-10-09",
-
     },
-  ])
+  ]);
   const [fakeProductData, setFakeProductData] = useState([
     {
       Sno: 1,
@@ -344,13 +339,17 @@ export default function AdminPortal() {
                     </button>
                   </td>
                   <td className="px-6 py-4">₹{item.amount}</td>
-                  <td className={`px-6 py-4 ${
+                  <td
+                    className={`px-6 py-4 ${
                       item.status
                         ? "text-green-600 dark:text-green-400"
                         : "text-red-600 dark:text-red-400"
-                    } whitespace-nowrap`}>{item.status? "Approved" :"Pending"}</td>
+                    } whitespace-nowrap`}
+                  >
+                    {item.status ? "Approved" : "Pending"}
+                  </td>
                   <td className="px-6 py-4">{item.date}</td>
-                  
+
                   <td className="px-6 py-4">{item.bank_card}</td>
                   <td className="px-6 py-4">{item.ifsc_code}</td>
                   <td className="px-6 py-4">{item.account_holder_name}</td>
@@ -387,12 +386,7 @@ export default function AdminPortal() {
               onRequestClose={closeRechargeModal}
               onApprove={handelApproveRecharge}
             />
-            
           )}
-
-          
-
-
         </div>
       </div>
       <div
@@ -432,13 +426,12 @@ export default function AdminPortal() {
                 <th scope="col" className="px-6 py-3">
                   Actions
                 </th>
-                
               </tr>
             </thead>
             <tbody>
               {fakeRechargeRecords.map((record, index) => (
                 <tr
-                  key={index+1}
+                  key={index + 1}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
                   <th
@@ -458,7 +451,7 @@ export default function AdminPortal() {
                     </button>
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  ₹{record.amount}
+                    ₹{record.amount}
                   </td>
                   <td
                     className={`px-6 py-4 ${
@@ -467,7 +460,7 @@ export default function AdminPortal() {
                         : "text-red-600 dark:text-red-400"
                     } whitespace-nowrap`}
                   >
-                    {record.status? "Approved" :"Pending"} 
+                    {record.status ? "Approved" : "Pending"}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {record.date}
@@ -559,11 +552,10 @@ export default function AdminPortal() {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {index+1}
+                    {index + 1}
                   </th>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                      {user.name}
-                    
+                    {user.name}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {user.phone_number}
@@ -572,29 +564,29 @@ export default function AdminPortal() {
                     {user.invite_code}
                   </td>
                   <td className="px-6 py-4 text-green-600 whitespace-nowrap dark:text-white">
-                    {user.is_verified? "Yes" : "No"}
+                    {user.is_verified ? "Yes" : "No"}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {user.start_time}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {user.recommended_by}
-                    {user.recommended_by? user.recommended_by : "None"}
+                    {user.recommended_by ? user.recommended_by : "None"}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {user.vip_level}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  ₹{user.wallet}
+                    ₹{user.wallet}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  ₹{user.recharge_amount}
+                    ₹{user.recharge_amount}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  ₹{user.income}
+                    ₹{user.income}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.is_admin? "Yes" : "No"}
+                    {user.is_admin ? "Yes" : "No"}
                   </td>
                 </tr>
               ))}
@@ -631,106 +623,106 @@ export default function AdminPortal() {
                 <th scope="col" className="px-6 py-3">
                   Price
                 </th>
-                
               </tr>
             </thead>
             <tbody>
               {fakeProductData.map((product, index) => (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  {index+1}
-                </th>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  {product.name}
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                ₹{product.price}
-                </td>
-              </tr>
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {index + 1}
+                  </th>
+                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    {product.name}
+                  </td>
+                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    ₹{product.price}
+                  </td>
+                </tr>
               ))}
             </tbody>
           </table>
         </div>
 
         <div
-        id="products"
-        style={{ marginTop: "8rem", marginBottom: "7rem" }}
-        className="container flex flex-col mx-auto justify-center item-center"
-      >
-        <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
-          <div className="withdrawals flex flex-col item-center justify-center">
-            <h2
-              id="users"
-              className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"
-            >
-              Order Details
-            </h2>
+          id="products"
+          style={{ marginTop: "8rem", marginBottom: "7rem" }}
+          className="container flex flex-col mx-auto justify-center item-center"
+        >
+          <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
+            <div className="withdrawals flex flex-col item-center justify-center">
+              <h2
+                id="users"
+                className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"
+              >
+                Order Details
+              </h2>
+            </div>
+          </div>
+
+          <div className="relative overflow-x-auto mx-2 my-4">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    Sno.
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    User
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Product
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Amount
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Date_of_order
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {fakeOrders.map((orders, index) => (
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {index + 1}
+                    </th>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      {orders.user}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      {orders.product}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      ₹{orders.amount}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      {orders.date_purchase}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-
-        <div className="relative overflow-x-auto mx-2 my-4">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  Sno.
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  User
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Product
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Amount
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Date_of_order
-                </th>
-                
-              </tr>
-            </thead>
-            <tbody>
-              {fakeOrders.map((orders, index) =>  (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  {index+1}
-                </th>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                  {orders.user}
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                {orders.product}
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                ₹{orders.amount}
-                </td>
-                <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                {orders.date_purchase}
-                </td>
-
-              </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="flex mb-5 justify-center">
+          <p className="text-2xl font-semibold text-gray-900 dark:text-white">
+            Admin Wallet Balance : ₹{admin_wallet}
+          </p>
         </div>
-      </div>
-      <div className="flex mb-5 justify-center">
-        <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-          Admin Wallet Balance : ₹{admin_wallet}
-        </p>
-      </div>
         <div className="flex justify-center">
-          <button onClick={handelDistributeIncome} className="bg-[#0E9F6E] hover:bg-[#03543F] text-white font-semibold py-2 px-4 rounded-full">
+          <button
+            onClick={handelDistributeIncome}
+            className="bg-[#0E9F6E] hover:bg-[#03543F] text-white font-semibold py-2 px-4 rounded-full"
+          >
             Distribute Income
           </button>
-          </div>
+        </div>
       </div>
     </>
   );
