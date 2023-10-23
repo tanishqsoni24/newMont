@@ -84,7 +84,7 @@ export default function Team() {
             <p>Team Size</p>
           </div>
         </div>
-        <h2 className="mb-2 mx-1 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
+        <h2 className="mb-2 mx-3 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
           Invitation Code
         </h2>
         <div className="border  bg-white mx-3 py-4 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -111,13 +111,13 @@ export default function Team() {
             {copy}
           </button>
         </div>
-        <h2 className="mb-2 mx-1 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
+        <h2 className="mb-2 mx-3 text-2xl font-semibold tracking-tight text-gray-900 my-5 dark:text-white">
           Team Members
         </h2>
 
-        <div className="relative  bg-white overflow-x-auto mx-1">
+        <div className="relative  bg-white overflow-x-auto rounded-xl mb-11 mx-1">
           {level_1.length > 0 ? (
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <table className="w-full text-sm text-left  text-gray-500 dark:text-gray-400">
               <tbody>
                 {level_1.length > 0 &&
                   level_1.map((member, index) => {
