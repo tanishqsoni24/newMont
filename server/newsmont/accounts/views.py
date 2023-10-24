@@ -278,13 +278,11 @@ def recharge(request):
         user_object = User.objects.filter(username=phone_number).first()
         if user_object:
             try:
-            
                 admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
                 if not admin_user:
                     return JsonResponse({'status': 'Error', 'message': 'Admin not found'})
             except Exception as e:
-                print(e)
-                # return JsonResponse({'status': 'Error', 'message': str(e)})
+                return JsonResponse({'status': 'Error', 'message': str(e)})
 
             user_profile_object = Profile.objects.filter(user=user_object).first()
             if not user_profile_object:

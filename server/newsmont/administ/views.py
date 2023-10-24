@@ -367,6 +367,15 @@ def approve_recharge_record(request):
             admin_wallet.amount = admin_wallet.amount + recharge_record.amount
             admin_wallet.save()
 
+            # update Recommend User Wallet by 25% of recharge amount if its first recharge
+            if recharge_record.user.recharge_amount == 0:
+                recommend_user = recharge_record.user.recommended_by
+                if recommend_user:
+                    recommend_user.wallet = recommend_user.wallet + (recharge_record.amount * 0.25)
+                    recommend_user.save()
+                    income_object = Income.objects.create(user=recommend_user.user, amount=recharge_record.amount * 0.25, income_type="Referral Rehcharge Income", income_date=timezone.now())
+                    income_object.save()
+
             # update user wallet
             user = recharge_record.user
             user.recharge_amount = user.recharge_amount + recharge_record.amount
@@ -380,33 +389,36 @@ def approve_recharge_record(request):
 @csrf_exempt
 def generate_income(request):
     if request.method == "POST":
-        purchased_products = Orders.objects.all()
-        for product in purchased_products:
-            user_profile_object = product.user
-            print(product.date_purchase + timezone.timedelta(days=product.product.days))
-            print(product.date_purchase) 
-            print(timezone.timedelta(days=product.product.days))
-            print(timezone.now())
-            if product.date_purchase + timezone.timedelta(days=product.product.days) > timezone.now():
-                print("here")
-                if product.product.category.name == "exclusive":
-                    # Add Daily Income to wallet
-                    user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
-                    user_profile_object.save()
-                    income_object = Income.objects.create(user=user_profile_object.user, amount=product.product.daily_income, income_type="Exclusive Product", income_date=timezone.now())
-                    income_object.save()
-                elif product.product.category.name == "upgrade":
-                    # Add Daily Income to wallet
-                    user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
-                    user_profile_object.save()
-                    income_object = Income.objects.create(user=user_profile_object.user, amount=product.product.daily_income, income_type="Upgrade Product", income_date=timezone.now())
-                    income_object.save()
-                elif product.product.category.name == "gift":
-                    # Add Daily Income to wallet
-                    user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
-                    user_profile_object.save()
-                    income_object = Income.objects.create(user=user_profile_object.user, amount=product.product.daily_income, income_type="Gift Product", income_date=timezone.now())
-                    income_object.save()
-            return JsonResponse({'status': 'Success', 'message': 'Income Generated successfully'})
-        return JsonResponse({'status': 'Error', 'message': 'No Orders Yet to Generate Income'})
+        # Check if no income is generated today then only generate the income 
+        income = Income.objects.filter(income_date__date=timezone.now().date()).first()
+        if not income:
+            purchased_products = Orders.objects.all()
+            for product in purchased_products:
+                user_profile_object = product.user
+                print(product.date_purchase + timezone.timedelta(days=product.product.days))
+                print(product.date_purchase) 
+                print(timezone.timedelta(days=product.product.days))
+                print(timezone.now())
+                if product.date_purchase + timezone.timedelta(days=product.product.days) > timezone.now():
+                    print("here")
+                    if product.product.category.name == "exclusive":
+                        # Add Daily Income to wallet
+                        user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
+                        user_profile_object.save()
+                        income_object = Income.objects.create(user=user_profile_object.user, amount=product.product.daily_income, income_type="Exclusive Product", income_date=timezone.now())
+                        income_object.save()
+                    elif product.product.category.name == "upgrade":
+                        # Add Daily Income to wallet
+                        user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
+                        user_profile_object.save()
+                        income_object = Income.objects.create(user=user_profile_object.user, amount=product.product.daily_income, income_type="Upgrade Product", income_date=timezone.now())
+                        income_object.save()
+                    elif product.product.category.name == "gift":
+                        # Add Daily Income to wallet
+                        user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
+                        user_profile_object.save()
+                        income_object = Income.objects.create(user=user_profile_object.user, amount=product.product.daily_income, income_type="Gift Product", income_date=timezone.now())
+                        income_object.save()
+                return JsonResponse({'status': 'Success', 'message': 'Income Generated successfully'})
+        return JsonResponse({'status': 'Error', 'message': 'No Orders Yet to Generate Income Or Income Already Generated Today'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})

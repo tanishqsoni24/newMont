@@ -15,6 +15,7 @@ export default function AddBankCard() {
         card_number: '',
         ifsc_code: ''
     })
+    const [bankCardWarning, setBankCardWarning] = useState("")
     const handleChange = text => e => {
         setBankCard({...bankCard, [text]: e.target.value})
     }
@@ -29,6 +30,11 @@ export default function AddBankCard() {
       }, []);
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        if (bankCard.card_holder_name.trim() === "" || bankCard.bank_name.trim() === "" || bankCard.card_number.trim() === "" || bankCard.ifsc_code.trim() === "") {
+            setBankCardWarning("Empty Fields Are Not Allowed!")
+            return;
+        }
         try{
             const token = Cookies.get("session_id");
             const decoded = await jwt_decode(token);
@@ -135,6 +141,7 @@ export default function AddBankCard() {
                   required=""
                 />
               </div>
+              {{bankCardWarning} && <p className="text-sm text-red-700">{bankCardWarning}</p>}
               <button
                 type="submit"
                 onClick={handleSubmit}
