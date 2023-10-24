@@ -30,6 +30,23 @@ def admin_login(request):
         return JsonResponse({"status": "Failed", "message": "Invalid Phone Number"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
 
+
+@csrf_exempt
+def add_agent(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone = data.get("phone_number")
+        password = data.get("password")
+        first_name = data.get("first_name")
+        last_name = data.get("last_name")
+        user = User.objects.create(username=phone, first_name=first_name, last_name=last_name)
+        user.set_password(password)
+        user.save()
+        agent = Profile.objects.create(user=user, phone_number=phone, is_agent=True)
+        agent.save()
+        return JsonResponse({"status": "Success", "message": "Agent Added Successfully"})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
+
 @csrf_exempt
 def admin_index(request):
     if request.method == "POST":
@@ -66,6 +83,7 @@ def admin_index(request):
                         "status": record.status,
                         "date": record.date.strftime("%B-%d-%Y") + " at " + record.date.strftime("%I:%M %p"),
                         "phone_number": record.user.phone_number,
+                        "is_rejected": record.is_rejected
                     })
                 for record in withdraw_records:
                     withdraw_records_details.append({
@@ -78,6 +96,7 @@ def admin_index(request):
                         "ifsc_code": record.bank_card.ifsc_code,
                         "account_holder_name": record.bank_card.card_holder_name,
                         "phone_number": record.user.phone_number,
+                        "is_rejected": record.is_rejected
                     })
                 for user in users:
                     users_details.append({
@@ -332,6 +351,14 @@ def approve_withdraw_records(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
         uid = data.get("withdrawal_id")
+        is_rejected = data.get("is_rejected")
+        if(is_rejected==True):
+            withdraw_record = Withdraw_Record.objects.filter(uid=uid).first()
+            if withdraw_record:
+                withdraw_record.is_rejected = True
+                withdraw_record.save()
+                return JsonResponse({"status": "Success", "message": "Withdraw Rejected"})
+            return JsonResponse({"status": "Failed", "message": "Invalid Withdraw Record"})
         admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
         admin_wallet = Admin_wallet.objects.filter(user=admin_user).first()
         withdraw_record = Withdraw_Record.objects.filter(uid=uid).first()
@@ -356,6 +383,14 @@ def approve_recharge_record(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
         uid = data.get("recharge_id")
+        is_rejected = data.get("is_rejected")
+        if(is_rejected==True): 
+            recharge_record = Recharge_Record.objects.filter(uid=uid).first()
+            if recharge_record:
+                recharge_record.is_rejected = True
+                recharge_record.save()
+                return JsonResponse({"status": "Success", "message": "Recharge Rejected"})
+            return JsonResponse({"status": "Failed", "message": "Invalid Recharge Record"})
         recharge_record = Recharge_Record.objects.filter(uid=uid).first()
         if recharge_record:
             recharge_record.status = True
