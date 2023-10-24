@@ -567,7 +567,7 @@ export default function AdminPortal() {
                         : "text-red-600 dark:text-red-400"
                     } whitespace-nowrap`}
                   >
-                    {record.status ? "Approved" : "Pending"}
+                    {record.status ? "Approved" : (record.is_rejected ? "Rejected" : "Pending")}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {record.date}
