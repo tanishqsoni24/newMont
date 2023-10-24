@@ -155,7 +155,20 @@ def show_overall_details(request):
         total_orders = Orders.objects.all().count()
         total_approved_withdraw_records = Withdraw_Record.objects.filter(status=True).count()
         total_approved_recharge_records = Recharge_Record.objects.filter(status=True).count()
-        return JsonResponse({"status": "Success", "message": "logged in successfully and data is sent!", "total_users": total_users, "total_recharge_records_today": total_recharge_records_today, "total_withdraw_records_today": total_withdraw_records_today, "total_pending_withdraw_records": total_pending_withdraw_records, "total_pending_recharge_records": total_pending_recharge_records, "total_products": total_products, "total_orders_today": total_orders_today, "total_orders": total_orders, "total_approved_withdraw_records": total_approved_withdraw_records, "total_approved_recharge_records": total_approved_recharge_records})
+        data = {
+            "total_users": total_users,
+            "total_recharge_records_today": total_recharge_records_today,
+            "total_withdraw_records_today": total_withdraw_records_today,
+            "total_pending_withdraw_records": total_pending_withdraw_records,
+            "total_pending_recharge_records": total_pending_recharge_records,
+            "total_products": total_products,
+            "total_orders_today": total_orders_today,
+            "total_orders": total_orders,
+            "total_approved_withdraw_records": total_approved_withdraw_records,
+            "total_approved_recharge_records": total_approved_recharge_records
+        }
+        return JsonResponse({"status": "Success", "message": "logged in successfully and data is sent!", 
+                             "data":data})
     return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
 
 @csrf_exempt

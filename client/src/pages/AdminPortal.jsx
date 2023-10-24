@@ -103,9 +103,13 @@ export default function AdminPortal() {
       setWithdrawRecords(response.data.withdraw_records_details);
       //(response.data.orders_details);
       //(response.data);
+      const overalldata = await axios.post("http://139.59.32.207/administ/all_detail/", {}, { content: "application/json" });
+
     };
     dataFetch();
   }, []);
+
+  const [overallData, setOverallData] = useState();
 
   const [userViaMobile, setUserViaMobile] = useState("");
   const userViaMobileHandler = (e) => {
@@ -287,8 +291,9 @@ export default function AdminPortal() {
             className="block w-32 py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-400 focus:ring focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
           >
             <option value="">All</option>
-            <option value="Paid">Paid</option>
-            <option value="Unpaid">Unpaid</option>
+            <option value="Approved">Approved</option>
+            <option value="Pending">Pending</option>
+            <option value="Rejected">Rejected</option>
           </select>
         </div>
 
