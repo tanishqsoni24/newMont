@@ -393,7 +393,7 @@ export default function AdminPortal() {
                         : "text-red-600 dark:text-red-400"
                     } whitespace-nowrap`}
                   >
-                    {item.status ? "Approved" : "Pending"}
+                    {item.status ? "Approved" : (item.is_rejected ? "Rejected" : "Pending")}
                   </td>
                   <td className="px-6 py-4">{item.date}</td>
 

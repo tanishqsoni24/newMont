@@ -11,4 +11,5 @@ urlpatterns = [
     path("withdrawal_detail/", views.show_withdrawl_requests, name="withdraw"),
     path("recharge_detail/", views.show_recharge_requests, name="recharge"),
     path("all_detail/",views.show_overall_details,name="all_detail"),
+    path("add_agent/", views.add_agent, name="add_agent"),
 ]
