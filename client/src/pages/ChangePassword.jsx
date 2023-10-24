@@ -2,10 +2,13 @@ import axios from 'axios'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Cookies from "js-cookie";
+import Spinner from "../components/general/Spinner";
 import jwt_decode from 'jwt-decode'
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 
 export default function ChangePassword() {
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [changePassword, setChangePassword] = React.useState({
         oldPassword: "",
         newPassword: "",
@@ -29,6 +32,7 @@ export default function ChangePassword() {
       }, []);
     const handleSubmit = async (e) => {  
         e.preventDefault()
+        setLoading(true);
         const token = Cookies.get("session_id");
         const decoded = jwt_decode(token);
         const phone_number = decoded.phone_number;
@@ -40,11 +44,12 @@ export default function ChangePassword() {
             }, {"content": "application/json"})
             //(response)
             if(response.data.status === "Success"){
-                alert("password changed")
+                setErrorMessage("password changed")
             }
         }else{
-            alert("password not match")
+            setErrorMessage("password not match")
         }
+        setLoading(false);
     }
 
   return (
@@ -82,10 +87,14 @@ export default function ChangePassword() {
                   </div>
                   <button type="submit"
                   onClick={handleSubmit}
-                  className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">change Password</button>
+                  className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Change Password</button>
               </form>
+              <p className="text-sm text-red-500 text-center dark:text-red-400">
+                {errorMessage}
+              </p>
           </div>
       </div>
+      {loading && <Spinner />}
   </div>
 </section>
   )
