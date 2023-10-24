@@ -10,4 +10,5 @@ urlpatterns = [
     path("distribute_income/", views.generate_income, name="distribute_income"),
     path("withdrawal_detail/", views.show_withdrawl_requests, name="withdraw"),
     path("recharge_detail/", views.show_recharge_requests, name="recharge"),
+    path("all_detail/",views.show_overall_details,name="all_detail"),
 ]

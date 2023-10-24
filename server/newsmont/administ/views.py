@@ -53,6 +53,7 @@ def admin_index(request):
                     order_details.append({
                         "id": order.uid,
                         "user": order.user.user.first_name,
+                        "phone_number": order.user.phone_number,
                         "product": order.product.name,
                         "amount": order.amount,
                         "date_purchase": order.date_purchase.strftime("%B-%d-%Y") + " at " + order.date_purchase.strftime("%I:%M %p"),
@@ -91,7 +92,8 @@ def admin_index(request):
                         "wallet": user.wallet,
                         "recharge_amount": user.recharge_amount,
                         "income": user.income,
-                        "is_admin": user.is_admin
+                        "is_admin": user.is_admin,
+                        "is_agent": user.is_agent
                     })
                 for product in products:
                     products_details.append({
@@ -110,7 +112,33 @@ def admin_index(request):
             return JsonResponse({"status": "Failed", "message": "You are not an admin"})
         return JsonResponse({"status": "Failed", "message": "Invalid Phone Number"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
-    
+
+
+@csrf_exempt
+def show_overall_details(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        total_users = Profile.objects.all().count()
+        total_recharge_records_today = 0
+        total_recharge_records = Recharge_Record.objects.all()
+        for record in total_recharge_records:
+            if record.date.strftime("%B-%d-%Y") == timezone.now().strftime("%B-%d-%Y"):
+                total_recharge_records_today += record.amount
+        total_withdraw_records_today = 0
+        total_withdraw_records = Withdraw_Record.objects.all()
+        for record in total_withdraw_records:
+            if record.date.strftime("%B-%d-%Y") == timezone.now().strftime("%B-%d-%Y"):
+                total_withdraw_records_today += record.amount
+        total_pending_withdraw_records = Withdraw_Record.objects.filter(status=False).count()
+        total_pending_recharge_records = Recharge_Record.objects.filter(status=False).count()
+        total_products = Product.objects.all().count()
+        total_orders_today = Orders.objects.filter(date_purchase__date=timezone.now().date()).count()
+        total_orders = Orders.objects.all().count()
+        total_approved_withdraw_records = Withdraw_Record.objects.filter(status=True).count()
+        total_approved_recharge_records = Recharge_Record.objects.filter(status=True).count()
+        return JsonResponse({"status": "Success", "message": "logged in successfully and data is sent!", "total_users": total_users, "total_recharge_records_today": total_recharge_records_today, "total_withdraw_records_today": total_withdraw_records_today, "total_pending_withdraw_records": total_pending_withdraw_records, "total_pending_recharge_records": total_pending_recharge_records, "total_products": total_products, "total_orders_today": total_orders_today, "total_orders": total_orders, "total_approved_withdraw_records": total_approved_withdraw_records, "total_approved_recharge_records": total_approved_recharge_records})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
+
 @csrf_exempt
 def show_withdrawl_requests(request):
     if request.method == "POST":

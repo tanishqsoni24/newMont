@@ -52,6 +52,7 @@ class Withdraw_Record(BaseModel):
     date = models.DateTimeField(blank=True, null=True)
     upi_ref_number = models.CharField(max_length=15, blank=True, null=True)
     paid_date = models.DateTimeField(blank=True, null=True)
+    is_rejected = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.user) + " - " + str(self.amount)
@@ -67,6 +68,7 @@ class Recharge_Record(BaseModel):
     status = models.BooleanField(default=False)
     date = models.DateTimeField(blank=True, null=True)
     user_recharge_payment_id = models.CharField(max_length=15, blank=True, null=True)
+    is_rejected = models.BooleanField(default=False)
 
     def __str__(self):
         return "Rs. " + str(self.amount) + " - " + str(self.user.user.first_name)
