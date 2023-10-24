@@ -9,6 +9,7 @@ import sign from "jwt-encode";
 export default function Profile() {
   const [withdraw, setWithdraw] = useState(0);
   const [withdrawwarning, setWithdrawwarning] = useState("");
+  const [rechargewarning, setRechargewarning] = useState("");
   const [user, setUser] = useState({
     phone_number: "",
     name: "",
@@ -23,6 +24,7 @@ export default function Profile() {
   };
   const [isWithdrawPopupOpen, setIsWithdrawPopupOpen] = useState(false);
   const openWithdrawPopup = () => {
+    setWithdrawwarning("");
     setIsWithdrawPopupOpen(true);
   };
   const closeWithdrawPopup = () => {
@@ -30,6 +32,7 @@ export default function Profile() {
   };
 
   const closePopup = () => {
+    setRechargewarning("");
     setIsRechargePopupOpen(false);
   };
   const [bankCardPopup, setBankCardPopup] = useState(false);
@@ -135,6 +138,10 @@ export default function Profile() {
 
   const handelRecharge = async (e) => {
     e.preventDefault();
+    if (recharge === 0 || recharge === "") {
+      setRechargewarning("Recharge amount is required.")
+      return;
+    }
     try {
       const response = await axios.post(
         "http://139.59.32.207/accounts/recharge/",
@@ -458,6 +465,7 @@ export default function Profile() {
                         required=""
                       />
                     </div>
+                      <p className="text-sm text-red-700">{rechargewarning}</p>
                     <button
                       type="submit"
                       onClick={handelRecharge}
