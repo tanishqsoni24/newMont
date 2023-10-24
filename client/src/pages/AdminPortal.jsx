@@ -98,11 +98,22 @@ export default function AdminPortal() {
       setFakeProductData(response.data.products_details);
       setFakeOrders(response.data.order_details);
       setAdmin_wallet(response.data.admin_wallet);
+      setUserData(response.data.users_details);
+      setRechargeRecords(response.data.recharge_records);
+      setWithdrawRecords(response.data.withdraw_records_details);
       //(response.data.orders_details);
       //(response.data);
     };
     dataFetch();
   }, []);
+
+  const [userViaMobile, setUserViaMobile] = useState("");
+  const userViaMobileHandler = (e) => {
+
+  }
+  const [userData, setUserData] = useState([]);
+  const [rechargeRecords, setRechargeRecords] = useState([]);
+  const [withdrawRecords, setWithdrawRecords] = useState([]);
 
   const [admin_wallet, setAdmin_wallet] = useState("0");
   const [rechargeModalIsOpen, setrechargeModalIsOpen] = useState(false);
@@ -281,6 +292,42 @@ export default function AdminPortal() {
           </select>
         </div>
 
+        <div style={{"width": "80%"}} className="my-4 mx-auto">
+
+        <form>   
+    <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div className="relative">
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input type="number"
+        onChange={(e) => {
+          setUserViaMobile(e.target.value);
+        }}
+        value={userViaMobile}
+        id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required/>
+        <button onClick={async (e) => {
+          // search numer in fakeUserData
+          e.preventDefault();
+          const user = withdrawRecords.filter(
+            (item) => item.phone_number === userViaMobile
+          )
+          if(user) {
+            // from fake user data remove all users except this user
+            setDataArray(user);
+          } else {
+            alert("User not found");
+          }
+        }}
+        
+        className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    </div>
+</form>
+</div>
+
+
         <div className="relative overflow-x-auto mx-2">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs dark:text-[#03543F] uppercase bg-gray-50 dark:bg-gray-700 text-[#03543F]">
@@ -404,6 +451,66 @@ export default function AdminPortal() {
           </div>
         </div>
 
+        <div style={{ width: "80%" }} className="mx-auto my-4">
+          <form>
+            <label
+              for="default-search"
+              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            >
+              Search
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="number"
+                onChange={(e) => {
+                  setUserViaMobile(e.target.value);
+                }}
+                value={userViaMobile}
+                id="default-search"
+                className="block w-full p-4 pl-10 text-sm text-gray-900 placeholder-gray-500 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-400 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-gray-900 dark:focus:border-gray-700"
+                placeholder="Search by mobile number"
+                required
+              />
+              <button
+                onClick={async (e) => {
+                  // search numer in fakeRechargeRecords
+                  e.preventDefault();
+                  const user = rechargeRecords.filter(
+                    (item) => item.phone_number === userViaMobile
+                  );
+                  if (user) {
+                    // from fake user data remove all users except this user
+                    setFakeRechargeRecords(user);
+                  } else {
+                    alert("User not found");
+                  }
+                }}
+                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Search
+              </button>
+            </div>
+          </form>
+        </div>
+
+
         <div className="relative overflow-x-auto mx-2 my-4">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -498,7 +605,41 @@ export default function AdminPortal() {
               User Details
             </h2>
           </div>
+
         </div>
+
+        <div style={{"width": "80%"}} className="my-4 mx-auto">
+
+        <form>   
+    <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div className="relative">
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input type="number"
+        onChange={(e) => {
+          setUserViaMobile(e.target.value);
+        }}
+        value={userViaMobile}
+        id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required/>
+        <button onClick={async (e) => {
+          // search numer in fakeUserData
+          e.preventDefault();
+          const user = userData.find((user) => user.phone_number === userViaMobile);
+          if(user) {
+            // from fake user data remove all users except this user
+            setFakeUserData([user]);
+          } else {
+            alert("User not found");
+          }
+        }}
+        
+        className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    </div>
+</form>
+</div>
 
         <div className="relative overflow-x-auto mx-2 my-4">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -540,10 +681,13 @@ export default function AdminPortal() {
                 <th scope="col" className="px-6 py-3">
                   Is Admin
                 </th>
+                <th scope="col" className="px-6 py-3">
+                  Is Agent
+                </th>
               </tr>
             </thead>
             <tbody>
-              {fakeUserData.map((user, index) => (
+              {fakeUserData.length>0 && fakeUserData.map((user, index) => (
                 <tr
                   key={index}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -586,6 +730,9 @@ export default function AdminPortal() {
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {user.is_admin ? "Yes" : "No"}
+                  </td>
+                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    {user.is_agent ? "Yes" : "No"}
                   </td>
                 </tr>
               ))}
@@ -661,6 +808,39 @@ export default function AdminPortal() {
             </div>
           </div>
 
+          <div style={{"width": "80%"}} className="my-4 mx-auto">
+
+        <form>   
+    <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div className="relative">
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input type="number"
+        onChange={(e) => {
+          setUserViaMobile(e.target.value);
+        }}
+        value={userViaMobile}
+        id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required/>
+        <button onClick={async (e) => {
+          // search numer in fakeUserData
+          e.preventDefault();
+          const user = fakeOrders.filter((user) => user.phone_number === userViaMobile);
+          if(user) {
+            // from fake user data remove all users except this user
+            setFakeOrders(user);
+          } else {
+            alert("User not found");
+          }
+        }}
+        
+        className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    </div>
+</form>
+</div>
+
           <div className="relative overflow-x-auto mx-2 my-4">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -715,10 +895,8 @@ export default function AdminPortal() {
           </p>
         </div>
         <div className="flex justify-center">
-          <button
-            onClick={handelDistributeIncome}
-            className="bg-[#0E9F6E] hover:bg-[#03543F] text-white font-semibold py-2 px-4 rounded-full"
-          >
+          <button onClick={handelDistributeIncome}
+            className="bg-blue-900 hover:bg-[#03543F] text-white font-semibold py-2 px-4 rounded-full">
             Distribute Income
           </button>
         </div>

@@ -21,6 +21,7 @@ class Profile(BaseModel):
     recharge_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
     income = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
     is_admin = models.BooleanField(default=False)
+    is_agent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.first_name
