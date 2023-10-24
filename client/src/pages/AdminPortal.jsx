@@ -12,16 +12,39 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 
 export default function AdminPortal() {
+  const [agentName, setAgentName] = useState("");
+  const [agentNumber, setAgentNumber] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [sortByStatus, setSortByStatus] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isdashboard, setDashboard] = useState(true);
+  const [iswithdraw, setIsWithdraw] = useState(false);
+  const [isrecharge, setIsRecharge] = useState(false);
+  const [isreward, setIsReward] = useState(false);
+  const [isuser, setIsUser] = useState(false);
+  const [isproduct, setIsProduct] = useState(false);
+  const [isagent, setIsAgent] = useState(false);
+  const [isorder, setIsOrder] = useState(false);
+
   const navigate = useNavigate();
   const openModal = (item) => {
     setSelectedItem(item);
     setModalIsOpen(true);
   };
+  const handleAgentNameChange = (e) => {
+    setAgentName(e.target.value);
+  };
 
+  const handleAgentNumberChange = (e) => {
+    setAgentNumber(e.target.value);
+  };
+  const handleAgentSubmit = (e) => {
+    e.preventDefault();
+    // You can handle the form submission logic here
+    console.log("Agent Name:", agentName);
+    console.log("Agent Number:", agentNumber);
+  };
   const handelDistributeIncome = async (e) => {
     e.preventDefault();
     const response = await axios.post(
@@ -104,53 +127,31 @@ export default function AdminPortal() {
       console.log(response.data.recharge_records);
       //(response.data.orders_details);
       //(response.data);
-      const overalldata = await axios.post("http://139.59.32.207/administ/all_detail/", {}, { content: "application/json" });
+      const overalldata = await axios.post(
+        "http://139.59.32.207/administ/all_detail/",
+        {},
+        { content: "application/json" }
+      );
       setOverallData(overalldata.data.data);
-
     };
     dataFetch();
   }, []);
 
-
-
   const [overallData, setOverallData] = useState({
-
-    total_approved_recharge_records
-      :
-      2,
-    total_approved_withdraw_records
-      :
-      3,
-    total_orders
-      :
-      1,
-    total_orders_today
-      :
-      1,
-    total_pending_recharge_records
-      :
-      2,
-    total_pending_withdraw_records
-      :
-      0,
-    total_products
-      :
-      8,
-    total_recharge_records_today
-      :
-      "2000.00",
-    total_users
-      :
-      5,
-    total_withdraw_records_today
-      :
-      "942.00",
+    total_approved_recharge_records: 2,
+    total_approved_withdraw_records: 3,
+    total_orders: 1,
+    total_orders_today: 1,
+    total_pending_recharge_records: 2,
+    total_pending_withdraw_records: 0,
+    total_products: 8,
+    total_recharge_records_today: "2000.00",
+    total_users: 5,
+    total_withdraw_records_today: "942.00",
   });
 
   const [userViaMobile, setUserViaMobile] = useState("");
-  const userViaMobileHandler = (e) => {
-
-  }
+  const userViaMobileHandler = (e) => {};
   const [userData, setUserData] = useState([]);
   const [rechargeRecords, setRechargeRecords] = useState([]);
   const [withdrawRecords, setWithdrawRecords] = useState([]);
@@ -221,18 +222,18 @@ export default function AdminPortal() {
   return (
     <>
       <nav className="bg-white dark:bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
-        <div className="max-w-full flex flex-wrap items-center justify-between mx-auto p-4">
-          <Link to="/" className="flex items-center">
+        <div className="max-w-full flex flex-wrap mx-auto p-4">
+          <a href="/" className="flex items-center">
             <img src={logo} className="w-20 mr-2" alt="Flowbite Logo" />
-            <span className="self-center text-2xl col-p md:text-3xl font-bold whitespace-nowrap dark:text-[#0E9F6E]">
+            <span className="self-center text-2xl col-p md:text-3xl font-bold whitespace-nowrap dark:text-[#4f6cc5]">
               My Gold Malls
             </span>
-          </Link>
-          <div className="flex md:order-2">
+          </a>
+          <div className="flex md:order-2 ml-7">
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
-              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-md md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-300 dark:hover:bg-[#0E9F6E] dark:focus:ring-gray-100"
+              className="inline-flex items-center p-2 w-10 h-full justify-center text-sm text-gray-500 rounded-md md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-300 dark:hover:bg-[#4f6cc5] dark:focus:ring-gray-100"
               aria-controls="navbar-sticky"
               aria-expanded={isMenuOpen ? "true" : "false"}
               onClick={toggleMenu}
@@ -256,47 +257,164 @@ export default function AdminPortal() {
             </button>
           </div>
           <div
-            className={`items-center justify-between w-full ${isMenuOpen ? "block" : "hidden"
-              } md:flex md:w-auto md:order-1`}
+            className={`w-full h-screen md:h-9 bg-[#e0e8ff] fixed right-0 top-0 transition-transform ${
+              isMenuOpen ? "translate-x-0" : "translate-x-full"
+            } md:translate-x-0 md:w-auto md:order-1`}
             id="navbar-sticky"
           >
-            <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-white md:dark:bg-white dark:border-gray-700">
+            <ul className="flex flex-col p-4 bg-[#e0e8ff] md:p-0 mt-4 font-medium border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-white md:dark:bg-white dark:border-gray-700">
+              <li
+                onClick={() => {
+                  closeMenu();
+                  scrollToSection("products");
+                  setDashboard(true);
+                  setIsWithdraw(false);
+                  setIsRecharge(false);
+                  setIsReward(false);
+                  setIsUser(false);
+                  setIsProduct(false);
+                  setIsAgent(false);
+                  setIsOrder(false);
+                }}
+                className={`block py-2 pl-3 pr-4 cursor-pointer text-black rounded col-p text-lg hover:text-[#4f6cc5] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#4f6cc5] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
+              >
+                Dashboard
+              </li>
               <li
                 onClick={() => {
                   closeMenu();
                   scrollToSection("withdraw");
+                  setDashboard(false);
+                  setIsWithdraw(true);
+                  setIsRecharge(false);
+                  setIsReward(false);
+                  setIsUser(false);
+                  setIsProduct(false);
+                  setIsAgent(false);
+                  setIsOrder(false);
                 }}
-                className={`block py-2 pl-3 pr-4 text-black cursor-pointer rounded col-p text-lg hover:text-[#0E9F6E] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#0E9F6E] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
+                className={`block py-2 pl-3 pr-4 text-black cursor-pointer rounded col-p text-lg hover:text-[#4f6cc5] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#4f6cc5] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
               >
-                Withdraw Records
+                Withdraw Management
               </li>
               <li
                 onClick={() => {
                   closeMenu();
                   scrollToSection("recharge");
+                  setDashboard(false);
+                  setIsWithdraw(false);
+                  setIsRecharge(true);
+                  setIsReward(false);
+                  setIsUser(false);
+                  setIsProduct(false);
+                  setIsAgent(false);
+                  setIsOrder(false);
                 }}
-                className={`block  py-2 pl-3 pr-4 text-black cursor-pointer rounded col-p text-lg hover:text-[#0E9F6E] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#0E9F6E] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
+                className={`block py-2 pl-3 pr-4 text-black cursor-pointer rounded col-p text-lg hover:text-[#4f6cc5] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#4f6cc5] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
               >
-                Recharge Records
+                Recharge Management
               </li>
-
+              <li
+                onClick={() => {
+                  closeMenu();
+                  scrollToSection("recharge");
+                  setDashboard(false);
+                  setIsWithdraw(false);
+                  setIsRecharge(false);
+                  setIsReward(true);
+                  setIsUser(false);
+                  setIsProduct(false);
+                  setIsAgent(false);
+                  setIsOrder(false);
+                }}
+                className={`block py-2 pl-3 pr-4 text-black cursor-pointer rounded col-p text-lg hover:text-[#4f6cc5] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#4f6cc5] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
+              >
+                Reward Management
+              </li>
               <li
                 onClick={() => {
                   closeMenu();
                   scrollToSection("users");
+                  setDashboard(false);
+                  setIsWithdraw(false);
+                  setIsRecharge(false);
+                  setIsReward(false);
+                  setIsUser(true);
+                  setIsProduct(false);
+                  setIsAgent(false);
+                  setIsOrder(false);
                 }}
-                className={`block py-2 pl-3 pr-4 cursor-pointer text-black rounded col-p text-lg hover:text-[#0E9F6E] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#0E9F6E] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
+                className={`block py-2 pl-3 pr-4 cursor-pointer text-black rounded col-p text-lg hover:text-[#4f6cc5] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#4f6cc5] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
               >
-                Users
+                User Management
               </li>
               <li
                 onClick={() => {
                   closeMenu();
                   scrollToSection("products");
+                  setDashboard(false);
+                  setIsWithdraw(false);
+                  setIsRecharge(false);
+                  setIsReward(false);
+                  setIsUser(false);
+                  setIsProduct(true);
+                  setIsAgent(false);
+                  setIsOrder(false);
                 }}
-                className={`block py-2 pl-3 pr-4 cursor-pointer text-black rounded col-p text-lg hover:text-[#0E9F6E] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#0E9F6E] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
+                className={`block py-2 pl-3 pr-4 cursor-pointer text-black rounded col-p text-lg hover:text-[#4f6cc5] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#4f6cc5] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
               >
-                Products
+                Manage Products
+              </li>
+              <li
+                onClick={() => {
+                  closeMenu();
+                  scrollToSection("products");
+                  setDashboard(false);
+                  setIsWithdraw(false);
+                  setIsRecharge(false);
+                  setIsReward(false);
+                  setIsUser(false);
+                  setIsProduct(false);
+                  setIsAgent(false);
+                  setIsOrder(true);
+                }}
+                className={`block py-2 pl-3 pr-4 cursor-pointer text-black rounded col-p text-lg hover:text-[#4f6cc5] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#4f6cc5] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
+              >
+                Manage Order
+              </li>
+              <li
+                onClick={() => {
+                  closeMenu();
+                  scrollToSection("products");
+                  setDashboard(false);
+                  setIsWithdraw(false);
+                  setIsRecharge(false);
+                  setIsReward(false);
+                  setIsUser(false);
+                  setIsProduct(false);
+                  setIsAgent(true);
+                  setIsOrder(false);
+                }}
+                className={`block py-2 pl-3 pr-4 cursor-pointer text-black rounded col-p text-lg hover:text-[#4f6cc5] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#4f6cc5] dark:text-black dark:hover-bg-transparent dark:hover:text-white md:dark:hover-bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out `}
+              >
+                Manage Administrator
+                <ul className="ml-2 mt-2 space-y-2">
+                  <li
+                    onClick={() => {
+                      closeMenu();
+                      setDashboard(false);
+                      setIsWithdraw(false);
+                      setIsRecharge(false);
+                      setIsReward(false);
+                      setIsUser(false);
+                      setIsProduct(false);
+                      setIsAgent(true);
+                    }}
+                    className="cursor-pointer text-sm text-gray-700 hover:text-[#4f6cc5] hover:font-medium"
+                  >
+                    -Add Agent
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>
@@ -305,12 +423,14 @@ export default function AdminPortal() {
       <div
         style={{ marginTop: "7rem" }}
         id="withdraw"
-        className="container flex flex-col mx-auto justify-center item-center"
+        className={`container flex flex-col mx-auto justify-center items-center ${
+          iswithdraw ? "block" : "hidden"
+        }`}
       >
         <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
           <div className="withdrawals flex flex-col item-center justify-center">
-            <h2 className="mb-2 text-[#014737] text-4xl font-semibold tracking-tight  dark:text-[#03543F]">
-              Withdraw Records
+            <h2 className="mb-2 text-[#34358f] text-2xl font-semibold tracking-tight  dark:text-[#03543F]">
+              Withdraw Management
             </h2>
           </div>
         </div>
@@ -332,41 +452,64 @@ export default function AdminPortal() {
           </select>
         </div>
 
-        <div style={{ "width": "80%" }} className="my-4 mx-auto">
-
+        <div style={{ width: "80%" }} className="my-4 mx-auto">
           <form>
-            <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <label
+              for="default-search"
+              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            >
+              Search
+            </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                <svg
+                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
                 </svg>
               </div>
-              <input type="number"
+              <input
+                type="number"
                 onChange={(e) => {
                   setUserViaMobile(e.target.value);
                 }}
                 value={userViaMobile}
-                id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required />
-              <button onClick={async (e) => {
-                // search numer in fakeUserData
-                e.preventDefault();
-                const user = withdrawRecords.filter(
-                  (item) => item.phone_number === userViaMobile
-                )
-                if (user) {
-                  // from fake user data remove all users except this user
-                  setDataArray(user);
-                } else {
-                  alert("User not found");
-                }
-              }}
-
-                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                id="default-search"
+                className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search via mobile"
+                required
+              />
+              <button
+                onClick={async (e) => {
+                  // search numer in fakeUserData
+                  e.preventDefault();
+                  const user = withdrawRecords.filter(
+                    (item) => item.phone_number === userViaMobile
+                  );
+                  if (user) {
+                    // from fake user data remove all users except this user
+                    setDataArray(user);
+                  } else {
+                    alert("User not found");
+                  }
+                }}
+                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Search
+              </button>
             </div>
           </form>
         </div>
-
 
         <div className="relative overflow-x-auto mx-2">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -427,12 +570,17 @@ export default function AdminPortal() {
                   </td>
                   <td className="px-6 py-4">₹{item.amount}</td>
                   <td
-                    className={`px-6 py-4 ${item.status
+                    className={`px-6 py-4 ${
+                      item.status
                         ? "text-green-600 dark:text-green-400"
                         : "text-red-600 dark:text-red-400"
-                      } whitespace-nowrap`}
+                    } whitespace-nowrap`}
                   >
-                    {item.status ? "Approved" : (item.is_rejected ? "Rejected" : "Pending")}
+                    {item.status
+                      ? "Approved"
+                      : item.is_rejected
+                      ? "Rejected"
+                      : "Pending"}
                   </td>
                   <td className="px-6 py-4">{item.date}</td>
 
@@ -442,10 +590,11 @@ export default function AdminPortal() {
                   <td className="px-6 py-4">
                     <button
                       onClick={() => openModal(item)}
-                      className={`text-blue-500 ${item.status
+                      className={`text-blue-500 ${
+                        item.status
                           ? "pointer-events-none text-gray-400"
                           : "hover:text-blue-700"
-                        }`}
+                      }`}
                     >
                       Approve
                     </button>
@@ -476,7 +625,9 @@ export default function AdminPortal() {
       </div>
       <div
         style={{ marginTop: "8rem" }}
-        className="container flex flex-col mx-auto justify-center item-center"
+        className={`container flex flex-col mx-auto justify-center items-center ${
+          isrecharge ? "block" : "hidden"
+        }`}
       >
         <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
           <div className="withdrawals flex flex-col item-center justify-center">
@@ -523,7 +674,7 @@ export default function AdminPortal() {
                 value={userViaMobile}
                 id="default-search"
                 className="block w-full p-4 pl-10 text-sm text-gray-900 placeholder-gray-500 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-400 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-gray-900 dark:focus:border-gray-700"
-                placeholder="Search by mobile number"
+                placeholder="Search by mobile"
                 required
               />
               <button
@@ -547,7 +698,6 @@ export default function AdminPortal() {
             </div>
           </form>
         </div>
-
 
         <div className="relative overflow-x-auto mx-2 my-4">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -599,13 +749,17 @@ export default function AdminPortal() {
                     ₹{record.amount}
                   </td>
                   <td
-                    className={`px-6 py-4 ${record.status
+                    className={`px-6 py-4 ${
+                      record.status
                         ? "text-green-600 dark:text-green-400"
                         : "text-red-600 dark:text-red-400"
-                      } whitespace-nowrap`}
-                      
+                    } whitespace-nowrap`}
                   >
-                    {record.is_rejected? "Rejected" : (record.status ? "Approved" : "Pending")}
+                    {record.is_rejected
+                      ? "Rejected"
+                      : record.status
+                      ? "Approved"
+                      : "Pending"}
                     {/* {record.status ? "Approved" : (record.is_rejected ? "Rejected" : "Pending")} */}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
@@ -614,10 +768,11 @@ export default function AdminPortal() {
                   <td className="px-6 py-4">
                     <button
                       onClick={() => openRechargeModal(record)}
-                      className={`text-blue-500 ${record.status
+                      className={`text-blue-500 ${
+                        record.status
                           ? "pointer-events-none text-gray-400"
                           : "hover:text-blue-700"
-                        }`}
+                      }`}
                     >
                       Approve
                     </button>
@@ -632,7 +787,9 @@ export default function AdminPortal() {
       <div
         id="users"
         style={{ marginTop: "8rem", marginBottom: "7rem" }}
-        className="container flex flex-col mx-auto justify-center item-center"
+        className={`container flex flex-col mx-auto justify-center items-center ${
+          isuser ? "block" : "hidden"
+        }`}
       >
         <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
           <div className="withdrawals flex flex-col item-center justify-center">
@@ -640,41 +797,66 @@ export default function AdminPortal() {
               id="users"
               className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"
             >
-              User Details
+              User Management
             </h2>
           </div>
-
         </div>
 
-        <div style={{ "width": "80%" }} className="my-4 mx-auto">
-
+        <div style={{ width: "80%" }} className="my-4 mx-auto">
           <form>
-            <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <label
+              for="default-search"
+              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            >
+              Search
+            </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                <svg
+                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
                 </svg>
               </div>
-              <input type="number"
+              <input
+                type="number"
                 onChange={(e) => {
                   setUserViaMobile(e.target.value);
                 }}
                 value={userViaMobile}
-                id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required />
-              <button onClick={async (e) => {
-                // search numer in fakeUserData
-                e.preventDefault();
-                const user = userData.find((user) => user.phone_number === userViaMobile);
-                if (user) {
-                  // from fake user data remove all users except this user
-                  setFakeUserData([user]);
-                } else {
-                  alert("User not found");
-                }
-              }}
-
-                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                id="default-search"
+                className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search via mobile"
+                required
+              />
+              <button
+                onClick={async (e) => {
+                  // search numer in fakeUserData
+                  e.preventDefault();
+                  const user = userData.find(
+                    (user) => user.phone_number === userViaMobile
+                  );
+                  if (user) {
+                    // from fake user data remove all users except this user
+                    setFakeUserData([user]);
+                  } else {
+                    alert("User not found");
+                  }
+                }}
+                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Search
+              </button>
             </div>
           </form>
         </div>
@@ -725,55 +907,56 @@ export default function AdminPortal() {
               </tr>
             </thead>
             <tbody>
-              {fakeUserData.length > 0 && fakeUserData.map((user, index) => (
-                <tr
-                  key={index}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              {fakeUserData.length > 0 &&
+                fakeUserData.map((user, index) => (
+                  <tr
+                    key={index}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   >
-                    {index + 1}
-                  </th>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.name}
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.phone_number}
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-green-400">
-                    {user.invite_code}
-                  </td>
-                  <td className="px-6 py-4 text-green-600 whitespace-nowrap dark:text-white">
-                    {user.is_verified ? "Yes" : "No"}
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.start_time}
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.recommended_by ? user.recommended_by : "None"}
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.vip_level}
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    ₹{user.wallet}
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    ₹{user.recharge_amount}
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    ₹{user.income}
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.is_admin ? "Yes" : "No"}
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    {user.is_agent ? "Yes" : "No"}
-                  </td>
-                </tr>
-              ))}
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {index + 1}
+                    </th>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      {user.name}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      {user.phone_number}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-green-400">
+                      {user.invite_code}
+                    </td>
+                    <td className="px-6 py-4 text-green-600 whitespace-nowrap dark:text-white">
+                      {user.is_verified ? "Yes" : "No"}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      {user.start_time}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      {user.recommended_by ? user.recommended_by : "None"}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      {user.vip_level}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      ₹{user.wallet}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      ₹{user.recharge_amount}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      ₹{user.income}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      {user.is_admin ? "Yes" : "No"}
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      {user.is_agent ? "Yes" : "No"}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
@@ -781,7 +964,9 @@ export default function AdminPortal() {
       <div
         id="products"
         style={{ marginTop: "8rem", marginBottom: "7rem" }}
-        className="container flex flex-col mx-auto justify-center item-center"
+        className={`container flex flex-col mx-auto justify-center items-center ${
+          isproduct ? "block" : "hidden"
+        }`}
       >
         <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
           <div className="withdrawals flex flex-col item-center justify-center">
@@ -829,43 +1014,70 @@ export default function AdminPortal() {
             </tbody>
           </table>
         </div>
+      </div>
 
-        <div
-          id="products"
-          style={{ marginTop: "8rem", marginBottom: "7rem" }}
-          className="container flex flex-col mx-auto justify-center item-center"
-        >
-          <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
-            <div className="withdrawals flex flex-col item-center justify-center">
-              <h2
-                id="users"
-                className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"
-              >
-                Order Details
-              </h2>
-            </div>
+      <div
+        id="order"
+        style={{ marginTop: "8rem", marginBottom: "7rem" }}
+        className={`container flex flex-col mx-auto justify-center items-center ${
+          isorder ? "block" : "hidden"
+        }`}
+      >
+        <div className="dark:bg-gray-800 dark:border-gray-700 flex justify-around">
+          <div className="withdrawals flex flex-col item-center justify-center">
+            <h2
+              id="users"
+              className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"
+            >
+              Order Details
+            </h2>
           </div>
+        </div>
 
-          <div style={{ "width": "80%" }} className="my-4 mx-auto">
-
-            <form>
-              <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                  </svg>
-                </div>
-                <input type="number"
-                  onChange={(e) => {
-                    setUserViaMobile(e.target.value);
-                  }}
-                  value={userViaMobile}
-                  id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required />
-                <button onClick={async (e) => {
+        <div style={{ width: "80%" }} className="my-4 mx-auto">
+          <form>
+            <label
+              for="default-search"
+              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            >
+              Search
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="number"
+                onChange={(e) => {
+                  setUserViaMobile(e.target.value);
+                }}
+                value={userViaMobile}
+                id="default-search"
+                className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search via mobile"
+                required
+              />
+              <button
+                onClick={async (e) => {
                   // search numer in fakeUserData
                   e.preventDefault();
-                  const user = fakeOrders.filter((user) => user.phone_number === userViaMobile);
+                  const user = fakeOrders.filter(
+                    (user) => user.phone_number === userViaMobile
+                  );
                   if (user) {
                     // from fake user data remove all users except this user
                     setFakeOrders(user);
@@ -873,104 +1085,192 @@ export default function AdminPortal() {
                     alert("User not found");
                   }
                 }}
+                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Search
+              </button>
+            </div>
+          </form>
+        </div>
 
-                  className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-              </div>
-            </form>
-          </div>
-
-          <div className="relative overflow-x-auto mx-2 my-4">
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    Sno.
+        <div className="relative overflow-x-auto mx-2 my-4">
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Sno.
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  User
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Product
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Amount
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Date_of_order
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {fakeOrders.map((orders, index) => (
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {index + 1}
                   </th>
-                  <th scope="col" className="px-6 py-3">
-                    User
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Product
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Amount
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Date_of_order
-                  </th>
+                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    {orders.user}
+                  </td>
+                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    {orders.product}
+                  </td>
+                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    ₹{orders.amount}
+                  </td>
+                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    {orders.date_purchase}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {fakeOrders.map((orders, index) => (
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {index + 1}
-                    </th>
-                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                      {orders.user}
-                    </td>
-                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                      {orders.product}
-                    </td>
-                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                      ₹{orders.amount}
-                    </td>
-                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                      {orders.date_purchase}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <div className="flex mb-5 justify-center">
-          <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-            Admin Wallet Balance : ₹{admin_wallet}
-          </p>
-        </div>
+      </div>
 
-        {/* fetch overall details */}
-        <div className="flex flex-wrap my-5 justify-center">
-          <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-            Total Orders : {overallData.total_orders}
-          </p>
-          <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
-            Total Users : {overallData.total_users}
-          </p>
-          <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
-            Total Products : {overallData.total_products}
-            </p>
-            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
-            Total Recharge Records Today : {overallData.total_recharge_records_today}
-            </p>
-            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
-            Total Withdraw Records Today : {overallData.total_withdraw_records_today}
-            </p>
-            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
-            Total Orders Today : {overallData.total_orders_today}
-            </p>
-            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
-            Total Approved Recharge Records : {overallData.total_approved_recharge_records}
-            </p>
-            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
-            Total Approved Withdraw Records : {overallData.total_approved_withdraw_records}
-            </p>
-            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
-            Total Pending Recharge Records : {overallData.total_pending_recharge_records}
-            </p>
-            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
-            Total Pending Withdraw Records : {overallData.total_pending_withdraw_records}
-            </p>
-        </div>
-        <div className="flex justify-center">
-          <button onClick={handelDistributeIncome}
-            className="bg-blue-900 hover:bg-[#03543F] text-white font-semibold py-2 px-4 rounded-full">
-            Distribute Income
-          </button>
+      <div
+  id="dashboard"
+  style={{ marginTop: "8rem", marginBottom: "7rem" }}
+  className={`container flex flex-col p-5 justify-center items-center ${isdashboard ? 'block' : 'hidden'}`}
+>
+  <div className="mb-5">
+    <p className="text-lg font-normal text-gray-900 dark:text-white">
+      Admin Wallet Balance: ₹{admin_wallet}
+    </p>
+  </div>
+
+  <div className="table-container">
+    <table className="min-w-full border-collapse border border-gray-300">
+      <thead>
+        <tr>
+          <th className="bg-gray-200 border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+            Metric
+          </th>
+          <th className="bg-gray-200 border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+            Value
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+            Total Orders
+          </td>
+          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+            {overallData.total_orders}
+          </td>
+        </tr>
+        <tr>
+          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+            Total Users
+          </td>
+          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+            {overallData.total_users}
+          </td>
+        </tr>
+        <tr>
+          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+            Total Products
+          </td>
+          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+            {overallData.total_products}
+          </td>
+        </tr>
+        <tr>
+          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+            Total Recharge Records Today
+          </td>
+          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+            {overallData.total_recharge_records_today}
+          </td>
+        </tr>
+        <tr>
+          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+            Total Withdraw Records Today
+          </td>
+          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+            {overallData.total_withdraw_records_today}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div className="flex justify-center mt-5">
+    <button
+      onClick={handelDistributeIncome}
+      className="bg-blue-900 hover:bg-[#03543F] text-white font-semibold py-2 px-4 rounded-full"
+    >
+      Distribute Income
+    </button>
+  </div>
+</div>
+
+
+      <div
+        id="agent"
+        style={{ marginTop: "8rem", marginBottom: "7rem" }}
+        className={`container flex flex-col mx-auto justify-center items-center ${
+          isagent ? "block" : "hidden"
+        }`}
+      >
+        <div className="add-agent p-5 m-5 ">
+          <form onSubmit={handleAgentSubmit}>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="agentName"
+              >
+                Agent Name
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="agentName"
+                type="text"
+                placeholder="Agent Name"
+                value={agentName}
+                onChange={handleAgentNameChange}
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="agentNumber"
+              >
+                Agent Number
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="agentNumber"
+                type="text"
+                placeholder="Agent Number"
+                value={agentNumber}
+                onChange={handleAgentNumberChange}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <button
+                className="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>
