@@ -397,7 +397,7 @@ def approve_recharge_record(request):
         data = json.loads(request.body.decode('utf-8'))
         uid = data.get("recharge_id")
         is_rejected = data.get("is_rejected")
-        if(is_rejected==True): 
+        if(is_rejected): 
             recharge_record = Recharge_Record.objects.filter(uid=uid).first()
             if recharge_record:
                 recharge_record.is_rejected = True

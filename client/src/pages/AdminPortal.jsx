@@ -101,15 +101,51 @@ export default function AdminPortal() {
       setUserData(response.data.users_details);
       setRechargeRecords(response.data.recharge_records);
       setWithdrawRecords(response.data.withdraw_records_details);
+      console.log(response.data.recharge_records);
       //(response.data.orders_details);
       //(response.data);
       const overalldata = await axios.post("http://139.59.32.207/administ/all_detail/", {}, { content: "application/json" });
+      setOverallData(overalldata.data.data);
 
     };
     dataFetch();
   }, []);
 
-  const [overallData, setOverallData] = useState();
+
+
+  const [overallData, setOverallData] = useState({
+
+    total_approved_recharge_records
+      :
+      2,
+    total_approved_withdraw_records
+      :
+      3,
+    total_orders
+      :
+      1,
+    total_orders_today
+      :
+      1,
+    total_pending_recharge_records
+      :
+      2,
+    total_pending_withdraw_records
+      :
+      0,
+    total_products
+      :
+      8,
+    total_recharge_records_today
+      :
+      "2000.00",
+    total_users
+      :
+      5,
+    total_withdraw_records_today
+      :
+      "942.00",
+  });
 
   const [userViaMobile, setUserViaMobile] = useState("");
   const userViaMobileHandler = (e) => {
@@ -220,9 +256,8 @@ export default function AdminPortal() {
             </button>
           </div>
           <div
-            className={`items-center justify-between w-full ${
-              isMenuOpen ? "block" : "hidden"
-            } md:flex md:w-auto md:order-1`}
+            className={`items-center justify-between w-full ${isMenuOpen ? "block" : "hidden"
+              } md:flex md:w-auto md:order-1`}
             id="navbar-sticky"
           >
             <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-white md:dark:bg-white dark:border-gray-700">
@@ -297,40 +332,40 @@ export default function AdminPortal() {
           </select>
         </div>
 
-        <div style={{"width": "80%"}} className="my-4 mx-auto">
+        <div style={{ "width": "80%" }} className="my-4 mx-auto">
 
-        <form>   
-    <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-    <div className="relative">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
+          <form>
+            <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+              </div>
+              <input type="number"
+                onChange={(e) => {
+                  setUserViaMobile(e.target.value);
+                }}
+                value={userViaMobile}
+                id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required />
+              <button onClick={async (e) => {
+                // search numer in fakeUserData
+                e.preventDefault();
+                const user = withdrawRecords.filter(
+                  (item) => item.phone_number === userViaMobile
+                )
+                if (user) {
+                  // from fake user data remove all users except this user
+                  setDataArray(user);
+                } else {
+                  alert("User not found");
+                }
+              }}
+
+                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+            </div>
+          </form>
         </div>
-        <input type="number"
-        onChange={(e) => {
-          setUserViaMobile(e.target.value);
-        }}
-        value={userViaMobile}
-        id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required/>
-        <button onClick={async (e) => {
-          // search numer in fakeUserData
-          e.preventDefault();
-          const user = withdrawRecords.filter(
-            (item) => item.phone_number === userViaMobile
-          )
-          if(user) {
-            // from fake user data remove all users except this user
-            setDataArray(user);
-          } else {
-            alert("User not found");
-          }
-        }}
-        
-        className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-    </div>
-</form>
-</div>
 
 
         <div className="relative overflow-x-auto mx-2">
@@ -392,11 +427,10 @@ export default function AdminPortal() {
                   </td>
                   <td className="px-6 py-4">₹{item.amount}</td>
                   <td
-                    className={`px-6 py-4 ${
-                      item.status
+                    className={`px-6 py-4 ${item.status
                         ? "text-green-600 dark:text-green-400"
                         : "text-red-600 dark:text-red-400"
-                    } whitespace-nowrap`}
+                      } whitespace-nowrap`}
                   >
                     {item.status ? "Approved" : (item.is_rejected ? "Rejected" : "Pending")}
                   </td>
@@ -408,11 +442,10 @@ export default function AdminPortal() {
                   <td className="px-6 py-4">
                     <button
                       onClick={() => openModal(item)}
-                      className={`text-blue-500 ${
-                        item.status
+                      className={`text-blue-500 ${item.status
                           ? "pointer-events-none text-gray-400"
                           : "hover:text-blue-700"
-                      }`}
+                        }`}
                     >
                       Approve
                     </button>
@@ -566,13 +599,14 @@ export default function AdminPortal() {
                     ₹{record.amount}
                   </td>
                   <td
-                    className={`px-6 py-4 ${
-                      record.status
+                    className={`px-6 py-4 ${record.status
                         ? "text-green-600 dark:text-green-400"
                         : "text-red-600 dark:text-red-400"
-                    } whitespace-nowrap`}
+                      } whitespace-nowrap`}
+                      
                   >
-                    {record.status ? "Approved" : (record.is_rejected ? "Rejected" : "Pending")}
+                    {record.is_rejected? "Rejected" : (record.status ? "Approved" : "Pending")}
+                    {/* {record.status ? "Approved" : (record.is_rejected ? "Rejected" : "Pending")} */}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {record.date}
@@ -580,11 +614,10 @@ export default function AdminPortal() {
                   <td className="px-6 py-4">
                     <button
                       onClick={() => openRechargeModal(record)}
-                      className={`text-blue-500 ${
-                        record.status
+                      className={`text-blue-500 ${record.status
                           ? "pointer-events-none text-gray-400"
                           : "hover:text-blue-700"
-                      }`}
+                        }`}
                     >
                       Approve
                     </button>
@@ -613,38 +646,38 @@ export default function AdminPortal() {
 
         </div>
 
-        <div style={{"width": "80%"}} className="my-4 mx-auto">
+        <div style={{ "width": "80%" }} className="my-4 mx-auto">
 
-        <form>   
-    <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-    <div className="relative">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
+          <form>
+            <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+              </div>
+              <input type="number"
+                onChange={(e) => {
+                  setUserViaMobile(e.target.value);
+                }}
+                value={userViaMobile}
+                id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required />
+              <button onClick={async (e) => {
+                // search numer in fakeUserData
+                e.preventDefault();
+                const user = userData.find((user) => user.phone_number === userViaMobile);
+                if (user) {
+                  // from fake user data remove all users except this user
+                  setFakeUserData([user]);
+                } else {
+                  alert("User not found");
+                }
+              }}
+
+                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+            </div>
+          </form>
         </div>
-        <input type="number"
-        onChange={(e) => {
-          setUserViaMobile(e.target.value);
-        }}
-        value={userViaMobile}
-        id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required/>
-        <button onClick={async (e) => {
-          // search numer in fakeUserData
-          e.preventDefault();
-          const user = userData.find((user) => user.phone_number === userViaMobile);
-          if(user) {
-            // from fake user data remove all users except this user
-            setFakeUserData([user]);
-          } else {
-            alert("User not found");
-          }
-        }}
-        
-        className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-    </div>
-</form>
-</div>
 
         <div className="relative overflow-x-auto mx-2 my-4">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -692,7 +725,7 @@ export default function AdminPortal() {
               </tr>
             </thead>
             <tbody>
-              {fakeUserData.length>0 && fakeUserData.map((user, index) => (
+              {fakeUserData.length > 0 && fakeUserData.map((user, index) => (
                 <tr
                   key={index}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -813,38 +846,38 @@ export default function AdminPortal() {
             </div>
           </div>
 
-          <div style={{"width": "80%"}} className="my-4 mx-auto">
+          <div style={{ "width": "80%" }} className="my-4 mx-auto">
 
-        <form>   
-    <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-    <div className="relative">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
-        </div>
-        <input type="number"
-        onChange={(e) => {
-          setUserViaMobile(e.target.value);
-        }}
-        value={userViaMobile}
-        id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required/>
-        <button onClick={async (e) => {
-          // search numer in fakeUserData
-          e.preventDefault();
-          const user = fakeOrders.filter((user) => user.phone_number === userViaMobile);
-          if(user) {
-            // from fake user data remove all users except this user
-            setFakeOrders(user);
-          } else {
-            alert("User not found");
-          }
-        }}
-        
-        className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-    </div>
-</form>
-</div>
+            <form>
+              <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                  </svg>
+                </div>
+                <input type="number"
+                  onChange={(e) => {
+                    setUserViaMobile(e.target.value);
+                  }}
+                  value={userViaMobile}
+                  id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search via mobile number" required />
+                <button onClick={async (e) => {
+                  // search numer in fakeUserData
+                  e.preventDefault();
+                  const user = fakeOrders.filter((user) => user.phone_number === userViaMobile);
+                  if (user) {
+                    // from fake user data remove all users except this user
+                    setFakeOrders(user);
+                  } else {
+                    alert("User not found");
+                  }
+                }}
+
+                  className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+              </div>
+            </form>
+          </div>
 
           <div className="relative overflow-x-auto mx-2 my-4">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -898,6 +931,40 @@ export default function AdminPortal() {
           <p className="text-2xl font-semibold text-gray-900 dark:text-white">
             Admin Wallet Balance : ₹{admin_wallet}
           </p>
+        </div>
+
+        {/* fetch overall details */}
+        <div className="flex flex-wrap my-5 justify-center">
+          <p className="text-2xl font-semibold text-gray-900 dark:text-white">
+            Total Orders : {overallData.total_orders}
+          </p>
+          <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
+            Total Users : {overallData.total_users}
+          </p>
+          <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
+            Total Products : {overallData.total_products}
+            </p>
+            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
+            Total Recharge Records Today : {overallData.total_recharge_records_today}
+            </p>
+            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
+            Total Withdraw Records Today : {overallData.total_withdraw_records_today}
+            </p>
+            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
+            Total Orders Today : {overallData.total_orders_today}
+            </p>
+            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
+            Total Approved Recharge Records : {overallData.total_approved_recharge_records}
+            </p>
+            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
+            Total Approved Withdraw Records : {overallData.total_approved_withdraw_records}
+            </p>
+            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
+            Total Pending Recharge Records : {overallData.total_pending_recharge_records}
+            </p>
+            <p className="text-2xl font-semibold text-gray-900 dark:text-white ml-5">
+            Total Pending Withdraw Records : {overallData.total_pending_withdraw_records}
+            </p>
         </div>
         <div className="flex justify-center">
           <button onClick={handelDistributeIncome}
