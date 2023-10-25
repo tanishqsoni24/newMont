@@ -15,13 +15,14 @@ def all_proucts(request):
     exclusive_product_details = []
     gift_product_details = []
     for prod in upgrage_product:
+        # print(prod.image.url)
         upgrade_product_details.append({
             'id': prod.uid,
             'name': prod.name,
             'slug': prod.slug,
             'price': prod.price,
             'eligible_for_vip_number': prod.eligible_for_vip_number,
-            'image': prod.image.url,
+            'image': "/media/products/copeer.jpg",
             'days': prod.days,
             'daily_income': prod.daily_income,
             'total_income': prod.total_income
@@ -33,7 +34,7 @@ def all_proucts(request):
             'slug': prod.slug,
             'price': prod.price,
             'eligible_for_vip_number': prod.eligible_for_vip_number,
-            'image': prod.image.url,
+            'image': "/media/products/copeer.jpg",
             'days': prod.days,
             'daily_income': prod.daily_income,
             'total_income': prod.total_income
@@ -45,7 +46,7 @@ def all_proucts(request):
             'slug': prod.slug,
             'price': prod.price,
             'eligible_for_vip_number': prod.eligible_for_vip_number,
-            'image': prod.image.url,
+            'image': "/media/products/copeer.jpg",
             'days': prod.days,
             'daily_income': prod.daily_income,
             'total_income': prod.total_income
