@@ -122,7 +122,7 @@ def admin_index(request):
                         "category": product.category.name,
                         "price": product.price,
                         "eligible_for_vip_number": product.eligible_for_vip_number,
-                        "image": product.image.url,
+                        # "image": product.image.url,
                         "days": product.days,
                         "daily_income": product.daily_income,
                         "total_income": product.total_income
@@ -470,3 +470,27 @@ def generate_income(request):
                 return JsonResponse({'status': 'Success', 'message': 'Income Generated successfully'})
         return JsonResponse({'status': 'Error', 'message': 'No Orders Yet to Generate Income Or Income Already Generated Today'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def modfify_user_wallet(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone = data.get("phone_number")
+        amount = data.get("amount")
+        user = Profile.objects.filter(phone_number=phone).first()
+        user.wallet = amount
+        user.save()
+        return JsonResponse({"status": "Success", "message": "Wallet Updated Successfully"})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})
+
+@csrf_exempt
+def add_money_to_userwallet(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone = data.get("phone_number")
+        amount = data.get("amount")
+        user = Profile.objects.filter(phone_number=phone).first()
+        user.wallet = user.wallet + amount
+        user.save()
+        return JsonResponse({"status": "Success", "message": "Wallet Updated Successfully"})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})
