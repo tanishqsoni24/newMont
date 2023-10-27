@@ -124,7 +124,7 @@ export default function AdminPortal() {
       setUserData(response.data.users_details);
       setRechargeRecords(response.data.recharge_records);
       setWithdrawRecords(response.data.withdraw_records_details);
-      console.log(response.data.recharge_records);
+      // console.log(response.data.recharge_records);
       //(response.data.orders_details);
       //(response.data);
       const overalldata = await axios.post(
@@ -512,7 +512,7 @@ export default function AdminPortal() {
         </div>
 
         <div className="relative overflow-x-auto mx-2">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <table className="w-full text-sm text-left ml-96 md:ml-0 text-gray-500 dark:text-gray-400">
             <thead className="text-xs dark:text-[#03543F] uppercase bg-gray-50 dark:bg-gray-700 text-[#03543F]">
               <tr>
                 <th scope="col" className="px-6 py-3">
@@ -700,7 +700,7 @@ export default function AdminPortal() {
         </div>
 
         <div className="relative overflow-x-auto mx-2 my-4">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <table className="w-full text-sm ml-96 md:ml-0 text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
@@ -862,7 +862,7 @@ export default function AdminPortal() {
         </div>
 
         <div className="relative overflow-x-auto mx-2 my-4">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <table className="w-full text-sm ml-[37%] md:ml-0 text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
@@ -1094,7 +1094,7 @@ export default function AdminPortal() {
         </div>
 
         <div className="relative overflow-x-auto mx-2 my-4">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <table className="w-full text-sm ml-32 md:ml-0 text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
@@ -1143,83 +1143,84 @@ export default function AdminPortal() {
       </div>
 
       <div
-  id="dashboard"
-  style={{ marginTop: "8rem", marginBottom: "7rem" }}
-  className={`container flex flex-col p-5 justify-center items-center ${isdashboard ? 'block' : 'hidden'}`}
->
-  <div className="mb-5">
-    <p className="text-lg font-normal text-gray-900 dark:text-white">
-      Admin Wallet Balance: ₹{admin_wallet}
-    </p>
-  </div>
+        id="dashboard"
+        style={{ marginTop: "8rem", marginBottom: "7rem" }}
+        className={`container flex flex-col p-5 justify-center items-center ${
+          isdashboard ? "block" : "hidden"
+        }`}
+      >
+        <div className="mb-5">
+          <p className="text-lg font-normal text-gray-900 dark:text-white">
+            Admin Wallet Balance: ₹{admin_wallet}
+          </p>
+        </div>
 
-  <div className="table-container">
-    <table className="min-w-full border-collapse border border-gray-300">
-      <thead>
-        <tr>
-          <th className="bg-gray-200 border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Metric
-          </th>
-          <th className="bg-gray-200 border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Value
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
-            Total Orders
-          </td>
-          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
-            {overallData.total_orders}
-          </td>
-        </tr>
-        <tr>
-          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
-            Total Users
-          </td>
-          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
-            {overallData.total_users}
-          </td>
-        </tr>
-        <tr>
-          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
-            Total Products
-          </td>
-          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
-            {overallData.total_products}
-          </td>
-        </tr>
-        <tr>
-          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
-            Total Recharge Records Today
-          </td>
-          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
-            {overallData.total_recharge_records_today}
-          </td>
-        </tr>
-        <tr>
-          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
-            Total Withdraw Records Today
-          </td>
-          <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
-            {overallData.total_withdraw_records_today}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <div className="table-container">
+          <table className="min-w-full border-collapse border border-gray-300">
+            <thead>
+              <tr>
+                <th className="bg-gray-200 border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                  Metric
+                </th>
+                <th className="bg-gray-200 border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                  Value
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+                  Total Orders
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+                  {overallData.total_orders}
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+                  Total Users
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+                  {overallData.total_users}
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+                  Total Products
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+                  {overallData.total_products}
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+                  Total Recharge Records Today
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+                  {overallData.total_recharge_records_today}
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+                  Total Withdraw Records Today
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-left text-sm font-normal text-gray-900 dark:text-white">
+                  {overallData.total_withdraw_records_today}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-  <div className="flex justify-center mt-5">
-    <button
-      onClick={handelDistributeIncome}
-      className="bg-blue-900 hover:bg-[#03543F] text-white font-semibold py-2 px-4 rounded-full"
-    >
-      Distribute Income
-    </button>
-  </div>
-</div>
-
+        <div className="flex justify-center mt-5">
+          <button
+            onClick={handelDistributeIncome}
+            className="bg-blue-900 hover:bg-[#03543F] text-white font-semibold py-2 px-4 rounded-full"
+          >
+            Distribute Income
+          </button>
+        </div>
+      </div>
 
       <div
         id="agent"
