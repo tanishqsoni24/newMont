@@ -82,6 +82,16 @@ export default function IncomingDetails() {
               })):""}
           </tbody>
         </table>
+        <div className="noice flex flex-col justify-center my-5">
+          {incomedetails.length > 0 ? (
+            ""
+          ) : (
+            <p className="text-red-500 text-center">
+              *No Income Record Found
+            </p>
+          )  
+          }
+        </div>
       </div>
     </div>
   );
