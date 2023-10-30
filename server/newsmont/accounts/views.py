@@ -458,3 +458,24 @@ def show_my_bank_cards(request):
             return JsonResponse({'status': 'Success', 'message': 'My Bank Cards', 'data': bank_cards})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
+
+@csrf_exempt
+def income_details(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get('phone_number')
+        user_obj = User.objects.filter(username=phone_number).first()
+        if user_obj:
+            user_profile_object = Profile.objects.filter(user=user_obj).first()
+            income = Income.objects.filter(user=user_obj).values()
+            income = [
+                {
+                    'amount': income_record['amount'],
+                    'income_type': income_record['income_type'],
+                    'date': income_record['income_date'].strftime("%B-%d-%Y"),
+                }
+                for income_record in income
+            ]
+            return JsonResponse({'status': 'Success', 'message': 'Income Details', 'data': income})
+        return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
+    return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
