@@ -104,9 +104,9 @@ export default function AdminPortal() {
     navigate(`/administ/recharge/${user.user}-${user.phone_number}`);
   };
 
-  useEffect(() => {
+
     const dataFetch = async (e) => {
-      //("hello");
+      // console.log("Fewf")
       const token = Cookies.get("admin_session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
@@ -134,20 +134,21 @@ export default function AdminPortal() {
       );
       setOverallData(overalldata.data.data);
     };
-    dataFetch();
-  }, []);
+    useEffect(() => {
+      dataFetch(); // Call dataFetch when the component mounts
+    }, []);
 
   const [overallData, setOverallData] = useState({
-    total_approved_recharge_records: 2,
-    total_approved_withdraw_records: 3,
-    total_orders: 1,
-    total_orders_today: 1,
-    total_pending_recharge_records: 2,
+    total_approved_recharge_records: 0,
+    total_approved_withdraw_records: 0,
+    total_orders: 0,
+    total_orders_today: 0,
+    total_pending_recharge_records: 0,
     total_pending_withdraw_records: 0,
-    total_products: 8,
-    total_recharge_records_today: "2000.00",
-    total_users: 5,
-    total_withdraw_records_today: "942.00",
+    total_products: 0,
+    total_recharge_records_today: "0000.00",
+    total_users: 0,
+    total_withdraw_records_today: "000.00",
   });
 
   const [userViaMobile, setUserViaMobile] = useState("");
@@ -489,6 +490,7 @@ export default function AdminPortal() {
                 placeholder="Search via mobile"
                 required
               />
+              
               <button
                 onClick={async (e) => {
                   // search numer in fakeUserData
@@ -507,7 +509,9 @@ export default function AdminPortal() {
               >
                 Search
               </button>
+              
             </div>
+            <img width="35" height="35" className="m-1 cursor-pointer" onClick={dataFetch} src="https://img.icons8.com/ios/50/synchronize.png" alt="synchronize"/>
           </form>
         </div>
 
@@ -696,6 +700,7 @@ export default function AdminPortal() {
                 Search
               </button>
             </div>
+              <img width="35" height="35" className="mt-1 cursor-pointer" onClick={dataFetch} src="https://img.icons8.com/ios/50/synchronize.png" alt="synchronize"/>
           </form>
         </div>
 

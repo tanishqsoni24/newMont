@@ -10,6 +10,7 @@ export default function Profile() {
   const [withdraw, setWithdraw] = useState(0);
   const [withdrawwarning, setWithdrawwarning] = useState("");
   const [rechargewarning, setRechargewarning] = useState("");
+  const [error, setError] = useState("");
   const [user, setUser] = useState({
     phone_number: "",
     name: "",
@@ -114,6 +115,11 @@ export default function Profile() {
     e.preventDefault();
     const token = Cookies.get("session_id");
     const decoded = jwt_decode(token);
+    
+    if(selectBankCard.card_holder_name==""){
+      setError("Please Select Bank Card");
+      return;
+    }
     const response = await axios.post(
       "http://139.59.32.207/accounts/withdraw/",
       {
@@ -550,8 +556,8 @@ export default function Profile() {
                 onClick={closeBankCardPopup}
                 width="20"
                 height="20"
-                className="mb-1"
-                src="https://img.icons8.com/ios-glyphs/30/014737/delete-sign.png"
+                className="mb-1 "
+                src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
                 alt="delete-sign"
               />
               <div className="w-full bg-white rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -609,6 +615,9 @@ export default function Profile() {
                         Please add a bank card.
                       </p>
                     )}
+                    <p className="text-red-500 mt-2 text-sm ml-20 md:-ml-7 md:text-center">
+                        {error}
+                      </p>
                   </div>
                 </div>
               </div>
