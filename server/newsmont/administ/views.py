@@ -257,7 +257,7 @@ def show_products(request):
                 "category": product.category.name,
                 "price": product.price,
                 "eligible_for_vip_number": product.eligible_for_vip_number,
-                "image": product.image.url,
+                # "image": product.image.url,
                 "days": product.days,
                 "daily_income": product.daily_income,
                 "total_income": product.total_income
@@ -437,18 +437,17 @@ def approve_recharge_record(request):
 @csrf_exempt
 def generate_income(request):
     if request.method == "POST":
-        # Check if no income is generated today then only generate the income 
-        income = Income.objects.filter(income_date__date=timezone.now().date()).first()
+        # Check if no income of upgrade, exclusive or gift product is generated today then generate income 
+        todays_incomes = Income.objects.filter(income_date__date=timezone.now().date()).all()
+        income = False
+        for today in todays_incomes:
+            if today.income_type == "Upgrade Product" or today.income_type == "Exclusive Product" or today.income_type == "Gift Product":
+                income = True
         if not income:
             purchased_products = Orders.objects.all()
             for product in purchased_products:
                 user_profile_object = product.user
-                print(product.date_purchase + timezone.timedelta(days=product.product.days))
-                print(product.date_purchase) 
-                print(timezone.timedelta(days=product.product.days))
-                print(timezone.now())
                 if product.date_purchase + timezone.timedelta(days=product.product.days) > timezone.now():
-                    print("here")
                     if product.product.category.name == "exclusive":
                         # Add Daily Income to wallet
                         user_profile_object.wallet = user_profile_object.wallet + product.product.daily_income
