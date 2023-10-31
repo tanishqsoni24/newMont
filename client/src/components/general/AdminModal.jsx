@@ -89,7 +89,9 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
           Close
         </button>
         <button
-        onClick={rejectWithdrawal}
+        onClick={() => {
+          rejectWithdrawal(item)
+        }}
         className="bg-red-500 text-white py-2 px-4 mt-4 rounded hover:bg-red-600"
       >
         Reject
