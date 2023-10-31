@@ -12,12 +12,31 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 
 export default function AdminPortal() {
+  const [reward, setReward] = useState({
+    phone_number: "",
+    wallet: "",
+  })
   const [agent , setAgent] = useState({
     agentName: "",
     agentNumber: "",
     agentInitialWallet : "",
     agentPassword : "",
   })
+  const handleRewardSubmit = async (e) => {
+    e.preventDefault();
+    const response = await axios.post(
+      "http://139.59.32.207/administ/reward/",
+      {
+        phone_number: reward.phone_number,
+        wallet: reward.wallet,
+      },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    alert(response.data.message);
+
+    window.location.reload();
+  };
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [sortByStatus, setSortByStatus] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -40,7 +59,7 @@ export default function AdminPortal() {
     e.preventDefault();
     
     const response = await axios.post(
-      "http://localhost:8000/administ/add_agent/",
+      "http://139.59.32.207/administ/add_agent/",
       {
         agentName: agent.agentName,
         agentNumber: agent.agentNumber,
@@ -61,6 +80,7 @@ export default function AdminPortal() {
       { headers: { "Content-Type": "application/json" } }
     );
     alert(response.data.message);
+    window.location.reload();
   };
 
   const openRechargeModal = (item) => {
@@ -79,13 +99,9 @@ export default function AdminPortal() {
   };
 
   const handelApproveRecharge = (item) => {
-    //("approve" + item.user);
-    //approval logic
     closeRechargeModal();
   };
   const handleApprove = (item) => {
-    //("approve" + item.user);
-    //approval logic
     closeModal();
   };
   const location = useLocation();
@@ -114,7 +130,6 @@ export default function AdminPortal() {
 
 
     const dataFetch = async (e) => {
-      // console.log("Fewf")
       const token = Cookies.get("admin_session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
@@ -132,9 +147,6 @@ export default function AdminPortal() {
       setUserData(response.data.users_details);
       setRechargeRecords(response.data.recharge_records);
       setWithdrawRecords(response.data.withdraw_records_details);
-      // console.log(response.data.recharge_records);
-      //(response.data.orders_details);
-      //(response.data);
       const overalldata = await axios.post(
         "http://139.59.32.207/administ/all_detail/",
         {},
@@ -1237,7 +1249,71 @@ export default function AdminPortal() {
           </button>
         </div>
       </div>
-
+      <div
+        id="agent"
+        style={{ marginTop: "8rem", marginBottom: "7rem" }}
+        className={`container flex flex-col mx-auto justify-center items-center ${
+          isreward ? "block" :
+           "hidden"
+        }`}
+      >
+        <div className="add-agent p-5 m-5 ">
+          <form>
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="agentNumber"
+              >
+                User Number
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="agentNumber"
+                type="number"
+                placeholder="8956798125"
+                value={reward.phone_number}
+                onChange={(event) => {
+                  setReward({
+                    ...reward,
+                    phone_number: event.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="agentNumber"
+              >
+                User Wallet Amount
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="agentNumber"
+                type="number"
+                placeholder="5000"
+                value={reward.wallet}
+                onChange={(event) => {
+                  setReward({
+                    ...reward,
+                    wallet: event.target.value,
+                  });
+                }}
+              />
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <button
+                className="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+                type="submit"
+                onClick={handleRewardSubmit}
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
       <div
         id="agent"
         style={{ marginTop: "8rem", marginBottom: "7rem" }}

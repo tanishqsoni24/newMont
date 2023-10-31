@@ -482,10 +482,13 @@ def modfify_user_wallet(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
         phone = data.get("phone_number")
-        amount = data.get("amount")
+        amount = data.get("wallet")
         user = Profile.objects.filter(phone_number=phone).first()
-        user.wallet = amount
-        user.save()
+        if user:
+            user.wallet = int(amount)
+            user.save()
+        else:
+            return JsonResponse({"status": "Failed", "message": "Invalid User"})
         return JsonResponse({"status": "Success", "message": "Wallet Updated Successfully"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request"})
 
