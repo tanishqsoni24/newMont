@@ -29,7 +29,7 @@ const RechargeModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     const response = await axios.post(
       "http://139.59.32.207/administ/approve_recharge/",
       {
-        recharge_id: item.id,
+        recharge_id : item.id,
         is_rejected: false,
       },
       { headers: { "Content-Type": "application/json" } }
@@ -42,12 +42,13 @@ const RechargeModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     const response = await axios.post(
       "http://139.59.32.207/administ/approve_recharge/",
       {
-        recharge_id: item.id,
+        recharge_id : item.id,
         is_rejected: true,
       },
       { headers: { "Content-Type": "application/json" } }
     );
     window.location.reload();
+    console.log(response);
   }
 
   return (
@@ -81,7 +82,9 @@ const RechargeModal = ({ item, isOpen, onRequestClose, onApprove }) => {
         </button>
 
         <button
-          onClick={rejectWithdrawal}
+          onClick={() => {
+            rejectWithdrawal(item)
+          }}
           className="bg-red-500 text-white py-2 px-4 mt-4 rounded hover:bg-red-600"
         >
           Reject

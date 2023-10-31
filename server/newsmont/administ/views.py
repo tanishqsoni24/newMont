@@ -35,15 +35,19 @@ def admin_login(request):
 def add_agent(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
-        phone = data.get("phone_number")
-        password = data.get("password")
-        first_name = data.get("first_name")
-        last_name = data.get("last_name")
-        user = User.objects.create(username=phone, first_name=first_name, last_name=last_name)
-        user.set_password(password)
-        user.save()
-        agent = Profile.objects.create(user=user, phone_number=phone, is_agent=True)
-        agent.save()
+        phone = data.get("agentNumber")
+        password = data.get("agentPassword")
+        first_name = data.get("agentName")
+        wallet = data.get("agentInitialWallet")
+        try:
+            user = User.objects.create(username=phone, first_name=first_name)
+
+            user.set_password(password)
+            user.save()
+            agent = Profile.objects.create(user=user, phone_number=phone, is_agent=True , wallet=wallet)
+            agent.save()
+        except:
+            return JsonResponse({"status": "Failed", "message": "Agent Already Exists"})
         return JsonResponse({"status": "Success", "message": "Agent Added Successfully"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
 
@@ -105,7 +109,7 @@ def admin_index(request):
                         "phone_number": user.phone_number,
                         "invite_code": user.invite_code,
                         "is_verified": user.is_verified,
-                        "start_time": user.start_time,
+                        "start_time": user.start_time.strftime("%B-%d-%Y") + " at " + user.start_time.strftime("%I:%M %p"),
                         "recommended_by": user.recommended_by.first_name if user.recommended_by else None,
                         "vip_level": user.vip_level,
                         "wallet": user.wallet,
@@ -366,10 +370,12 @@ def approve_withdraw_records(request):
         uid = data.get("withdrawal_id")
         is_rejected = data.get("is_rejected")
         if(is_rejected==True):
+            print(is_rejected, uid)
             withdraw_record = Withdraw_Record.objects.filter(uid=uid).first()
             if withdraw_record:
                 withdraw_record.is_rejected = True
                 withdraw_record.save()
+                print(withdraw_record.is_rejected)
                 return JsonResponse({"status": "Success", "message": "Withdraw Rejected"})
             return JsonResponse({"status": "Failed", "message": "Invalid Withdraw Record"})
         admin_user = [user for user in Profile.objects.all() if user.is_admin == True][0]
@@ -397,7 +403,8 @@ def approve_recharge_record(request):
         data = json.loads(request.body.decode('utf-8'))
         uid = data.get("recharge_id")
         is_rejected = data.get("is_rejected")
-        if(is_rejected): 
+        print(uid , is_rejected )
+        if(is_rejected == True): 
             recharge_record = Recharge_Record.objects.filter(uid=uid).first()
             if recharge_record:
                 recharge_record.is_rejected = True

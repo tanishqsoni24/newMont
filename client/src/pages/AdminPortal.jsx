@@ -12,8 +12,12 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 
 export default function AdminPortal() {
-  const [agentName, setAgentName] = useState("");
-  const [agentNumber, setAgentNumber] = useState("");
+  const [agent , setAgent] = useState({
+    agentName: "",
+    agentNumber: "",
+    agentInitialWallet : "",
+    agentPassword : "",
+  })
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [sortByStatus, setSortByStatus] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -32,18 +36,22 @@ export default function AdminPortal() {
     setSelectedItem(item);
     setModalIsOpen(true);
   };
-  const handleAgentNameChange = (e) => {
-    setAgentName(e.target.value);
-  };
-
-  const handleAgentNumberChange = (e) => {
-    setAgentNumber(e.target.value);
-  };
-  const handleAgentSubmit = (e) => {
+  const handleAgentSubmit = async (e) => {
     e.preventDefault();
-    // You can handle the form submission logic here
-    console.log("Agent Name:", agentName);
-    console.log("Agent Number:", agentNumber);
+    
+    const response = await axios.post(
+      "http://localhost:8000/administ/add_agent/",
+      {
+        agentName: agent.agentName,
+        agentNumber: agent.agentNumber,
+        agentInitialWallet : agent.agentInitialWallet,
+        agentPassword : agent.agentPassword,
+      },
+      { headers: { "Content-Type": "application/json" } }
+
+    );
+    alert(response.data.message);
+
   };
   const handelDistributeIncome = async (e) => {
     e.preventDefault();
@@ -597,7 +605,9 @@ export default function AdminPortal() {
                       className={`text-blue-500 ${
                         item.status
                           ? "pointer-events-none text-gray-400"
-                          : "hover:text-blue-700"
+                          :
+                          
+                          (item.is_rejected ? "pointer-events-none text-gray-400" : "hover:text-blue-700")
                       }`}
                     >
                       Approve
@@ -776,7 +786,8 @@ export default function AdminPortal() {
                       className={`text-blue-500 ${
                         record.status
                           ? "pointer-events-none text-gray-400"
-                          : "hover:text-blue-700"
+                          : 
+                          (record.is_rejected ? "pointer-events-none text-gray-400" : "hover:text-blue-700")
                       }`}
                     >
                       Approve
@@ -1235,7 +1246,7 @@ export default function AdminPortal() {
         }`}
       >
         <div className="add-agent p-5 m-5 ">
-          <form onSubmit={handleAgentSubmit}>
+          <form>
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
@@ -1248,8 +1259,13 @@ export default function AdminPortal() {
                 id="agentName"
                 type="text"
                 placeholder="Agent Name"
-                value={agentName}
-                onChange={handleAgentNameChange}
+                value={agent.agentName}
+                onChange={(event) => {
+                  setAgent({
+                    ...agent,
+                    agentName: event.target.value,
+                  });
+                }}
               />
             </div>
             <div className="mb-6">
@@ -1262,16 +1278,65 @@ export default function AdminPortal() {
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="agentNumber"
-                type="text"
-                placeholder="Agent Number"
-                value={agentNumber}
-                onChange={handleAgentNumberChange}
+                type="number"
+                placeholder="8956798125"
+                value={agent.agentNumber}
+                onChange={(event) => {
+                  setAgent({
+                    ...agent,
+                    agentNumber: event.target.value,
+                  });
+                }}
               />
             </div>
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="agentNumber"
+              >
+                Agent Initial Wallet Amount
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="agentNumber"
+                type="number"
+                placeholder="5000"
+                value={agent.agentInitialWallet}
+                onChange={(event) => {
+                  setAgent({
+                    ...agent,
+                    agentInitialWallet: event.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="agentNumber"
+              >
+                Agent Password
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="agentNumber"
+                type="password"
+                placeholder="******"
+                value={agent.agentPassword}
+                onChange={(event) => {
+                  setAgent({
+                    ...agent,
+                    agentPassword: event.target.value,
+                  });
+                }}
+              />
+            </div>
+            
             <div className="flex items-center justify-between">
               <button
                 className="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
                 type="submit"
+                onClick={handleAgentSubmit}
               >
                 Submit
               </button>
