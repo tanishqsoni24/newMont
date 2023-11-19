@@ -38,7 +38,7 @@ export default function Login() {
         return;
       }
       const response = await axios.post(
-        "http://139.59.32.207/accounts/login/",
+        "https://mygoldmalls.com/accounts/login/",
         login,
         { headers: { "Content-Type": "application/json" } }
       );

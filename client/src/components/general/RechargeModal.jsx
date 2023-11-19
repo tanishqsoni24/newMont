@@ -27,7 +27,7 @@ const RechargeModal = ({ item, isOpen, onRequestClose, onApprove }) => {
 
   const approveWithdrawal = async (item) => {
     const response = await axios.post(
-      "http://139.59.32.207/administ/approve_recharge/",
+      "https://mygoldmalls.com/administ/approve_recharge/",
       {
         recharge_id : item.id,
         is_rejected: false,
@@ -40,7 +40,7 @@ const RechargeModal = ({ item, isOpen, onRequestClose, onApprove }) => {
 
   const rejectWithdrawal = async (item) => {
     const response = await axios.post(
-      "http://139.59.32.207/administ/approve_recharge/",
+      "https://mygoldmalls.com/administ/approve_recharge/",
       {
         recharge_id : item.id,
         is_rejected: true,

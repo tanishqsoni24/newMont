@@ -61,7 +61,7 @@ export default function Profile() {
     const decoded = await jwt_decode(token);
     //(decoded);
     const response = await axios.post(
-      "http://139.59.32.207/accounts/userDetail/",
+      "https://mygoldmalls.com/accounts/userDetail/",
       { phone_number: decoded.phone_number },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -78,7 +78,7 @@ export default function Profile() {
   useEffect(() => {
     const bankCard = async () => {
       const response = await axios.post(
-        "http://139.59.32.207/accounts/showmybankcard/",
+        "https://mygoldmalls.com/accounts/showmybankcard/",
         { phone_number: user.phone_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -121,7 +121,7 @@ export default function Profile() {
       return;
     }
     const response = await axios.post(
-      "http://139.59.32.207/accounts/withdraw/",
+      "https://mygoldmalls.com/accounts/withdraw/",
       {
         phone_number: decoded.phone_number,
         amount: withdraw,
@@ -149,28 +149,91 @@ export default function Profile() {
       return;
     }
     try {
+
+
+      // ######################################################################
+      // Our New LOGIC
+      // ######################################################################
+
+      const token = Cookies.get("session_id"); 
+      const decoded = jwt_decode(token);
+
+      console.log("formatting data")
+      let data = new FormData();
+      data.append('transaction_id', 'ABC1234567891234567');
+      data.append('name', 'tanishqsoni');
+      data.append('email', 'tanishqsoni0309@gmail.com');
+      data.append('mobile', '1234567891');
+      data.append('amount', '1000');
+
+      console.log("sending request")
+      // try{
+      //   let config = {
+      //     method: 'post',
+      //     url: 'https://letspaywallet.in/api/v1/upi/upiQrGenerateAuth',
+      //     headers: { 
+      //       'Content-Type': 'multipart/form-data', 
+      //       'token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZXBzX2tleSI6IjkyYzA1NzhjMDllOTZkNmMxNDJkZmI1MSIsImFlcHNfaXYiOiJjZWU5NDU3YTdlNjI0OTIzODQxNWY0YzUzY2Y5In0.MhqxLp9mUUhMIoatcTiJHMW3iu2IzLjgIXZH2ro-XFo', 
+      //     },
+      //     data : data
+      //   };
+      //   console.log("sending request 1")
+      //   axios.request(config)
+      //   .then((response) => {
+      //     console.log(JSON.stringify(response.data));
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+      // }
+      // catch (err) {
+      //   console.log(err);
+      // }
+
+
+
+
       const response = await axios.post(
-        "http://139.59.32.207/accounts/recharge/",
-        { amount: recharge, phone_number: user.phone_number },
-        { headers: { "Content-Type": "application/json" } }
+        "https://www.letspaywallet.in/api/v1/upi/upiQrGenerateAuth",
+        // send data in multipart/form-data
+        data,
+        { 
+          headers: { 
+            "Content-Type": "multipart/form-data",
+            token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZXBzX2tleSI6IjkyYzA1NzhjMDllOTZkNmMxNDJkZmI1MSIsImFlcHNfaXYiOiJjZWU5NDU3YTdlNjI0OTIzODQxNWY0YzUzY2Y5In0.MhqxLp9mUUhMIoatcTiJHMW3iu2IzLjgIXZH2ro-XFo"
+          } 
+        } 
       );
 
-      if (response.data.status === "Success") {
-        //(response.data);
+      console.log(response.data);
 
-        // decode the token
+      // ######################################################################
+      // Our Old LOGIC 
+      // ######################################################################
 
-        userDeatil();
 
-        // close popup
-        closePopup();
+      // const response = await axios.post(
+      //   "https://mygoldmalls.com/accounts/recharge/",
+      //   { amount: recharge, phone_number: user.phone_number },
+      //   { headers: { "Content-Type": "application/json" } }
+      // );
 
-        setIsAlert(
-          "Recharge Request Sent Successfully of amount ₹" + recharge + ".00 "
-        );
-      } else {
-        setIsAlert(response.data.message);
-      }
+      // if (response.data.status === "Success") {
+      //   //(response.data);
+
+      //   // decode the token
+
+      //   userDeatil();
+
+      //   // close popup
+      //   closePopup();
+
+      //   setIsAlert(
+      //     "Recharge Request Sent Successfully of amount ₹" + recharge + ".00 "
+      //   );
+      // } else {
+      //   setIsAlert(response.data.message);
+      // }
     } catch (err) {
       //(err);
     }
@@ -204,7 +267,7 @@ export default function Profile() {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "http://139.59.32.207/accounts/deleteMyAccount/",
+        "https://mygoldmalls.com/accounts/deleteMyAccount/",
         {
           phone_number: decoded.phone_number,
           password: deletePassword.password,

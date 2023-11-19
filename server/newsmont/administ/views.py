@@ -41,7 +41,6 @@ def add_agent(request):
         wallet = data.get("agentInitialWallet")
         try:
             user = User.objects.create(username=phone, first_name=first_name)
-
             user.set_password(password)
             user.save()
             agent = Profile.objects.create(user=user, phone_number=phone, is_agent=True , wallet=wallet)
@@ -109,7 +108,7 @@ def admin_index(request):
                         "phone_number": user.phone_number,
                         "invite_code": user.invite_code,
                         "is_verified": user.is_verified,
-                        "start_time": user.start_time.strftime("%B-%d-%Y") + " at " + user.start_time.strftime("%I:%M %p"),
+                        # "start_time": user.start_time.strftime("%B-%d-%Y") + " at " + user.start_time.strftime("%I:%M %p"),
                         "recommended_by": user.recommended_by.first_name if user.recommended_by else None,
                         "vip_level": user.vip_level,
                         "wallet": user.wallet,

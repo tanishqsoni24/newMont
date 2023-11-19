@@ -25,7 +25,7 @@ export default function AdminPortal() {
   const handleRewardSubmit = async (e) => {
     e.preventDefault();
     const response = await axios.post(
-      "http://139.59.32.207/administ/reward/",
+      "https://mygoldmalls.com/administ/reward/",
       {
         phone_number: reward.phone_number,
         wallet: reward.wallet,
@@ -59,7 +59,7 @@ export default function AdminPortal() {
     e.preventDefault();
     
     const response = await axios.post(
-      "http://139.59.32.207/administ/add_agent/",
+      "https://mygoldmalls.com/administ/add_agent/",
       {
         agentName: agent.agentName,
         agentNumber: agent.agentNumber,
@@ -75,7 +75,7 @@ export default function AdminPortal() {
   const handelDistributeIncome = async (e) => {
     e.preventDefault();
     const response = await axios.post(
-      "http://139.59.32.207/administ/distribute_income/",
+      "https://mygoldmalls.com/administ/distribute_income/",
       {},
       { headers: { "Content-Type": "application/json" } }
     );
@@ -133,7 +133,7 @@ export default function AdminPortal() {
       const token = Cookies.get("admin_session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "http://139.59.32.207/administ/",
+        "https://mygoldmalls.com/administ/",
         { phone_number: decoded.phone_number },
         { content: "application/json" }
       );
@@ -148,7 +148,7 @@ export default function AdminPortal() {
       setRechargeRecords(response.data.recharge_records);
       setWithdrawRecords(response.data.withdraw_records_details);
       const overalldata = await axios.post(
-        "http://139.59.32.207/administ/all_detail/",
+        "https://mygoldmalls.com/administ/all_detail/",
         {},
         { content: "application/json" }
       );
