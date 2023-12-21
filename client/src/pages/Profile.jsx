@@ -64,7 +64,7 @@ export default function Profile() {
     const decoded = await jwt_decode(token);
     //(decoded);
     const response = await axios.post(
-      "https://mygoldmalls.com/accounts/userDetail/",
+      "http://localhost:8000/accounts/userDetail/",
       { phone_number: decoded.phone_number },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -81,7 +81,7 @@ export default function Profile() {
   useEffect(() => {
     const bankCard = async () => {
       const response = await axios.post(
-        "https://mygoldmalls.com/accounts/showmybankcard/",
+        "http://localhost:8000/accounts/showmybankcard/",
         { phone_number: user.phone_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -124,7 +124,7 @@ export default function Profile() {
       return;
     }
     const response = await axios.post(
-      "https://mygoldmalls.com/accounts/withdraw/",
+      "http://localhost:8000/accounts/withdraw/",
       {
         phone_number: decoded.phone_number,
         amount: withdraw,
@@ -175,7 +175,7 @@ export default function Profile() {
       let transaction_id = "aux"+generateRandomNumber();
 
       const response = await axios.post(
-        "http://192.168.13.112:3001/recieve",
+        "http://localhost:3001/recieve",
         {
           "transaction_id": transaction_id,
           "name": user.name,
@@ -193,6 +193,7 @@ export default function Profile() {
         console.log("enter")
         // addqrcode state
         setQrCode(response.data.qr_string);
+        setfireUPI(true);
       }
 
 
@@ -202,7 +203,7 @@ export default function Profile() {
 
 
       // const response = await axios.post(
-      //   "https://mygoldmalls.com/accounts/recharge/",
+      //   "http://localhost:8000/accounts/recharge/",
       //   { amount: recharge, phone_number: user.phone_number },
       //   { headers: { "Content-Type": "application/json" } }
       // );
@@ -226,7 +227,23 @@ export default function Profile() {
     } catch (err) {
       //(err);
     }
-  };
+  };  
+  const [fireUPI , setfireUPI] = useState(false);
+
+  const [isConfirmRecharge , setIsConfirmRecharge] = useState(false);
+  useEffect(() => {
+    if(fireUPI){
+      document.getElementById("fireUPI").click();
+      // construct a model for payment reject or confirm
+      // close recharge popup
+      setIsRechargePopupOpen(false);
+      // open confirm recharge popup
+      setIsConfirmRecharge(true);
+      
+
+      setfireUPI(false);
+    }
+  }, [fireUPI]);
   useEffect(() => {
     // Set the background color for the body element
     document.body.classList.add("body-bg-color2");
@@ -237,7 +254,6 @@ export default function Profile() {
     };
   }, []);
   const [deletePopUp, setDeletePopUp] = useState(false);
-
   const handleDeletePopup = () => {
     setDeletePopUp(true);
   };
@@ -256,7 +272,7 @@ export default function Profile() {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "https://mygoldmalls.com/accounts/deleteMyAccount/",
+        "http://localhost:8000/accounts/deleteMyAccount/",
         {
           phone_number: decoded.phone_number,
           password: deletePassword.password,
@@ -351,7 +367,7 @@ export default function Profile() {
             {/* =================================CHANGE======================================== */}
 
 
-            <a href={qrCode} className="text-white bg-[#00032c] hover:bg-[#363c7b] focus:outline-none focus:ring-4 focus:ring-[#d4d7fb] font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-[#00032c] dark:hover:bg-[#d4d7fb] ">UPI</a>
+            <a href={qrCode} id="fireUPI" style={{"visibility" : "hidden"}}>UPI</a>
 
             {/* ==================================/change/====================================== */}
             <button
@@ -489,6 +505,76 @@ export default function Profile() {
             </div>
           </div>
         </div>
+        {isConfirmRecharge && (
+          
+          <div
+            id="pop"
+            className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-transparent z-20"
+            // Change "bg-gray-900 bg-opacity-50" to "bg-transparent" here
+          >
+
+            <div
+              style={{ width: "20rem" }}
+              className="flex flex-col justify-center overflow-y-auto items-center md:w-96 md:mx-auto"
+            >
+              <img
+              onClick={
+                () => {
+                  setIsConfirmRecharge(false);
+                }
+              }
+
+                width="20"
+                height="20"
+                className="mb-1 "
+                src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
+                alt="delete-sign"
+              />
+              <div className="w-full bg-white rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+              <div
+                  className="p-6 space-y-4 md:space-y-6 sm:p-8 ml-32 md:ml-9 md:mt-0"
+                >
+                {/* a paragraph on guide lines */}
+
+                <p className="text-center text-sm text-gray-500 mt-4">
+                  Please go on the UPI app and do the payment of ₹{recharge}.00
+                  then click on the confirm recharge button.
+                  </p>
+
+                {/* and two buttons one of blue confirm recharge */}
+                {/* and other of red cancel recharge */}
+
+                
+                  <button onClick={
+                    () => {
+                      // do something
+                    }
+                  } className="w-full text-white bg-[#26439b] hover:bg-[#2d4286] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    Confirm Recharge
+                  </button>
+                  <br />
+                  <button 
+                  onClick={
+                    () => {
+
+                      const response = window.confirm("Are you sure you want to cancel the recharge?");
+                      if(response){
+                        setIsConfirmRecharge(false);
+                      }
+
+                  }
+                }
+                  className="w-full text-white bg-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    Cancle Recharge
+                    </button>
+                </div>
+
+                </div>
+            </div>
+          </div>
+        )
+
+        }
 
         {isRechargePopupOpen && (
           <div
