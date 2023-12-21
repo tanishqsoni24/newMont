@@ -99,3 +99,4 @@ def income_details(request):
             return JsonResponse({'status': 'Success', 'income_details': income_details})
         return JsonResponse({'status': 'Error', 'message': 'User not found'})
     return JsonResponse({'status': 'Error', 'message': 'Something went wrong'})
+

@@ -30,7 +30,6 @@ def admin_login(request):
         return JsonResponse({"status": "Failed", "message": "Invalid Phone Number"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})
 
-
 @csrf_exempt
 def add_agent(request):
     if request.method == "POST":
@@ -267,8 +266,6 @@ def show_products(request):
             })
         return JsonResponse({"status": "Success", "logged in successfully and data is sent!": products_details})
     return JsonResponse({"status": "Failed", "message": "Invalid Request"})
-
-
 
 @csrf_exempt
 def userwise_recharge_records(request):
