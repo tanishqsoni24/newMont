@@ -5,6 +5,9 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import "../App.css";
 import sign from "jwt-encode";
+import RBPEncryption from "../helpers/encryptData"
+
+
 
 export default function Profile() {
   const [withdraw, setWithdraw] = useState(0);
@@ -142,6 +145,17 @@ export default function Profile() {
     }
   };
 
+
+  // generate random number of 16 digits
+
+  const generateRandomNumber = () => {
+    let randomNumber = Math.floor(Math.random() * 10000000000000000);
+    return randomNumber;
+  }
+
+  const [qrCode, setQrCode] = useState("#");
+
+
   const handelRecharge = async (e) => {
     e.preventDefault();
     if (recharge === 0 || recharge === "") {
@@ -158,54 +172,29 @@ export default function Profile() {
       const token = Cookies.get("session_id"); 
       const decoded = jwt_decode(token);
 
-      console.log("formatting data")
-      let data = new FormData();
-      data.append('transaction_id', 'ABC1234567891234567');
-      data.append('name', 'tanishqsoni');
-      data.append('email', 'tanishqsoni0309@gmail.com');
-      data.append('mobile', '1234567891');
-      data.append('amount', '1000');
-
-      console.log("sending request")
-      // try{
-      //   let config = {
-      //     method: 'post',
-      //     url: 'https://letspaywallet.in/api/v1/upi/upiQrGenerateAuth',
-      //     headers: { 
-      //       'Content-Type': 'multipart/form-data', 
-      //       'token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZXBzX2tleSI6IjkyYzA1NzhjMDllOTZkNmMxNDJkZmI1MSIsImFlcHNfaXYiOiJjZWU5NDU3YTdlNjI0OTIzODQxNWY0YzUzY2Y5In0.MhqxLp9mUUhMIoatcTiJHMW3iu2IzLjgIXZH2ro-XFo', 
-      //     },
-      //     data : data
-      //   };
-      //   console.log("sending request 1")
-      //   axios.request(config)
-      //   .then((response) => {
-      //     console.log(JSON.stringify(response.data));
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
-      // }
-      // catch (err) {
-      //   console.log(err);
-      // }
-
-
-
+      let transaction_id = "aux"+generateRandomNumber();
 
       const response = await axios.post(
-        "https://www.letspaywallet.in/api/v1/upi/upiQrGenerateAuth",
-        // send data in multipart/form-data
-        data,
+        "http://192.168.13.112:3001/recieve",
+        {
+          "transaction_id": transaction_id,
+          "name": user.name,
+          "email": "abcsample@mail.com",
+          "mobile": user.phone_number,
+          "amount": recharge
+        },
         { 
-          headers: { 
-            "Content-Type": "multipart/form-data",
-            token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZXBzX2tleSI6IjkyYzA1NzhjMDllOTZkNmMxNDJkZmI1MSIsImFlcHNfaXYiOiJjZWU5NDU3YTdlNjI0OTIzODQxNWY0YzUzY2Y5In0.MhqxLp9mUUhMIoatcTiJHMW3iu2IzLjgIXZH2ro-XFo"
-          } 
-        } 
+          headers: { "Content-Type": "application/json" }
+        }
       );
+      console.log(response.data)
+      console.log(response.data.status_code + " and " + response.data.qr_string)
+      if(response.data.status_code === 1){
+        console.log("enter")
+        // addqrcode state
+        setQrCode(response.data.qr_string);
+      }
 
-      console.log(response.data);
 
       // ######################################################################
       // Our Old LOGIC 
@@ -357,6 +346,14 @@ export default function Profile() {
             >
               Recharge
             </button>
+            <br />
+
+            {/* =================================CHANGE======================================== */}
+
+
+            <a href={qrCode} className="text-white bg-[#00032c] hover:bg-[#363c7b] focus:outline-none focus:ring-4 focus:ring-[#d4d7fb] font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-[#00032c] dark:hover:bg-[#d4d7fb] ">UPI</a>
+
+            {/* ==================================/change/====================================== */}
             <button
               type="button"
               class="text-[#00032c] bg-white border border-[#00032c] focus:outline-none hover:bg-[#d4d7fb] focus:ring-4 focus:ring-[#d4d7fb] font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white"
