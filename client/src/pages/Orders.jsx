@@ -21,7 +21,7 @@ export default function Orders() {
         const requestorders = async () => {
             const token = Cookies.get("session_id");
             const decoded = await jwt_decode(token);
-            const response = await axios.post('http://localhost:8000/accounts/myorders/',{
+            const response = await axios.post('http://192.168.13.112:8000/accounts/myorders/',{
                 phone_number : decoded.phone_number
             } ,{ headers: { 'Content-Type': 'application/json' } });
             console.log(response.data.data)

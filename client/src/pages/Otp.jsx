@@ -16,7 +16,7 @@ export default function Otp() {
         e.preventDefault();
         const token = Cookies.get("phone_number");
         const decoded = jwtDecode(token);
-        const response = await axios.post('http://localhost:8000/accounts/resend-otp/', {
+        const response = await axios.post('http://192.168.13.112:8000/accounts/resend-otp/', {
             phone_number: decoded.phone_number
         }, { headers: { 'Content-Type': 'application/json' } });
 
@@ -41,7 +41,7 @@ export default function Otp() {
         e.preventDefault()
         const token = Cookies.get("phone_number");
         const decoded = await jwtDecode(token);
-        const response = await axios.post('http://localhost:8000/accounts/activate/', {
+        const response = await axios.post('http://192.168.13.112:8000/accounts/activate/', {
           phone_number: decoded.phone_number,
           otp: otp
         }, { headers: { 'Content-Type': 'application/json' } });

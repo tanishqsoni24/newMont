@@ -25,19 +25,42 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     },
   };
 
+  const generateRandomNumber = () => {
+    let randomNumber = Math.floor(Math.random() * 10000000000000000);
+    return randomNumber;
+  }
+
+  
   const approveWithdrawal = async (item) => {
     const token = Cookies.get("admin_session_id");
     const decoded = jwt_decode(token);
-    const response = await axios.post(
-      "http://localhost:8000/administ/approve_withdraw/",
-      {
-        phone_number: decoded.phone_number,
-        withdrawal_id: item.id,
-        is_rejected: false,
-      },
-      { headers: { "Content-Type": "application/json" } }
-    );
-    window.location.reload();
+
+
+    /*
+      transaction_id:aux9813953701837886
+      account_holder_name:Tanishq Soni
+      bank_name:Punjab National Bank
+      account_number:0314000109273398
+      ifsc_code:PUNB0031400
+      mobile_number:8445933567
+      email:abcsample@mail.com
+      amount:140
+    */
+
+    const response = await axios.post("http://192.168.13.112:3001/approve_withdraw/", 
+    {
+
+    })
+    // const response = await axios.post(
+    //   "http://192.168.13.112:8000/administ/approve_withdraw/",
+    //   {
+    //     phone_number: decoded.phone_number,
+    //     withdrawal_id: item.id,
+    //     is_rejected: false,
+    //   },
+    //   { headers: { "Content-Type": "application/json" } }
+    // );
+    // window.location.reload();
 
   }
 
@@ -45,7 +68,7 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     const token = Cookies.get("admin_session_id");
     const decoded = jwt_decode(token);
     const response = await axios.post(
-      "http://localhost:8000/administ/approve_withdraw/",
+      "http://192.168.13.112:8000/administ/approve_withdraw/",
       {
         phone_number: decoded.phone_number,
         withdrawal_id: item.id,

@@ -67,7 +67,8 @@ class Recharge_Record(BaseModel):
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     status = models.BooleanField(default=False)
     date = models.DateTimeField(blank=True, null=True)
-    user_recharge_payment_id = models.CharField(max_length=15, blank=True, null=True)
+    user_recharge_payment_id = models.CharField(max_length=20, blank=True, null=True)
+    transaction_id = models.CharField(max_length=20, blank=True, null=True)
     is_rejected = models.BooleanField(default=False)
 
     def __str__(self):

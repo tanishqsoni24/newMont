@@ -64,7 +64,7 @@ export default function Profile() {
     const decoded = await jwt_decode(token);
     //(decoded);
     const response = await axios.post(
-      "http://localhost:8000/accounts/userDetail/",
+      "http://192.168.13.112:8000/accounts/userDetail/",
       { phone_number: decoded.phone_number },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -81,7 +81,7 @@ export default function Profile() {
   useEffect(() => {
     const bankCard = async () => {
       const response = await axios.post(
-        "http://localhost:8000/accounts/showmybankcard/",
+        "http://192.168.13.112:8000/accounts/showmybankcard/",
         { phone_number: user.phone_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -103,7 +103,7 @@ export default function Profile() {
   }, [isAlert]);
 
   useEffect(() => {
-    userDeatil();
+    userDeatil(); 
   }, []);
   const [recharge, setRecharge] = useState(0);
 
@@ -124,7 +124,7 @@ export default function Profile() {
       return;
     }
     const response = await axios.post(
-      "http://localhost:8000/accounts/withdraw/",
+      "http://192.168.13.112:8000/accounts/withdraw/",
       {
         phone_number: decoded.phone_number,
         amount: withdraw,
@@ -154,7 +154,19 @@ export default function Profile() {
   }
 
   const [qrCode, setQrCode] = useState("#");
-
+  const [transaction_id, setTransaction_id] = useState("aux"+generateRandomNumber());
+  const [doneTransactionId, setDoneTransactionId] = useState("");
+  const [paymentSuccessResponse, setPaymentSuccessResponse] = useState(
+    {
+      "status_code": undefined,
+      "txn_status":"",
+      "status_msg": "",
+      "transaction_id":"",
+      "amount": undefined,
+      "utr":"",
+      "phone_number" : user.phone_number,
+    }
+  );
 
   const handelRecharge = async (e) => {
     e.preventDefault();
@@ -164,18 +176,16 @@ export default function Profile() {
     }
     try {
 
-
-      // ######################################################################
-      // Our New LOGIC
-      // ######################################################################
-
       const token = Cookies.get("session_id"); 
       const decoded = jwt_decode(token);
 
-      let transaction_id = "aux"+generateRandomNumber();
-
+      // set transaction id
+      
+      console.log(transaction_id)
       const response = await axios.post(
-        "http://localhost:3001/recieve",
+        
+
+        "http://192.168.13.112:3001/recieve",
         {
           "transaction_id": transaction_id,
           "name": user.name,
@@ -194,38 +204,13 @@ export default function Profile() {
         // addqrcode state
         setQrCode(response.data.qr_string);
         setfireUPI(true);
+        setDoneTransactionId(transaction_id);
+        setTransaction_id("aux"+generateRandomNumber());
+        
+        // console.log(object)
       }
-
-
-      // ######################################################################
-      // Our Old LOGIC 
-      // ######################################################################
-
-
-      // const response = await axios.post(
-      //   "http://localhost:8000/accounts/recharge/",
-      //   { amount: recharge, phone_number: user.phone_number },
-      //   { headers: { "Content-Type": "application/json" } }
-      // );
-
-      // if (response.data.status === "Success") {
-      //   //(response.data);
-
-      //   // decode the token
-
-      //   userDeatil();
-
-      //   // close popup
-      //   closePopup();
-
-      //   setIsAlert(
-      //     "Recharge Request Sent Successfully of amount ₹" + recharge + ".00 "
-      //   );
-      // } else {
-      //   setIsAlert(response.data.message);
-      // }
     } catch (err) {
-      //(err);
+      console.log(err);
     }
   };  
   const [fireUPI , setfireUPI] = useState(false);
@@ -253,6 +238,69 @@ export default function Profile() {
       document.body.classList.remove("body-bg-color2");
     };
   }, []);
+
+
+  const getPaymentAck = async () => {
+    try{
+        const token = Cookies.get("session_id"); 
+        const decoded = jwt_decode(token);
+        const response = await axios.post(
+          "http://192.168.13.112:3001/paymentAck",
+          {
+            "transaction_id": doneTransactionId,
+          },
+          { 
+            headers: { "Content-Type": "application/json" }
+          }
+        );
+        console.log(response.data)
+        if(response.data.status_code===1){
+          setPaymentSuccessResponse({
+            "status_code": response.data.status_code,
+            "txn_status":response.data.txn_status,
+            "status_msg": response.data.status_msg,
+            "transaction_id":response.data.transaction_id,
+            "amount": response.data.amount,
+            "utr":response.data.utr,
+            "phone_number" : user.phone_number,
+          })
+          console.log(paymentSuccessResponse);
+        } 
+    }
+
+    catch(err){
+      console.log(err)
+    }
+}
+
+  useEffect(() => {
+    const handelPaymentSuccess = async () => {
+    const backendResponse = await axios.post(
+      "http://192.168.13.112:8000/accounts/recharge/",
+      paymentSuccessResponse,
+      { headers: { "Content-Type": "application/json" } }
+    );
+
+    if (backendResponse.data.status === "Success") {
+      //(response.data);
+
+      // decode the token
+
+      userDeatil();
+      setfireUPI(false);
+      setIsAlert(
+        "Recharge Request Sent Successfully of amount ₹" + recharge + ".00 "
+      );
+    } else {
+      setfireUPI(false);
+      setIsAlert(backendResponse.data.message);
+    }}
+
+    handelPaymentSuccess();
+  }, [paymentSuccessResponse])
+
+
+
   const [deletePopUp, setDeletePopUp] = useState(false);
   const handleDeletePopup = () => {
     setDeletePopUp(true);
@@ -272,7 +320,7 @@ export default function Profile() {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "http://localhost:8000/accounts/deleteMyAccount/",
+        "http://192.168.13.112:8000/accounts/deleteMyAccount/",
         {
           phone_number: decoded.phone_number,
           password: deletePassword.password,
@@ -293,6 +341,9 @@ export default function Profile() {
 
   return (
     <React.Fragment>
+      <div className="">
+      {paymentSuccessResponse.phone_number} hello
+      </div>
       <div className="md:w-5/6 w-full mx-auto">
         {isAlert && (
           <div
@@ -367,7 +418,7 @@ export default function Profile() {
             {/* =================================CHANGE======================================== */}
 
 
-            <a href={qrCode} id="fireUPI" style={{"visibility" : "hidden"}}>UPI</a>
+            <a href={qrCode} id="fireUPI" style={{"display" : "none"}}></a>
 
             {/* ==================================/change/====================================== */}
             <button
@@ -545,11 +596,7 @@ export default function Profile() {
                 {/* and other of red cancel recharge */}
 
                 
-                  <button onClick={
-                    () => {
-                      // do something
-                    }
-                  } className="w-full text-white bg-[#26439b] hover:bg-[#2d4286] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                  <button onClick={getPaymentAck} className="w-full text-white bg-[#26439b] hover:bg-[#2d4286] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                     Confirm Recharge
                   </button>
                   <br />

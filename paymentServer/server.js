@@ -27,11 +27,35 @@ app.post("/recieve", async (req, res) => {
     headers: {
       "Content-Type": "multipart/form-data",
       "Token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZXBzX2tleSI6IjkyYzA1NzhjMDllOTZkNmMxNDJkZmI1MSIsImFlcHNfaXYiOiJjZWU5NDU3YTdlNjI0OTIzODQxNWY0YzUzY2Y5In0.MhqxLp9mUUhMIoatcTiJHMW3iu2IzLjgIXZH2ro-XFo"
-    }}
+    }
+  }
     )
   console.log(response.data);
     res.send(response.data);
 });
+
+app.post("/paymentAck", async (req, res) => {
+  let data = req.body;
+  let formData = new FormData();
+  formData.append("transaction_id", data.transaction_id);
+  console.log(data)
+
+  const response = await axios.post("http://letspaywallet.in/api/v1/upi/upiTxnStatusCheck",formData,
+  {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZXBzX2tleSI6IjkyYzA1NzhjMDllOTZkNmMxNDJkZmI1MSIsImFlcHNfaXYiOiJjZWU5NDU3YTdlNjI0OTIzODQxNWY0YzUzY2Y5In0.MhqxLp9mUUhMIoatcTiJHMW3iu2IzLjgIXZH2ro-XFo"
+    }
+  })
+
+  console.log(response.data);
+  res.send(response.data);
+});
+
+app.get("/generateTrxnId", (req, res)=>{
+  let randomNumber = Math.floor(Math.random() * 10000000000000000);
+  res.send({transaction_id: "aux"+randomNumber});
+}) 
 
 
 // Start the server
