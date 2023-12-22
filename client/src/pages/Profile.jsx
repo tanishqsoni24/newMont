@@ -64,7 +64,7 @@ export default function Profile() {
     const decoded = await jwt_decode(token);
     //(decoded);
     const response = await axios.post(
-      "http://192.168.13.112:8000/accounts/userDetail/",
+      "http://192.168.1.11:8000/accounts/userDetail/",
       { phone_number: decoded.phone_number },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -81,7 +81,7 @@ export default function Profile() {
   useEffect(() => {
     const bankCard = async () => {
       const response = await axios.post(
-        "http://192.168.13.112:8000/accounts/showmybankcard/",
+        "http://192.168.1.11:8000/accounts/showmybankcard/",
         { phone_number: user.phone_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -124,7 +124,7 @@ export default function Profile() {
       return;
     }
     const response = await axios.post(
-      "http://192.168.13.112:8000/accounts/withdraw/",
+      "http://192.168.1.11:8000/accounts/withdraw/",
       {
         phone_number: decoded.phone_number,
         amount: withdraw,
@@ -178,14 +178,10 @@ export default function Profile() {
 
       const token = Cookies.get("session_id"); 
       const decoded = jwt_decode(token);
-
-      // set transaction id
-      
-      console.log(transaction_id)
       const response = await axios.post(
         
 
-        "http://192.168.13.112:3001/recieve",
+        "http://192.168.1.11:3001/recieve",
         {
           "transaction_id": transaction_id,
           "name": user.name,
@@ -197,20 +193,17 @@ export default function Profile() {
           headers: { "Content-Type": "application/json" }
         }
       );
-      console.log(response.data)
-      console.log(response.data.status_code + " and " + response.data.qr_string)
       if(response.data.status_code === 1){
-        console.log("enter")
         // addqrcode state
         setQrCode(response.data.qr_string);
         setfireUPI(true);
         setDoneTransactionId(transaction_id);
         setTransaction_id("aux"+generateRandomNumber());
         
-        // console.log(object)
+    
       }
     } catch (err) {
-      console.log(err);
+    alert("something went wrong")
     }
   };  
   const [fireUPI , setfireUPI] = useState(false);
@@ -245,7 +238,7 @@ export default function Profile() {
         const token = Cookies.get("session_id"); 
         const decoded = jwt_decode(token);
         const response = await axios.post(
-          "http://192.168.13.112:3001/paymentAck",
+          "http://192.168.1.11:3001/paymentAck",
           {
             "transaction_id": doneTransactionId,
           },
@@ -253,7 +246,6 @@ export default function Profile() {
             headers: { "Content-Type": "application/json" }
           }
         );
-        console.log(response.data)
         if(response.data.status_code===1){
           setPaymentSuccessResponse({
             "status_code": response.data.status_code,
@@ -264,19 +256,23 @@ export default function Profile() {
             "utr":response.data.utr,
             "phone_number" : user.phone_number,
           })
-          console.log(paymentSuccessResponse);
+          setfireUPI(false);
         } 
+        else{
+          alert("something went wrong")
+          setfireUPI(false)
+        }
     }
 
     catch(err){
-      console.log(err)
+      alert("something went wrong")
     }
 }
 
   useEffect(() => {
     const handelPaymentSuccess = async () => {
     const backendResponse = await axios.post(
-      "http://192.168.13.112:8000/accounts/recharge/",
+      "http://192.168.1.11:8000/accounts/recharge/",
       paymentSuccessResponse,
       { headers: { "Content-Type": "application/json" } }
     );
@@ -320,7 +316,7 @@ export default function Profile() {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "http://192.168.13.112:8000/accounts/deleteMyAccount/",
+        "http://192.168.1.11:8000/accounts/deleteMyAccount/",
         {
           phone_number: decoded.phone_number,
           password: deletePassword.password,

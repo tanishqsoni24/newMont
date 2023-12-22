@@ -19,18 +19,17 @@ export default function IncomingDetails() {
       const userIncomeDetails = async () => {
         const token = Cookies.get("session_id");
         const decoded = await jwt_decode(token);
-        const response = await axios.post('http://192.168.13.112:8000/accounts/myIncomeDetails/', {
+        const response = await axios.post('http://192.168.1.11:8000/accounts/myIncomeDetails/', {
           phone_number: decoded.phone_number
         }, { headers: { 'Content-Type': 'application/json' } });
         
         setIncomeDetails(response.data.data);
         
-        console.log(response.data.data);
       };
       userIncomeDetails();
     }
     catch(err){
-      // console.log(err)
+      alert("something went wrong")
     }
 
 }, []);
