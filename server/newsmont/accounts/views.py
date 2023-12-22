@@ -353,7 +353,7 @@ def my_withdraw_requests(request):
             withdraw_records = [
                 {
                     'amount': withdraw_record['amount'],
-                    'status': withdraw_record['status'],
+                    'status': analyze(withdraw_record['status'], withdraw_record['is_rejected']),
                     'date': withdraw_record['date'].strftime("%B-%d-%Y")+ " at " + withdraw_record['date'].strftime("%H:%M:%S"),
                 }
                 for withdraw_record in withdraw_records
@@ -363,6 +363,12 @@ def my_withdraw_requests(request):
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
 
+def analyze(status, is_rejected):
+    if is_rejected:
+        return "Rejected"
+    if status:
+        return "Approved"
+    return "Pending"
 
 @csrf_exempt
 def change_password(request):

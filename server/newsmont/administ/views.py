@@ -346,20 +346,19 @@ def send_response_to_ref_num(request):
 def getDataFromWithdrawal_id(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
-        uid = data.get("withdraw_id")
+        uid = data.get("withdrawal_id")
+        print(uid)
         withdraw_record = Withdraw_Record.objects.filter(uid=uid).first()
+        print(withdraw_record)
         if withdraw_record:
-            #   transaction_id:aux9813953701837886
-               #   account_holder_name:Tanishq Soni
-                #   bank_name:Punjab National Bank
-               #   account_number:0314000109273398
-               #   ifsc_code:PUNB0031400
-               #   mobile_number:8445933567
-               #   email:abcsample@mail.com
-               #   amount:140
             withdraw_record_details = {
-                "transaction_id": withdraw_,
-                
+                "account_holder_name" : withdraw_record.bank_card.card_holder_name,
+                "bank_name" : withdraw_record.bank_card.bank_name,
+                "account_number" : withdraw_record.bank_card.account_number,
+                "ifsc_code" : withdraw_record.bank_card.ifsc_code,
+                "mobile_number" : withdraw_record.user.phone_number,
+                "email" : "abcsample@mail.com",
+                "amount" : withdraw_record.amount,
             }
             return JsonResponse({"status": "Success", "message": "Data is sent!", "data": withdraw_record_details})
         return JsonResponse({"status": "Failed", "message": "Invalid Withdraw Record"})
@@ -386,9 +385,11 @@ def approved_recharge_records(request):
 @csrf_exempt
 def approve_withdraw_records(request):
     if request.method == "POST":
+        print("in approve withdraw reecords")
         data = json.loads(request.body.decode('utf-8'))
         uid = data.get("withdrawal_id")
         is_rejected = data.get("is_rejected")
+        print("uid is = ",uid , "status is = ", is_rejected)
         if(is_rejected==True):
             print(is_rejected, uid)
             withdraw_record = Withdraw_Record.objects.filter(uid=uid).first()
@@ -403,8 +404,13 @@ def approve_withdraw_records(request):
         withdraw_record = Withdraw_Record.objects.filter(uid=uid).first()
         if withdraw_record:
             if withdraw_record.amount < admin_wallet.amount:
-                
+                utr = data.get("utr")
+                print(utr)
+                transaction_id = data.get("transaction_id")
+                print(transaction_id)
                 withdraw_record.status = True
+                withdraw_record.upi_ref_number = utr
+                withdraw_record.transaction_id = transaction_id
                 withdraw_record.save()
                 # subtract the amount from admin wallet
                 admin_wallet.amount = admin_wallet.amount - withdraw_record.amount
@@ -413,6 +419,7 @@ def approve_withdraw_records(request):
                 user = withdraw_record.user
                 user.wallet = user.wallet - withdraw_record.amount
                 user.save()
+                print("apporved")
                 return JsonResponse({"status": "Success", "message": "Withdraw Approved"})
             return JsonResponse({"status": "Failed", "message": "Invalid Withdraw Record"})
             
@@ -425,7 +432,6 @@ def approve_recharge_record(request):
         data = json.loads(request.body.decode('utf-8'))
         uid = data.get("recharge_id")
         is_rejected = data.get("is_rejected")
-        print(uid , is_rejected )
         if(is_rejected == True): 
             recharge_record = Recharge_Record.objects.filter(uid=uid).first()
             if recharge_record:

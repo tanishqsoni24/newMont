@@ -42,7 +42,7 @@ export default function Home() {
   useEffect(() => {
 
     const fetching = async () => {
-      const response = await axios.get("http://192.168.1.11:8000/dashboard/all_products/");
+      const response = await axios.get("http://192.168.13.112:8000/dashboard/all_products/");
       //(response.data);
       setExclusive(response.data.exclusive_product_details);
       setUpgrade(response.data.upgrade_product_details);

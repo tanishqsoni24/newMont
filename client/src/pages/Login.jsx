@@ -38,7 +38,7 @@ export default function Login() {
         return;
       }
       const response = await axios.post(
-        "http://192.168.1.11:8000/accounts/login/",
+        "http://192.168.13.112:8000/accounts/login/",
         login,
         { headers: { "Content-Type": "application/json" } }
       );

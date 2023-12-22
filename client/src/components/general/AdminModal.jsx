@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -30,55 +30,71 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     return randomNumber;
   }
 
+  const [transaction_id, setTransactionId] = useState("aux"+generateRandomNumber());
+  const [doneTransactionId, setDoneTransactionId] = useState("");
   
   const approveWithdrawal = async (item) => {
     const token = Cookies.get("admin_session_id");
     const decoded = jwt_decode(token);
 
+    const getWithdrawalDetails = await axios.post("http://192.168.13.112:8000/administ/get_withdrawl_data/", 
+            {
+              withdrawal_id: item.id
+            }, 
+            { 
+              headers: {
+                "Content-Type": "application/json" 
+              } 
+            });
 
-    /*
-      transaction_id:aux9813953701837886
-      account_holder_name:Tanishq Soni
-      bank_name:Punjab National Bank
-      account_number:0314000109273398
-      ifsc_code:PUNB0031400
-      mobile_number:8445933567
-      email:abcsample@mail.com
-      amount:140
-    */
+    const withdrawalDetails = await getWithdrawalDetails.data;
+    console.log(withdrawalDetails)
+    // console.log(withdrawalDetails.data)
+    if(withdrawalDetails.status==="Success") {
+      const getWithdraw = await axios.post("http://192.168.13.112:3001/withdraw", 
+      {
+        transaction_id: transaction_id,
+        account_holder_name: withdrawalDetails.data.account_holder_name,
+        bank_name: withdrawalDetails.data.bank_name,
+        account_number: withdrawalDetails.data.account_number,
+        ifsc_code: withdrawalDetails.data.ifsc_code,
+        mobile_number: withdrawalDetails.data.mobile_number,
+        email: withdrawalDetails.data.email,
+        amount: withdrawalDetails.data.amount
+      },
+      { 
+        headers: { 
+          "Content-Type": "application/json" 
+        } 
+      });
+      console.log(getWithdraw.data)
+      if(getWithdraw.data.status_code === 1){
 
-    const getWithdrawalDetails = await axios.post("http://192.168.1.11:8000/administ/get_withdrawl_data/", {withdrawal_id: item.id} , { headers: { "Content-Type": "application/json" } });
-
-    const withdrawalDetails = getWithdrawalDetails.data;
-
-    withdrawalDetails.phone_number = decoded.phone_number;
-
-    const getWithdraw = await axios.post("http://192.168.1.11:3001/withdraw", withdrawalDetails, { headers: { "Content-Type": "application/json" } });
-
-    const withdraw = getWithdraw.data;
-
-    if(withdraw.status_code === 1) {
-
-      const response = await axios.post(
-        "http://192.168.1.11:8000/administ/approve_withdraw/",
-        {
-          phone_number: decoded.phone_number,
-          withdrawal_id: item.id,
-          is_rejected: false,
-        },
-        { headers: { "Content-Type": "application/json" } }
-      );}
-    window.location.reload();
-
+        const response = await axios.post(
+          "http://192.168.13.112:8000/administ/approve_withdraw/",
+          {
+            withdrawal_id: item.id,
+            is_rejected: false,
+            transaction_id: transaction_id,
+            utr : getWithdraw.data.utr,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+      }
+      setTransactionId("aux"+generateRandomNumber());
+      window.location.reload();
+    }
   }
 
   const rejectWithdrawal = async (item) => {
     const token = Cookies.get("admin_session_id");
     const decoded = jwt_decode(token);
     const response = await axios.post(
-      "http://192.168.1.11:8000/administ/approve_withdraw/",
+      "http://192.168.13.112:8000/administ/approve_withdraw/",
       {
-        phone_number: decoded.phone_number,
         withdrawal_id: item.id,
         is_rejected: true,
       },

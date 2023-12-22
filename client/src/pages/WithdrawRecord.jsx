@@ -20,7 +20,7 @@ export default function WithdrawRecord() {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "http://192.168.1.11:8000/accounts/mywithdrawrecord/",
+        "http://192.168.13.112:8000/accounts/mywithdrawrecord/",
         {
           phone_number: decoded.phone_number,
         },
@@ -74,11 +74,15 @@ export default function WithdrawRecord() {
                     </th>
                     <td class="px-6 py-4">₹{withdraw.amount}</td>
                     <td class="px-6 py-4">
-                      {withdraw.status ? (
-                        <p className="text-green-500">Success</p>
-                      ) : (
-                        <p className="text-red-500">Pending</p>
-                      )}
+                      {withdraw.status === "Pending" ? (
+                        <p className="text-yellow-500">{withdraw.status}</p>
+                      ) : null}
+                      {withdraw.status === "Approved" ? (
+                        <p className="text-green-500">{withdraw.status}</p>
+                      ) : null}
+                      {withdraw.status === "Rejected" ? (
+                        <p className="text-red-500">{withdraw.status}</p>
+                      ) : null}
                     </td>
                   </tr>
                 );

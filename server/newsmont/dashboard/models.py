@@ -50,9 +50,10 @@ class Withdraw_Record(BaseModel):
     bank_card = models.ForeignKey(Bank_Card, on_delete=models.CASCADE, related_name="bank_card")
     status = models.BooleanField(default=False)
     date = models.DateTimeField(blank=True, null=True)
-    upi_ref_number = models.CharField(max_length=15, blank=True, null=True)
+    upi_ref_number = models.CharField(max_length=20, blank=True, null=True)
     paid_date = models.DateTimeField(blank=True, null=True)
     is_rejected = models.BooleanField(default=False)
+    transaction_id = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
         return str(self.user) + " - " + str(self.amount)

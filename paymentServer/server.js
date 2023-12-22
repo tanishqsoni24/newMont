@@ -35,17 +35,9 @@ app.post("/recieve", async (req, res) => {
 });
 
 app.post("/withdraw", async (req, res) => {
-
+  console.log("etered")
   let data = req.body;
   let formData = new FormData();
-  // #   transaction_id:aux9813953701837886
-  //               #   account_holder_name:Tanishq Soni
-  //               #   bank_name:Punjab National Bank
-  //               #   account_number:0314000109273398
-  //               #   ifsc_code:PUNB0031400
-  //               #   mobile_number:8445933567
-  //               #   email:abcsample@mail.com
-  //               #   amount:140
   formData.append("transaction_id", data.transaction_id);
   formData.append("account_holder_name", data.account_holder_name);
   formData.append("bank_name", data.bank_name);
@@ -56,7 +48,7 @@ app.post("/withdraw", async (req, res) => {
   formData.append("amount", data.amount);
   console.log(data)
 
-  const response = await axios.post("https://letspaywallet.in/api/v1/upi/upiWithdrawal",formData,
+  const response = await axios.post("http://letspaywallet.in/api/v1/upi/upiPayoutAuth",formData,
 
   {
     headers: {
