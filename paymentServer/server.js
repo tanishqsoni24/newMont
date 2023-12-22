@@ -34,6 +34,43 @@ app.post("/recieve", async (req, res) => {
     res.send(response.data);
 });
 
+app.post("/withdraw", async (req, res) => {
+
+  let data = req.body;
+  let formData = new FormData();
+  // #   transaction_id:aux9813953701837886
+  //               #   account_holder_name:Tanishq Soni
+  //               #   bank_name:Punjab National Bank
+  //               #   account_number:0314000109273398
+  //               #   ifsc_code:PUNB0031400
+  //               #   mobile_number:8445933567
+  //               #   email:abcsample@mail.com
+  //               #   amount:140
+  formData.append("transaction_id", data.transaction_id);
+  formData.append("account_holder_name", data.account_holder_name);
+  formData.append("bank_name", data.bank_name);
+  formData.append("account_number", data.account_number);
+  formData.append("ifsc_code", data.ifsc_code);
+  formData.append("mobile_number", data.mobile_number);
+  formData.append("email", data.email);
+  formData.append("amount", data.amount);
+  console.log(data)
+
+  const response = await axios.post("https://letspaywallet.in/api/v1/upi/upiWithdrawal",formData,
+
+  {
+    headers: {
+
+      "Content-Type": "multipart/form-data",
+      "Token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZXBzX2tleSI6IjkyYzA1NzhjMDllOTZkNmMxNDJkZmI1MSIsImFlcHNfaXYiOiJjZWU5NDU3YTdlNjI0OTIzODQxNWY0YzUzY2Y5In0.MhqxLp9mUUhMIoatcTiJHMW3iu2IzLjgIXZH2ro-XFo"
+    }
+  })
+  console.log(response.data);
+  res.send(response.data);
+}
+);
+
+
 app.post("/paymentAck", async (req, res) => {
   let data = req.body;
   let formData = new FormData();

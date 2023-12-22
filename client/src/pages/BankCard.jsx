@@ -24,7 +24,7 @@ export default function BankCard() {
     const showmybankcard = async () => {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
-      const response = await axios.post('http://192.168.13.112:8000/accounts/showmybankcard/', {
+      const response = await axios.post('http://192.168.1.11:8000/accounts/showmybankcard/', {
         phone_number: decoded.phone_number
       }, { headers: { 'Content-Type': 'application/json' } });
       if (response.data.status === "Success") {

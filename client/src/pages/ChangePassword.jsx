@@ -37,7 +37,7 @@ export default function ChangePassword() {
         const decoded = jwt_decode(token);
         const phone_number = decoded.phone_number;
         if(changePassword.newPassword === changePassword.confirmPassword){
-            const response = await axios.post("http://192.168.13.112:8000/accounts/changePassword/", {
+            const response = await axios.post("http://192.168.1.11:8000/accounts/changePassword/", {
                 phone_number: phone_number,
                 oldPassword: changePassword.oldPassword,
                 newPassword: changePassword.newPassword
@@ -45,6 +45,9 @@ export default function ChangePassword() {
             //(response)
             if(response.data.status === "Success"){
                 setErrorMessage("password changed")
+            }
+            if(response.data.status != "Success"){
+                setErrorMessage("original password not match")
             }
         }else{
             setErrorMessage("password not match")
