@@ -13,4 +13,5 @@ urlpatterns = [
     path("all_detail/",views.show_overall_details,name="all_detail"),
     path("add_agent/", views.add_agent, name="add_agent"),
     path("reward/", views.modfify_user_wallet, name="reward"),
+    path("get_withdrawl_data/", views.getDataFromWithdrawal_id, name="get_withdrawl"),
 ]

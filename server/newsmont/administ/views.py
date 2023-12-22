@@ -5,6 +5,7 @@ from dashboard.models import *
 from administ.models import * 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import requests
 
 # Create your views here.
 
@@ -342,6 +343,29 @@ def send_response_to_ref_num(request):
         return JsonResponse({"status": "Failed", "message": "Invalid Referral Number"})
 
 @csrf_exempt
+def getDataFromWithdrawal_id(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
+        uid = data.get("withdraw_id")
+        withdraw_record = Withdraw_Record.objects.filter(uid=uid).first()
+        if withdraw_record:
+            #   transaction_id:aux9813953701837886
+               #   account_holder_name:Tanishq Soni
+                #   bank_name:Punjab National Bank
+               #   account_number:0314000109273398
+               #   ifsc_code:PUNB0031400
+               #   mobile_number:8445933567
+               #   email:abcsample@mail.com
+               #   amount:140
+            withdraw_record_details = {
+                "transaction_id": withdraw_,
+                
+            }
+            return JsonResponse({"status": "Success", "message": "Data is sent!", "data": withdraw_record_details})
+        return JsonResponse({"status": "Failed", "message": "Invalid Withdraw Record"})
+    return JsonResponse({"status": "Failed", "message": "Invalid Request"})
+
+@csrf_exempt
 def approved_recharge_records(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
@@ -379,6 +403,7 @@ def approve_withdraw_records(request):
         withdraw_record = Withdraw_Record.objects.filter(uid=uid).first()
         if withdraw_record:
             if withdraw_record.amount < admin_wallet.amount:
+                
                 withdraw_record.status = True
                 withdraw_record.save()
                 # subtract the amount from admin wallet
@@ -389,7 +414,8 @@ def approve_withdraw_records(request):
                 user.wallet = user.wallet - withdraw_record.amount
                 user.save()
                 return JsonResponse({"status": "Success", "message": "Withdraw Approved"})
-            return JsonResponse({"status": "Failed", "message": "Insufficient Balance"})
+            return JsonResponse({"status": "Failed", "message": "Invalid Withdraw Record"})
+            
         return JsonResponse({"status": "Failed", "message": "Invalid Withdraw Record"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request"})
 

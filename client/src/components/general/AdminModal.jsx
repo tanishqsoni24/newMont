@@ -47,20 +47,28 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
       amount:140
     */
 
-    const response = await axios.post("http://192.168.13.112:3001/approve_withdraw/", 
-    {
+    const getWithdrawalDetails = await axios.post("http://192.168.1.11:8000/administ/get_withdrawl_data/", {withdrawal_id: item.id} , { headers: { "Content-Type": "application/json" } });
 
-    })
-    // const response = await axios.post(
-    //   "http://192.168.13.112:8000/administ/approve_withdraw/",
-    //   {
-    //     phone_number: decoded.phone_number,
-    //     withdrawal_id: item.id,
-    //     is_rejected: false,
-    //   },
-    //   { headers: { "Content-Type": "application/json" } }
-    // );
-    // window.location.reload();
+    const withdrawalDetails = getWithdrawalDetails.data;
+
+    withdrawalDetails.phone_number = decoded.phone_number;
+
+    const getWithdraw = await axios.post("http://192.168.1.11:3001/withdraw", withdrawalDetails, { headers: { "Content-Type": "application/json" } });
+
+    const withdraw = getWithdraw.data;
+
+    if(withdraw.status_code === 1) {
+
+      const response = await axios.post(
+        "http://192.168.1.11:8000/administ/approve_withdraw/",
+        {
+          phone_number: decoded.phone_number,
+          withdrawal_id: item.id,
+          is_rejected: false,
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );}
+    window.location.reload();
 
   }
 
@@ -68,7 +76,7 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     const token = Cookies.get("admin_session_id");
     const decoded = jwt_decode(token);
     const response = await axios.post(
-      "http://192.168.13.112:8000/administ/approve_withdraw/",
+      "http://192.168.1.11:8000/administ/approve_withdraw/",
       {
         phone_number: decoded.phone_number,
         withdrawal_id: item.id,

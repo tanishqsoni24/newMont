@@ -35,7 +35,7 @@ export default function Team() {
         invite_code: decoded.invite_code,
       });
       const response = await axios.post(
-        "http://192.168.13.112:8000/accounts/my-teams/",
+        "http://192.168.1.11:8000/accounts/my-teams/",
         { phone_number: decoded.phone_number },
         { content: "application/json" }
       );
