@@ -58,7 +58,7 @@ export default function ForgotPassword() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://192.168.13.112:8000/accounts/forgot-password/",
+        "http://192.168.7.112:8000/accounts/forgot-password/",
         number,
         {
           headers: { "Content-Type": "application/json" },
@@ -80,7 +80,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://192.168.13.112:8000/accounts/verify-forgot-password-token/",
+        "http://192.168.7.112:8000/accounts/verify-forgot-password-token/",
         otp,
         {
           headers: { "Content-Type": "application/json" },
@@ -108,7 +108,7 @@ export default function ForgotPassword() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://192.168.13.112:8000/accounts/reset-password/",
+        "http://192.168.7.112:8000/accounts/reset-password/",
         newPass,
         {
           headers: { "Content-Type": "application/json" },
@@ -131,7 +131,7 @@ export default function ForgotPassword() {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
         <h1 className="text-2xl font-semibold leading-tight tracking-tight text-blue-900 md:text-4xl dark:text-white">
-          New Gold Malls
+          My GoldMalls
         </h1>
             <h1 className="text-xl font-bold leading-tight tracking-tight text-blue-900 md:text-2xl dark:text-white">
               Forgot Password

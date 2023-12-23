@@ -16,7 +16,7 @@ export default function Otp() {
         e.preventDefault();
         const token = Cookies.get("phone_number");
         const decoded = jwtDecode(token);
-        const response = await axios.post('http://192.168.13.112:8000/accounts/resend-otp/', {
+        const response = await axios.post('http://192.168.7.112:8000/accounts/resend-otp/', {
             phone_number: decoded.phone_number
         }, { headers: { 'Content-Type': 'application/json' } });
 
@@ -41,7 +41,7 @@ export default function Otp() {
         e.preventDefault()
         const token = Cookies.get("phone_number");
         const decoded = await jwtDecode(token);
-        const response = await axios.post('http://192.168.13.112:8000/accounts/activate/', {
+        const response = await axios.post('http://192.168.7.112:8000/accounts/activate/', {
           phone_number: decoded.phone_number,
           otp: otp
         }, { headers: { 'Content-Type': 'application/json' } });
@@ -80,7 +80,7 @@ export default function Otp() {
     <section className="bg-gray-50 h-screen dark:bg-gray-900">
   <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
   <h1  className="text-2xl font-semibold leading-tight m-2 tracking-tight text-blue-900 md:text-4xl dark:text-white">
-                  New Gold Malls
+                  My GoldMalls
               </h1>
       <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

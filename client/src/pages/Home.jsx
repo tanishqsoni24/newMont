@@ -42,7 +42,7 @@ export default function Home() {
   useEffect(() => {
 
     const fetching = async () => {
-      const response = await axios.get("http://192.168.13.112:8000/dashboard/all_products/");
+      const response = await axios.get("http://192.168.7.112:8000/dashboard/all_products/");
       //(response.data);
       setExclusive(response.data.exclusive_product_details);
       setUpgrade(response.data.upgrade_product_details);
@@ -160,8 +160,8 @@ export default function Home() {
               Announcement
             </h3>
             <p>
-              1.Notice: Newmont Mining APP will be officially launched on
-              10/1/2023.
+              1.Notice: MyGoldMalls APP will be officially launched on
+              25/12/2023.
             </p>
             <p>
               2.Withdrawal is available when your account balance reaches 180₹
