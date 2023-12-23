@@ -20,7 +20,7 @@ export default function WithdrawRecord() {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "http://143.110.179.22:8000/accounts/mywithdrawrecord/",
+        "https://mygoldmalls:8000/accounts/mywithdrawrecord/",
         {
           phone_number: decoded.phone_number,
         },
