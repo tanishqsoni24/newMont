@@ -22,7 +22,7 @@ export default function Admin() {
         e.preventDefault()
 
         try{
-            const response = await axios.post('https://mygoldmalls:8000/administ/login/',login, { headers: { 'Content-Type': 'application/json' } });
+            const response = await axios.post('http://143.110.179.22:8000/administ/login/',login, { headers: { 'Content-Type': 'application/json' } });
             //(response)
             //(response.data)
 
