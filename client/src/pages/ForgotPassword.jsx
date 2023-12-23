@@ -58,7 +58,7 @@ export default function ForgotPassword() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://www.services.mygoldmalls.com/accounts/forgot-password/",
+        "http://143.110.179.22:8000/accounts/forgot-password/",
         number,
         {
           headers: { "Content-Type": "application/json" },
@@ -80,7 +80,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://www.services.mygoldmalls.com/accounts/verify-forgot-password-token/",
+        "http://143.110.179.22:8000/accounts/verify-forgot-password-token/",
         otp,
         {
           headers: { "Content-Type": "application/json" },
@@ -107,7 +107,7 @@ export default function ForgotPassword() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://www.services.mygoldmalls.com/accounts/reset-password/",
+        "http://143.110.179.22:8000/accounts/reset-password/",
         newPass,
         {
           headers: { "Content-Type": "application/json" },

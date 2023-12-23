@@ -70,7 +70,7 @@ export default function Profile() {
     const decoded = await jwt_decode(token);
     //(decoded);
     const response = await axios.post(
-      "https://www.services.mygoldmalls.com/accounts/userDetail/",
+      "http://143.110.179.22:8000/accounts/userDetail/",
       { phone_number: decoded.phone_number },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -87,7 +87,7 @@ export default function Profile() {
   useEffect(() => {
     const bankCard = async () => {
       const response = await axios.post(
-        "https://www.services.mygoldmalls.com/accounts/showmybankcard/",
+        "http://143.110.179.22:8000/accounts/showmybankcard/",
         { phone_number: user.phone_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -131,7 +131,7 @@ export default function Profile() {
       return;
     }
     const response = await axios.post(
-      "https://www.services.mygoldmalls.com/accounts/withdraw/",
+      "http://143.110.179.22:8000/accounts/withdraw/",
       {
         phone_number: decoded.phone_number,
         amount: withdraw,
@@ -192,7 +192,7 @@ export default function Profile() {
       const token = Cookies.get("session_id"); 
       const decoded = jwt_decode(token);
       const response = await axios.post(
-        "https://www.payments.mygoldmalls.com/recieve",
+        "http://143.110.179.22:3001/recieve",
         {
           "transaction_id": transaction_id,
           "name": user.name,
@@ -249,7 +249,7 @@ export default function Profile() {
         const token = Cookies.get("session_id"); 
         const decoded = jwt_decode(token);
         const response = await axios.post(
-          "https://www.payments.mygoldmalls.com/paymentAck",
+          "http://143.110.179.22:3001/paymentAck",
           {
             "transaction_id": doneTransactionId,
           },
@@ -285,7 +285,7 @@ export default function Profile() {
   useEffect(() => {
     const handelPaymentSuccess = async () => {
     const backendResponse = await axios.post(
-      "https://www.services.mygoldmalls.com/accounts/recharge/",
+      "http://143.110.179.22:8000/accounts/recharge/",
       paymentSuccessResponse,
       { headers: { "Content-Type": "application/json" } }
     );
@@ -327,7 +327,7 @@ export default function Profile() {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "https://www.services.mygoldmalls.com/accounts/deleteMyAccount/",
+        "http://143.110.179.22:8000/accounts/deleteMyAccount/",
         {
           phone_number: decoded.phone_number,
           password: deletePassword.password,

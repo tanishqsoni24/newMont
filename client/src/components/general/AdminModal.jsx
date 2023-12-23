@@ -37,7 +37,7 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     const token = Cookies.get("admin_session_id");
     const decoded = jwt_decode(token);
 
-    const getWithdrawalDetails = await axios.post("https://www.services.mygoldmalls.com/administ/get_withdrawl_data/",
+    const getWithdrawalDetails = await axios.post("http://143.110.179.22:8000/administ/get_withdrawl_data/",
             {
               withdrawal_id: item.id
             }, 
@@ -51,7 +51,7 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     console.log(withdrawalDetails)
     // console.log(withdrawalDetails.data)
     if(withdrawalDetails.status==="Success") {
-      const getWithdraw = await axios.post("https://www.payments.mygoldmalls.com/withdraw", 
+      const getWithdraw = await axios.post("http://143.110.179.22:3001/withdraw", 
       {
         transaction_id: transaction_id,
         account_holder_name: withdrawalDetails.data.account_holder_name,
@@ -71,7 +71,7 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
       if(getWithdraw.data.status_code === 1){
 
         const response = await axios.post(
-          "https://www.services.mygoldmalls.com/administ/approve_withdraw/",
+          "http://143.110.179.22:8000/administ/approve_withdraw/",
           {
             withdrawal_id: item.id,
             is_rejected: false,
@@ -93,7 +93,7 @@ const ApprovalModal = ({ item, isOpen, onRequestClose, onApprove }) => {
     const token = Cookies.get("admin_session_id");
     const decoded = jwt_decode(token);
     const response = await axios.post(
-      "https://www.services.mygoldmalls.com/administ/approve_withdraw/",
+      "http://143.110.179.22:8000/administ/approve_withdraw/",
       {
         withdrawal_id: item.id,
         is_rejected: true,
