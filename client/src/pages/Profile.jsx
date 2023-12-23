@@ -50,6 +50,12 @@ export default function Profile() {
       setWithdrawwarning("Withdraw amount is required.");
       return;
     }
+
+    if(withdraw <= 100){
+      setWithdrawwarning("Withdraw amount should be greater than 100");
+      return;
+    }
+
     try {
       // popup close
       closeWithdrawPopup();
@@ -64,7 +70,7 @@ export default function Profile() {
     const decoded = await jwt_decode(token);
     //(decoded);
     const response = await axios.post(
-      "http://192.168.1.11:8000/accounts/userDetail/",
+      "http://192.168.7.112:8000/accounts/userDetail/",
       { phone_number: decoded.phone_number },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -81,7 +87,7 @@ export default function Profile() {
   useEffect(() => {
     const bankCard = async () => {
       const response = await axios.post(
-        "http://192.168.1.11:8000/accounts/showmybankcard/",
+        "http://192.168.7.112:8000/accounts/showmybankcard/",
         { phone_number: user.phone_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -116,6 +122,7 @@ export default function Profile() {
 
   const handelWithdrawRequest = async (e) => {
     e.preventDefault();
+
     const token = Cookies.get("session_id");
     const decoded = jwt_decode(token);
     
@@ -124,7 +131,7 @@ export default function Profile() {
       return;
     }
     const response = await axios.post(
-      "http://192.168.1.11:8000/accounts/withdraw/",
+      "http://192.168.7.112:8000/accounts/withdraw/",
       {
         phone_number: decoded.phone_number,
         amount: withdraw,
@@ -174,14 +181,18 @@ export default function Profile() {
       setRechargewarning("Recharge amount is required.")
       return;
     }
+
+    if(recharge > 5000){
+      setRechargewarning("Recharge amount should be less than 5000")
+      return;
+    }
+
     try {
 
       const token = Cookies.get("session_id"); 
       const decoded = jwt_decode(token);
       const response = await axios.post(
-        
-
-        "http://192.168.1.11:3001/recieve",
+        "http://192.168.7.112:3001/recieve",
         {
           "transaction_id": transaction_id,
           "name": user.name,
@@ -238,7 +249,7 @@ export default function Profile() {
         const token = Cookies.get("session_id"); 
         const decoded = jwt_decode(token);
         const response = await axios.post(
-          "http://192.168.1.11:3001/paymentAck",
+          "http://192.168.7.112:3001/paymentAck",
           {
             "transaction_id": doneTransactionId,
           },
@@ -256,23 +267,25 @@ export default function Profile() {
             "utr":response.data.utr,
             "phone_number" : user.phone_number,
           })
-          setfireUPI(false);
+          alert("Recharge Successful, Your Payment will be approved shortly, view your recharge status inside 'Recharge Record'")
+          setIsConfirmRecharge(false);
         } 
         else{
-          alert("something went wrong")
-          setfireUPI(false)
+          alert("Something went wrong")
+          window.location.href = "/profile";
         }
     }
 
     catch(err){
-      alert("something went wrong")
+      alert("Something went wrong")
+      window.location.href = "/profile";
     }
 }
 
   useEffect(() => {
     const handelPaymentSuccess = async () => {
     const backendResponse = await axios.post(
-      "http://192.168.1.11:8000/accounts/recharge/",
+      "http://192.168.7.112:8000/accounts/recharge/",
       paymentSuccessResponse,
       { headers: { "Content-Type": "application/json" } }
     );
@@ -283,12 +296,10 @@ export default function Profile() {
       // decode the token
 
       userDeatil();
-      setfireUPI(false);
       setIsAlert(
         "Recharge Request Sent Successfully of amount ₹" + recharge + ".00 "
       );
     } else {
-      setfireUPI(false);
       setIsAlert(backendResponse.data.message);
     }}
 
@@ -316,7 +327,7 @@ export default function Profile() {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "http://192.168.1.11:8000/accounts/deleteMyAccount/",
+        "http://192.168.7.112:8000/accounts/deleteMyAccount/",
         {
           phone_number: decoded.phone_number,
           password: deletePassword.password,

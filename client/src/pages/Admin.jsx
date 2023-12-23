@@ -22,7 +22,7 @@ export default function Admin() {
         e.preventDefault()
 
         try{
-            const response = await axios.post('http://192.168.1.11:8000/administ/login/',login, { headers: { 'Content-Type': 'application/json' } });
+            const response = await axios.post('http://192.168.7.112:8000/administ/login/',login, { headers: { 'Content-Type': 'application/json' } });
             //(response)
             //(response.data)
 

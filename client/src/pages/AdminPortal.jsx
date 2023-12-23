@@ -25,7 +25,7 @@ export default function AdminPortal() {
   const handleRewardSubmit = async (e) => {
     e.preventDefault();
     const response = await axios.post(
-      "http://192.168.1.11:8000/administ/reward/",
+      "http://192.168.7.112:8000/administ/reward/",
       {
         phone_number: reward.phone_number,
         wallet: reward.wallet,
@@ -59,7 +59,7 @@ export default function AdminPortal() {
     e.preventDefault();
     
     const response = await axios.post(
-      "http://192.168.1.11:8000/administ/add_agent/",
+      "http://192.168.7.112:8000/administ/add_agent/",
       {
         agentName: agent.agentName,
         agentNumber: agent.agentNumber,
@@ -75,7 +75,7 @@ export default function AdminPortal() {
   const handelDistributeIncome = async (e) => {
     e.preventDefault();
     const response = await axios.post(
-      "http://192.168.1.11:8000/administ/distribute_income/",
+      "http://192.168.7.112:8000/administ/distribute_income/",
       {},
       { headers: { "Content-Type": "application/json" } }
     );
@@ -133,7 +133,7 @@ export default function AdminPortal() {
       const token = Cookies.get("admin_session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "http://192.168.1.11:8000/administ/",
+        "http://192.168.7.112:8000/administ/",
         { phone_number: decoded.phone_number },
         { content: "application/json" }
       );
@@ -148,7 +148,7 @@ export default function AdminPortal() {
       setRechargeRecords(response.data.recharge_records);
       setWithdrawRecords(response.data.withdraw_records_details);
       const overalldata = await axios.post(
-        "http://192.168.1.11:8000/administ/all_detail/",
+        "http://192.168.7.112:8000/administ/all_detail/",
         {},
         { content: "application/json" }
       );
