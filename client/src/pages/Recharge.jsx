@@ -26,7 +26,7 @@ export default function Viewuser() {
       const [fakeRechargeRecords, setFakeRechargeRecords] =useState([]);
       useEffect(() => {
         const rechargeDetail = async () => {
-        const response = await axios.post('http://192.168.7.112:8000/administ/recharge_detail/',{phone_number : userId.split("-")[1]} ,{"content": "application/json"});
+        const response = await axios.post('https://www.services.mygoldmalls.com/administ/recharge_detail/',{phone_number : userId.split("-")[1]} ,{"content": "application/json"});
         //(response.data.data)
         setFakeRechargeRecords(response.data.data)
         }

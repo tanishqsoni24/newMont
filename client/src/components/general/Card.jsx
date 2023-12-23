@@ -29,7 +29,7 @@ export default function Card(props) {
     const decoded = await jwt_decode(token);
 
     const response = await axios.post(
-      "http://192.168.7.112:8000/dashboard/purchase_product/",
+      "https://www.services.mygoldmalls.com/dashboard/purchase_product/",
       { phone_number: decoded.phone_number, product_id: props.id },
       { content: "application/json" }
     );

@@ -72,7 +72,7 @@ export default function Signup() {
       try {
         //(signup);
         const response = await axios.post(
-          "http://192.168.7.112:8000/accounts/signup/",
+          "https://www.services.mygoldmalls.com/accounts/signup/",
           signup,
           { headers: { "Content-Type": "application/json" } }
         );

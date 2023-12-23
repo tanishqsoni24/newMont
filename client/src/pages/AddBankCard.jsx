@@ -39,7 +39,7 @@ export default function AddBankCard() {
             const token = Cookies.get("session_id");
             const decoded = await jwt_decode(token);
             //(decoded.phone_number)
-            const response = await axios.post('http://192.168.7.112:8000/accounts/add-bank-card/',{
+            const response = await axios.post('https://www.services.mygoldmalls.com/accounts/add-bank-card/',{
                 phone_number: decoded.phone_number,
                 card_holder_name: bankCard.card_holder_name,
                 bank_name: bankCard.bank_name,
