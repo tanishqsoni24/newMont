@@ -24,16 +24,11 @@ export default function Orders() {
             const response = await axios.post('http://192.168.7.112:8000/accounts/myorders/',{
                 phone_number : decoded.phone_number
             } ,{ headers: { 'Content-Type': 'application/json' } });
-            console.log(response.data.data)
             setOrders(response.data.data)
         }
         requestorders()
       }
         , [])
-
-    useEffect(() => {
-        console.log("orders:", orders)
-    }, [orders])
     return (
 
         <div style={{ marginTop: "7rem" }} className="container flex flex-col mx-auto justify-center item-center">

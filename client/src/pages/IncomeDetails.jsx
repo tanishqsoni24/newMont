@@ -25,12 +25,11 @@ export default function IncomingDetails() {
         
         setIncomeDetails(response.data.data);
         
-        console.log(response.data.data);
       };
       userIncomeDetails();
     }
     catch(err){
-      // console.log(err)
+      alert("something went wrong")
     }
 
 }, []);

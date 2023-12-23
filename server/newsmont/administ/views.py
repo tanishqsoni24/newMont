@@ -5,7 +5,7 @@ from dashboard.models import *
 from administ.models import * 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import requests
+import random
 
 # Create your views here.
 
@@ -39,13 +39,15 @@ def add_agent(request):
         password = data.get("agentPassword")
         first_name = data.get("agentName")
         wallet = data.get("agentInitialWallet")
+        otp = str(random.randint(100000, 999999))
         try:
             user = User.objects.create(username=phone, first_name=first_name)
             user.set_password(password)
             user.save()
-            agent = Profile.objects.create(user=user, phone_number=phone, is_agent=True , wallet=wallet)
+            agent = Profile.objects.create(user=user, phone_number=phone, is_agent=True , wallet=wallet, otp=otp, is_verified=True, is_admin=False)
             agent.save()
-        except:
+        except Exception as e:
+            print(e)
             return JsonResponse({"status": "Failed", "message": "Agent Already Exists"})
         return JsonResponse({"status": "Success", "message": "Agent Added Successfully"})
     return JsonResponse({"status": "Failed", "message": "Invalid Request Method"})

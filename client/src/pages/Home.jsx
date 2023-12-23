@@ -393,7 +393,7 @@ export default function Home() {
                 price={item.price}
                 rate="4.5"
                 id={item.id}
-                src={"http://localhost:8000"+item.image}
+                src={"http://192.168.1.11:8000"+item.image}
               />
             </div>))}
         </div>
@@ -414,7 +414,7 @@ export default function Home() {
                 price={item.price}
                 rate="4.5"
                 id={item.id}
-                src={"http://localhost:8000"+item.image}
+                src={"http://192.168.1.11:8000"+item.image}
               />
             </div>))}
         </div>
@@ -436,7 +436,7 @@ export default function Home() {
                 price={item.price}
                 id={item.id}
                 rate="4.5"
-                src={"http://localhost:8000"+item.image}
+                src={"http://192.168.1.11:8000"+item.image}
               />
             </div>))}
         </div>

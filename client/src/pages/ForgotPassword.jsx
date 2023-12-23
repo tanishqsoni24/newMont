@@ -96,8 +96,7 @@ export default function ForgotPassword() {
         setErrorMessage("Wrong OTP entered")
       }
     } catch (err) {
-      // setErrorMessage(err);
-      // console.log(errorMessage)
+      alert("Wrong OTP entered");
     }
     setLoading(false);
   };

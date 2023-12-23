@@ -191,13 +191,7 @@ export default function Profile() {
 
       const token = Cookies.get("session_id"); 
       const decoded = jwt_decode(token);
-
-      // set transaction id
-      
-      console.log(transaction_id)
       const response = await axios.post(
-        
-
         "http://192.168.7.112:3001/recieve",
         {
           "transaction_id": transaction_id,
@@ -210,20 +204,17 @@ export default function Profile() {
           headers: { "Content-Type": "application/json" }
         }
       );
-      console.log(response.data)
-      console.log(response.data.status_code + " and " + response.data.qr_string)
       if(response.data.status_code === 1){
-        console.log("enter")
         // addqrcode state
         setQrCode(response.data.qr_string);
         setfireUPI(true);
         setDoneTransactionId(transaction_id);
         setTransaction_id("aux"+generateRandomNumber());
         
-        // console.log(object)
+    
       }
     } catch (err) {
-      console.log(err);
+    alert("something went wrong")
     }
   };  
   const [fireUPI , setfireUPI] = useState(false);
@@ -286,7 +277,6 @@ export default function Profile() {
     }
 
     catch(err){
-      console.log("error is = ",err)
       alert("Something went wrong")
       window.location.href = "/profile";
     }

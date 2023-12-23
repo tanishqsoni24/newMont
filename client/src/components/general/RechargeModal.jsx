@@ -48,7 +48,6 @@ const RechargeModal = ({ item, isOpen, onRequestClose, onApprove }) => {
       { headers: { "Content-Type": "application/json" } }
     );
     window.location.reload();
-    console.log(response);
   }
 
   return (
