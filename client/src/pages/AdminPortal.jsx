@@ -437,6 +437,12 @@ export default function AdminPortal() {
                   </li>
                 </ul>
               </li>
+              <li className="block py-2 pl-3 pr-4 cursor-pointer text-black rounded col-p text-sm hover:text-[#4f6cc5] hover:bg-transparent md:hover:bg-transparent md:p-0 md:dark:hover:text-[#4f6cc5] dark:text-black dark:hover:bg-transparent dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200 ease-in-out ">
+                <button className="bg-blue-900 hover:bg-[#03543F] text-white font-semibold py-2 px-4 rounded-full" onClick={()=>{
+                  Cookies.remove("admin_session_id");
+                  navigate("/login");
+                }}>Logout</button>
+              </li>
             </ul>
           </div>
         </div>
