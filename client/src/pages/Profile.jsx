@@ -171,7 +171,7 @@ export default function Profile() {
       "transaction_id":"",
       "amount": undefined,
       "utr":"",
-      "phone_number" : user.phone_number,
+      "phone_number" : "",
     }
   );
 
@@ -299,12 +299,14 @@ export default function Profile() {
       setIsAlert(
         "Recharge Request Sent Successfully of amount ₹" + recharge + ".00 "
       );
-    } else {
-      setIsAlert(backendResponse.data.message);
-    }}
+    } 
+    // else {
+    //   // setIsAlert(backendResponse.data.message);
+    // }
+  }
 
     handelPaymentSuccess();
-  }, [paymentSuccessResponse])
+  }, [paymentSuccessResponse, user])
 
 
 
