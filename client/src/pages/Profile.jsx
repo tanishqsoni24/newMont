@@ -5,9 +5,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import "../App.css";
 import sign from "jwt-encode";
-import RBPEncryption from "../helpers/encryptData"
-
-
+import RBPEncryption from "../helpers/encryptData";
 
 export default function Profile() {
   const [withdraw, setWithdraw] = useState(0);
@@ -51,7 +49,7 @@ export default function Profile() {
       return;
     }
 
-    if(withdraw <= 100){
+    if (withdraw <= 100) {
       setWithdrawwarning("Withdraw amount should be greater than 100");
       return;
     }
@@ -109,7 +107,7 @@ export default function Profile() {
   }, [isAlert]);
 
   useEffect(() => {
-    userDeatil(); 
+    userDeatil();
   }, []);
   const [recharge, setRecharge] = useState(0);
 
@@ -125,8 +123,8 @@ export default function Profile() {
 
     const token = Cookies.get("session_id");
     const decoded = jwt_decode(token);
-    
-    if(selectBankCard.card_holder_name==""){
+
+    if (selectBankCard.card_holder_name == "") {
       setError("Please Select Bank Card");
       return;
     }
@@ -152,83 +150,78 @@ export default function Profile() {
     }
   };
 
-
   // generate random number of 16 digits
 
   const generateRandomNumber = () => {
     let randomNumber = Math.floor(Math.random() * 10000000000000000);
     return randomNumber;
-  }
+  };
 
   const [qrCode, setQrCode] = useState("#");
-  const [transaction_id, setTransaction_id] = useState("aux"+generateRandomNumber());
-  const [doneTransactionId, setDoneTransactionId] = useState("");
-  const [paymentSuccessResponse, setPaymentSuccessResponse] = useState(
-    {
-      "status_code": undefined,
-      "txn_status":"",
-      "status_msg": "",
-      "transaction_id":"",
-      "amount": undefined,
-      "utr":"",
-      "phone_number" : "",
-    }
+  const [transaction_id, setTransaction_id] = useState(
+    "aux" + generateRandomNumber()
   );
+  const [doneTransactionId, setDoneTransactionId] = useState("");
+  const [paymentSuccessResponse, setPaymentSuccessResponse] = useState({
+    status_code: undefined,
+    txn_status: "",
+    status_msg: "",
+    transaction_id: "",
+    amount: undefined,
+    utr: "",
+    phone_number: "",
+  });
 
   const handelRecharge = async (e) => {
     e.preventDefault();
     if (recharge === 0 || recharge === "") {
-      setRechargewarning("Recharge amount is required.")
+      setRechargewarning("Recharge amount is required.");
       return;
     }
 
-    if(recharge > 5000){
-      setRechargewarning("Recharge amount should be less than 5000")
+    if (recharge > 5000) {
+      setRechargewarning("Recharge amount should be less than 5000");
       return;
     }
 
     try {
-
-      const token = Cookies.get("session_id"); 
+      const token = Cookies.get("session_id");
       const decoded = jwt_decode(token);
       const response = await axios.post(
         "http://143.110.179.22:3001/recieve",
         {
-          "transaction_id": transaction_id,
-          "name": user.name,
-          "email": "abcsample@mail.com",
-          "mobile": user.phone_number,
-          "amount": recharge
+          transaction_id: transaction_id,
+          name: user.name,
+          email: "abcsample@mail.com",
+          mobile: user.phone_number,
+          amount: recharge,
         },
-        { 
-          headers: { "Content-Type": "application/json" }
+        {
+          headers: { "Content-Type": "application/json" },
         }
       );
-      if(response.data.status_code === 1){
+      if (response.data.status_code === 1) {
         // addqrcode state
         setQrCode(response.data.qr_string);
         setfireUPI(true);
         setDoneTransactionId(transaction_id);
-        setTransaction_id("aux"+generateRandomNumber());
-        
-    
+        setTransaction_id("aux" + generateRandomNumber());
       }
     } catch (err) {
-    alert("something went wrong")
+      alert("something went wrong");
     }
-  };  
-  const [fireUPI , setfireUPI] = useState(false);
-
-  const [isConfirmRecharge , setIsConfirmRecharge] = useState(false);
+  };
+  const [fireUPI, setfireUPI] = useState(false);
+  const [loadrecharge, setloadrecharge] = useState(false); // [loadrecharge, setloadrecharge]
+  const [isConfirmRecharge, setIsConfirmRecharge] = useState(false);
   useEffect(() => {
-    if(fireUPI){
+    if (fireUPI) {
       document.getElementById("fireUPI").click();
       // construct a model for payment reject or confirm
       // close recharge popup
       setIsRechargePopupOpen(false);
       // open confirm recharge popup
       setIsConfirmRecharge(true);
-      
 
       setfireUPI(false);
     }
@@ -243,72 +236,70 @@ export default function Profile() {
     };
   }, []);
 
-
   const getPaymentAck = async () => {
-    try{
-        const token = Cookies.get("session_id"); 
-        const decoded = jwt_decode(token);
-        const response = await axios.post(
-          "http://143.110.179.22:3001/paymentAck",
-          {
-            "transaction_id": doneTransactionId,
-          },
-          { 
-            headers: { "Content-Type": "application/json" }
-          }
-        );
-        if(response.data.status_code===1){
-          setPaymentSuccessResponse({
-            "status_code": response.data.status_code,
-            "txn_status":response.data.txn_status,
-            "status_msg": response.data.status_msg,
-            "transaction_id":response.data.transaction_id,
-            "amount": response.data.amount,
-            "utr":response.data.utr,
-            "phone_number" : user.phone_number,
-          })
-          alert("Recharge Successful, Your Payment will be approved shortly, view your recharge status inside 'Recharge Record'")
-          setIsConfirmRecharge(false);
-        } 
-        else{
-          alert("Something went wrong")
-          window.location.href = "/profile";
+    try {
+      setloadrecharge(true);
+      const token = Cookies.get("session_id");
+      const decoded = jwt_decode(token);
+      const response = await axios.post(
+        "http://143.110.179.22:3001/paymentAck",
+        {
+          transaction_id: doneTransactionId,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
         }
-    }
-
-    catch(err){
-      alert("Something went wrong")
+      );
+      setloadrecharge(false);
+      if (response.data.status_code === 1) {
+        setPaymentSuccessResponse({
+          status_code: response.data.status_code,
+          txn_status: response.data.txn_status,
+          status_msg: response.data.status_msg,
+          transaction_id: response.data.transaction_id,
+          amount: response.data.amount,
+          utr: response.data.utr,
+          phone_number: user.phone_number,
+        });
+        alert(
+          "Recharge Successful, Your Payment will be approved shortly, view your recharge status inside 'Recharge Record'"
+        );
+        setIsConfirmRecharge(false);
+      } else {
+        alert("Something went wrong");
+        window.location.href = "/profile";
+      }
+    } catch (err) {
+      alert("Something went wrong");
       window.location.href = "/profile";
     }
-}
+  };
 
   useEffect(() => {
     const handelPaymentSuccess = async () => {
-    const backendResponse = await axios.post(
-      "http://143.110.179.22:8000/accounts/recharge/",
-      paymentSuccessResponse,
-      { headers: { "Content-Type": "application/json" } }
-    );
-
-    if (backendResponse.data.status === "Success") {
-      //(response.data);
-
-      // decode the token
-
-      userDeatil();
-      setIsAlert(
-        "Recharge Request Sent Successfully of amount ₹" + recharge + ".00 "
+      const backendResponse = await axios.post(
+        "http://143.110.179.22:8000/accounts/recharge/",
+        paymentSuccessResponse,
+        { headers: { "Content-Type": "application/json" } }
       );
-    } 
-    // else {
-    //   // setIsAlert(backendResponse.data.message);
-    // }
-  }
+
+      if (backendResponse.data.status === "Success") {
+        //(response.data);
+
+        // decode the token
+
+        userDeatil();
+        setIsAlert(
+          "Recharge Request Sent Successfully of amount ₹" + recharge + ".00 "
+        );
+      }
+      // else {
+      //   // setIsAlert(backendResponse.data.message);
+      // }
+    };
 
     handelPaymentSuccess();
-  }, [paymentSuccessResponse, user])
-
-
+  }, [paymentSuccessResponse, user]);
 
   const [deletePopUp, setDeletePopUp] = useState(false);
   const handleDeletePopup = () => {
@@ -423,8 +414,7 @@ export default function Profile() {
 
             {/* =================================CHANGE======================================== */}
 
-
-            <a href={qrCode} id="fireUPI" style={{"display" : "none"}}></a>
+            <a href={qrCode} id="fireUPI" style={{ display: "none" }}></a>
 
             {/* ==================================/change/====================================== */}
             <button
@@ -563,71 +553,56 @@ export default function Profile() {
           </div>
         </div>
         {isConfirmRecharge && (
-          
           <div
             id="pop"
-            className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-transparent z-20"
-            // Change "bg-gray-900 bg-opacity-50" to "bg-transparent" here
+            className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gray-900 bg-opacity-50 z-20"
           >
-
             <div
               style={{ width: "20rem" }}
               className="flex flex-col justify-center overflow-y-auto items-center md:w-96 md:mx-auto"
             >
               <img
-              onClick={
-                () => {
+                onClick={() => {
                   setIsConfirmRecharge(false);
-                }
-              }
-
+                }}
                 width="20"
                 height="20"
-                className="mb-1 "
+                className="mb-1 ml-[288px] cursor-pointer "
                 src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png"
                 alt="delete-sign"
               />
-              <div className="w-full bg-white rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-              <div
-                  className="p-6 space-y-4 md:space-y-6 sm:p-8 ml-32 md:ml-9 md:mt-0"
-                >
-                {/* a paragraph on guide lines */}
-
-                <p className="text-center text-sm text-gray-500 mt-4">
-                  Please go on the UPI app and do the payment of ₹{recharge}.00
-                  then click on the confirm recharge button.
+              <div className="w-full bg-gray-100 rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                <div className="1st div p-3 ">
+                  <p className="text-center text-md text-gray-500 mt-4">
+                    Please go on the UPI app and do the payment of ₹{recharge}
+                    .00 then click on the confirm recharge button.
                   </p>
-
-                {/* and two buttons one of blue confirm recharge */}
-                {/* and other of red cancel recharge */}
-
-                
-                  <button onClick={getPaymentAck} className="w-full text-white bg-[#26439b] hover:bg-[#2d4286] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                    Confirm Recharge
+                </div>
+                <div className="2nd div p-6">
+                  <button
+                  onClick={getPaymentAck}
+                    className="w-full mt-2 text-white bg-[#26439b] hover:bg-[#2d4286] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  >
+                      {loadrecharge ? "Processing Recharge..." : "Confirm Recharge"}
                   </button>
-                  <br />
-                  <button 
-                  onClick={
-                    () => {
-
-                      const response = window.confirm("Are you sure you want to cancel the recharge?");
-                      if(response){
+                  <button
+                    onClick={() => {
+                      const response = window.confirm(
+                        "Are you sure you want to cancel the recharge?"
+                      );
+                      if (response) {
                         setIsConfirmRecharge(false);
                       }
-
-                  }
-                }
-                  className="w-full text-white bg-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                    Cancle Recharge
-                    </button>
+                    }}
+                    className="w-full mt-2 text-white bg-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  >
+                    Cancel Recharge
+                  </button>
                 </div>
-
-                </div>
+              </div>
             </div>
           </div>
-        )
-
-        }
+        )}
 
         {isRechargePopupOpen && (
           <div
@@ -670,7 +645,7 @@ export default function Profile() {
                         required=""
                       />
                     </div>
-                      <p className="text-sm text-red-700">{rechargewarning}</p>
+                    <p className="text-sm text-red-700">{rechargewarning}</p>
                     <button
                       type="submit"
                       onClick={handelRecharge}
@@ -815,8 +790,8 @@ export default function Profile() {
                       </p>
                     )}
                     <p className="text-red-500 mt-2 text-sm ml-20 md:-ml-7 md:text-center">
-                        {error}
-                      </p>
+                      {error}
+                    </p>
                   </div>
                 </div>
               </div>
