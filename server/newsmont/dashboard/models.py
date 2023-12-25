@@ -89,3 +89,8 @@ class Orders(BaseModel):
     def __str__(self):
         return self.user.user.first_name + " : " + str(self.date_purchase.strftime("%B-%d-%Y")) + " : " + self.product.name
     
+class Tasks(BaseModel):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="task_user")
+    task_name = models.CharField(max_length=100, blank=True, null=True)
+    task_description = models.CharField(max_length=1000, blank=True, null=True)
+    task_status = models.BooleanField(default=False)
