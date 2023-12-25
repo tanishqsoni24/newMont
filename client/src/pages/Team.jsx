@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -57,6 +56,7 @@ export default function Team() {
     setCopy("Copied...");
 
     navigator.clipboard.writeText(user.invite_code);
+    // another way of copy the code
 
     setTimeout(() => {
       setCopy("Copy Code");
