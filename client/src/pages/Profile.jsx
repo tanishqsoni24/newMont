@@ -251,7 +251,7 @@ export default function Profile() {
         }
       );
       setloadrecharge(false);
-      if (response.data.status_code === 1) {
+      if (response.data.status_code === 1 && utr!=null) {
         setPaymentSuccessResponse({
           status_code: response.data.status_code,
           txn_status: response.data.txn_status,
