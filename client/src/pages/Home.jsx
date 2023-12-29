@@ -42,7 +42,7 @@ export default function Home() {
   useEffect(() => {
 
     const fetching = async () => {
-      const response = await axios.get("http://143.110.179.22:8000/dashboard/all_products/");
+      const response = await axios.get("https://mygoldmalls.com/api/dashboard/all_products/");
       //(response.data);
       setExclusive(response.data.exclusive_product_details);
       setUpgrade(response.data.upgrade_product_details);

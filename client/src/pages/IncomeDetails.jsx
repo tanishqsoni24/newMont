@@ -19,7 +19,7 @@ export default function IncomingDetails() {
       const userIncomeDetails = async () => {
         const token = Cookies.get("session_id");
         const decoded = await jwt_decode(token);
-        const response = await axios.post('http://143.110.179.22:8000/accounts/myIncomeDetails/', {
+        const response = await axios.post('https://mygoldmalls.com/api/accounts/myIncomeDetails/', {
           phone_number: decoded.phone_number
         }, { headers: { 'Content-Type': 'application/json' } });
         

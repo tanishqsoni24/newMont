@@ -34,7 +34,7 @@ export default function Team() {
         invite_code: decoded.invite_code,
       });
       const response = await axios.post(
-        "http://143.110.179.22:8000/accounts/my-teams/",
+        "https://mygoldmalls.com/api/accounts/my-teams/",
         { phone_number: decoded.phone_number },
         { content: "application/json" }
       );
