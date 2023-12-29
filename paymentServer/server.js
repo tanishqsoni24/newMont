@@ -12,7 +12,7 @@ app.use(cors());
 // Enable JSON use
 app.use(express.json());
 
-app.post("/recieve", async (req, res) => {
+app.post("/payment/recieve", async (req, res) => {
   let data = req.body;
   let formData = new FormData();
   formData.append("transaction_id", data.transaction_id);
@@ -34,7 +34,7 @@ app.post("/recieve", async (req, res) => {
     res.send(response.data);
 });
 
-app.post("/withdraw", async (req, res) => {
+app.post("/payment/withdraw", async (req, res) => {
   console.log("etered")
   let data = req.body;
   let formData = new FormData();
@@ -61,7 +61,7 @@ app.post("/withdraw", async (req, res) => {
 );
 
 
-app.post("/paymentAck", async (req, res) => {
+app.post("/payment/paymentAck", async (req, res) => {
   let data = req.body;
   let formData = new FormData();
   formData.append("transaction_id", data.transaction_id);
