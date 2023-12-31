@@ -2,6 +2,7 @@ import React from "react";
 import cr1 from "../../src/components/Images/crousel1.jpg";
 import cr2 from "../../src/components/Images/crousel2.jpg";
 import cr3 from "../../src/components/Images/b1.jpg";
+import image from "../../src/components/Images/copeer.jpg"
 import { useState } from "react";
 import { useEffect } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -393,7 +394,7 @@ export default function Home() {
                 price={item.price}
                 rate="4.5"
                 id={item.id}
-                src={"https://mygoldmalls.com"+item.image}
+                src={image}
               />
             </div>))}
         </div>
