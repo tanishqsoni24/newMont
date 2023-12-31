@@ -8,6 +8,15 @@ import sign from "jwt-encode";
 
 export default function Signup() {
   useEffect(() => {
+    // https://mygoldmalls.com/signup?invite_code=c68d0c7883a4
+    const urlParams = new URLSearchParams(window.location.search);
+    const invite_code = urlParams.get("invite_code");
+    if (invite_code) {
+      const invite_code_field = document.getElementById("invite_code");
+      // make this field readonly
+      invite_code_field.readOnly = true;
+      setSignup({ ...signup, invite_code });
+    }
     // Set the background color for the body element
     document.body.classList.add("body-bg-color");
     // Clean up by removing the class when the component unmounts
@@ -86,6 +95,8 @@ export default function Signup() {
         if (response.data.status === "Success") {
           //("success");
           // encode the token
+          // remove preexisting token
+          Cookies.remove("phone_number");
           const token_data = {
             phone_number: signup.phone_number,
           };
@@ -258,7 +269,7 @@ export default function Signup() {
                   onChange={handleChange}
                   value={signup.invite_code}
                   name="invite_code"
-                  id="email"
+                  id="invite_code"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="75fhweb52"
                 />
