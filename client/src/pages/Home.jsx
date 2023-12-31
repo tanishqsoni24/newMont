@@ -393,7 +393,7 @@ export default function Home() {
                 price={item.price}
                 rate="4.5"
                 id={item.id}
-                src={"https://mygoldmalls.com/"+item.image}
+                src={"https://mygoldmalls.com"+item.image}
               />
             </div>))}
         </div>
