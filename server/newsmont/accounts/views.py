@@ -16,6 +16,7 @@ from administ.models import *
 def signup(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
+        email = data.get('email')
         first_name = data.get('first_name')
         last_name = data.get('last_name')
         phone_number = data.get('phone_number')
@@ -23,14 +24,16 @@ def signup(request):
         password = data.get('password')
         # country_code = data.get('country_code')
 
+        if not email:
+            return JsonResponse({'status': 'Error', 'message': 'Email not provided'})
         if not phone_number:
             return JsonResponse({'status': 'Error', 'message': 'Phone Number not provided'})
         if not password:
             return JsonResponse({'status': 'Error', 'message': 'Password not provided'})
         if len(phone_number) != 10:
             return JsonResponse({'status': 'Error', 'message': 'Phone Number Invalid'})
-        # if country_code != '+91':
-        #     return JsonResponse({'status': 'Error', 'message': 'Country Code Invalid'})
+        if email_verifier(email) == False:
+            return JsonResponse({'status': 'Error', 'message': 'Email Invalid'})
 
         user_obj = Profile.objects.filter(phone_number=phone_number).first()
         if user_obj:
@@ -41,9 +44,9 @@ def signup(request):
                 return JsonResponse({'status': 'Error', 'message': 'Invalid Invite Code'})
 
         otp = generate_otp()
-        response = send_otp(phone_number, otp)
-        if response.status_code == 200:
-            user_create_object = User.objects.create_user(username=phone_number, password=password, first_name=first_name, last_name=last_name)
+        response = send_otp(email, otp)
+        if response:
+            user_create_object = User.objects.create_user(username=phone_number, password=password, first_name=first_name, last_name=last_name, email=email)
             user_create_object.save()
 
             user_profile_object = Profile.objects.create(user=user_create_object, phone_number=phone_number, otp=otp)
@@ -59,7 +62,7 @@ def signup(request):
                     recommend_profile.save()
                     income_object = Income.objects.create(user=recommend_profile.user, amount=50, income_type="Referral", income_date=timezone.now())
                     income_object.save()
-                    return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
+                    return JsonResponse({'status': 'Success', 'message': f'OTP Sent to your registered mail id {email}'})
                 return JsonResponse({'status': 'Error', 'message': 'Invalid Invite Code'})
             return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
         return JsonResponse({'status': 'Error', 'message': 'OTP Not Sent'})
@@ -71,14 +74,15 @@ def resend_otp(request):
         data = json.loads(request.body.decode('utf-8'))
         phone_number = data.get('phone_number')
         user_profile_object = Profile.objects.filter(phone_number=phone_number).first()
+        email = user_profile_object.user.email
         if user_profile_object:
             otp = generate_otp()
             user_profile_object.otp = otp
             user_profile_object.start_timer()
             user_profile_object.save()
-            response = send_otp(phone_number, otp)
-            if response.status_code == 200:
-                return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
+            response = send_otp(email, otp)
+            if response:
+                return JsonResponse({'status': 'Success', 'message': f'OTP Sent to {email}'})
             return JsonResponse({'status': 'Error', 'message': 'OTP Not Sent'})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})
     return JsonResponse({'status': 'Error', 'message': 'Bad Request'})
@@ -142,8 +146,8 @@ def forogt_password(request):
             user_profile_object.forgot_password_token = token
             user_profile_object.forgot_password_token_timer()
             user_profile_object.save()
-            response = send_otp(phone_number, token)
-            if response.status_code == 200:
+            response = send_otp(email=user_object.email, otp=token)
+            if response:
                 return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
             return JsonResponse({'status': 'Error', 'message': 'OTP Not Sent'})
         return JsonResponse({'status': 'Error', 'message': 'Phone Number not registered'})

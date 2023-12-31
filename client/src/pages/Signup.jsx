@@ -27,6 +27,10 @@ export default function Signup() {
       errors.last_name = "Last name is required";
     }
 
+    if (!signup.email) {
+      errors.email = "Email is required";
+    }
+
     if (!signup.phone_number) {
       errors.phone_number = "Phone number is required";
     } else if (signup.phone_number.length !== 10) {
@@ -57,6 +61,7 @@ export default function Signup() {
     first_name: "",
     last_name: "",
     phone_number: "",
+    email : "",
     password: "",
     confirmPassword: "",
     invite_code: "",
@@ -125,7 +130,7 @@ export default function Signup() {
             <form className="space-y-4 md:space-y-6">
               <div>
                 <label
-                  for="email"
+                  for="fName"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   First Name
@@ -135,7 +140,7 @@ export default function Signup() {
                   onChange={handleChange}
                   value={signup.first_name}
                   name="first_name"
-                  id="email"
+                  id="fName"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Rajesh"
                 />
@@ -145,7 +150,7 @@ export default function Signup() {
               )}
               <div>
                 <label
-                  for="email"
+                  for="lName"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Last Name
@@ -155,7 +160,7 @@ export default function Signup() {
                   onChange={handleChange}
                   value={signup.last_name}
                   name="last_name"
-                  id="email"
+                  id="lName"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Singh"
                 />
@@ -165,7 +170,7 @@ export default function Signup() {
               )}
               <div>
                 <label
-                  for="email"
+                  for="pNo"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Your phone Number
@@ -175,13 +180,33 @@ export default function Signup() {
                   onChange={handleChange}
                   value={signup.phone_number}
                   name="phone_number"
-                  id="email"
+                  id="pNo"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="7565889452"
                 />
               </div>
               {formErrors.phone_number && (
                 <p className="text-red-500">{formErrors.phone_number}</p>
+              )}
+              <div>
+                <label
+                  for="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  onChange={handleChange}
+                  value={signup.email}
+                  name="email"
+                  id="email"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="abc@emaple.com"
+                />
+              </div>
+              {formErrors.email && (
+                <p className="text-red-500">{formErrors.email}</p>
               )}
               <div>
                 <label
