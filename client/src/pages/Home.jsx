@@ -420,7 +420,7 @@ export default function Home() {
             </div>))}
         </div>
 
-        <div
+        <div 
            className={`flex upgrade flex-wrap md:ml-9 ${
             isgift ? ' block ' : 'hidden'
           }`}

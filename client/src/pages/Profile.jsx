@@ -293,13 +293,15 @@ export default function Profile() {
           "Recharge Request Sent Successfully of amount ₹" + recharge + ".00 "
         );
       }
-      // else {
-      //   // setIsAlert(backendResponse.data.message);
-      // }
+      else {
+        if(backendResponse.data.message!=="Phone Number not registered"){
+          setIsAlert(backendResponse.data.message);
+        }
+      }
     };
 
     handelPaymentSuccess();
-  }, [paymentSuccessResponse, user]);
+  }, [paymentSuccessResponse]);
 
   const [deletePopUp, setDeletePopUp] = useState(false);
   const handleDeletePopup = () => {
