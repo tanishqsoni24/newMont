@@ -456,7 +456,7 @@ def approve_recharge_record(request):
             if recharge_record.user.recharge_amount == 0:
                 recommend_user = recharge_record.user.recommended_by
                 if recommend_user:
-                    recommend_user.wallet = recommend_user.wallet + (recharge_record.amount * 0.25)
+                    recommend_user.profile.wallet = recommend_user.profile.wallet + (recharge_record.amount * 0.25)
                     recommend_user.save()
                     income_object = Income.objects.create(user=recommend_user.user, amount=recharge_record.amount * 0.25, income_type="Referral Rehcharge Income", income_date=timezone.now())
                     income_object.save()
