@@ -458,7 +458,7 @@ def approve_recharge_record(request):
                 if recommend_user:
                     recommend_user.profile.wallet = recommend_user.profile.wallet + (float(recharge_record.amount) * 0.25)
                     recommend_user.save()
-                    income_object = Income.objects.create(user=recommend_user, amount=float(recharge_record.amount) * 0.25, income_type="Referral Rehcharge Income", income_date=timezone.now())
+                    income_object = Income.objects.create(user=recommend_user, amount=float(recharge_record.amount) * 0.25, income_type="Referral Recharge Income", income_date=timezone.now())
                     income_object.save()
 
             # update user wallet

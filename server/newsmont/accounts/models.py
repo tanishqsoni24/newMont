@@ -42,7 +42,7 @@ class Profile(BaseModel):
 class Income(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="income_user")
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
-    income_type = models.CharField(max_length=20, blank=True, null=True)
+    income_type = models.CharField(max_length=200, blank=True, null=True)
     income_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
