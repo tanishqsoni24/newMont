@@ -415,7 +415,7 @@ export default function Home() {
                 price={item.price}
                 rate="4.5"
                 id={item.id}
-                src={"http://192.168.1.11:8000"+item.image}
+                src={image}
               />
             </div>))}
         </div>
