@@ -17,7 +17,7 @@ export default function Task() {
       <h2 className="text-3xl  block text-center text-white font-bold m-7">
         Task System{" "}
       </h2>
-      <div
+      {/* <div
         style={{ marginTop: "2rem" }}
         className="container mx-auto flex flex-wrap justify-around"
       >
@@ -45,6 +45,9 @@ export default function Task() {
           title="Invite to activate 1000"
           desc="By sharing, when the member you recommend reaches VIP1 or above, success +1000. Additional reward 8070 (when you reach the goal, you can receive the bonus here every day)"
         />
+      </div> */}
+      <div style={{fontSize: "xx-large"}} className="text-center text-white">
+        Coming Soon...
       </div>
     </React.Fragment>
   );

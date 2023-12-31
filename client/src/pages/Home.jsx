@@ -193,7 +193,7 @@ export default function Home() {
               className="ml-3  "
               src="https://img.icons8.com/ios/50/00032c/telegram-app.png"
               alt="telegram-app"
-            />
+              />
             <p>Telegram</p>
           </div>
           <div className="item p-2 m-8 cursor-pointer" onClick={showWPopup}>
@@ -266,7 +266,7 @@ export default function Home() {
                   <p className="font-bold pb-3 pl-9 pr-9 justify-self-center">
                     Telegram
                   </p>
-                  <button className="mt-4 px-5 py-2 md:ml-5 ml-5 bg-[#00032c] text-white rounded-3xl hover:bg-[#03543F] transition-colors 100ms ease-in-out">
+                  <button onClick={()=>{window.location.href="https://t.me/my_golds_mall"}} className="mt-4 px-5 py-2 md:ml-5 ml-5 bg-[#00032c] text-white rounded-3xl hover:bg-[#03543F] transition-colors 100ms ease-in-out">
                     Join Now
                   </button>
                 </div>
@@ -393,7 +393,7 @@ export default function Home() {
                 price={item.price}
                 rate="4.5"
                 id={item.id}
-                src={"http://192.168.1.11:8000"+item.image}
+                src={"https://mygoldmalls.com/"+item.image}
               />
             </div>))}
         </div>
