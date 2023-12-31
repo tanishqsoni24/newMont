@@ -33,7 +33,7 @@ export default function Team() {
       // generate a link for the user to share
 
       setUser({
-        invite_code: `http://localhost:3000/signup?invite_code=${decoded.invite_code}`,
+        invite_code: `https://mygoldmalls/signup?invite_code=${decoded.invite_code}`,
       });
       const response = await axios.post(
         "https://mygoldmalls.com/api/accounts/my-teams/",
