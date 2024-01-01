@@ -461,6 +461,29 @@ def approve_recharge_record(request):
                     income_object = Income.objects.create(user=recommend_user, amount=float(recharge_record.amount) * 0.25, income_type="Referral Recharge Income", income_date=timezone.now())
                     income_object.save()
 
+            # update level 2 user wallet by 3% of recharge amount if its first recharge
+            if recharge_record.user.recharge_amount == 0:
+                try:
+                    level2_user = recharge_record.user.recommended_by.recommended_by
+                    if level2_user:
+                        level2_user.profile.wallet = level2_user.profile.wallet + (float(recharge_record.amount) * 0.03)
+                        level2_user.save()
+                        income_object = Income.objects.create(user=level2_user, amount=float(recharge_record.amount) * 0.03, income_type="Level 2 Recharge Income", income_date=timezone.now())
+                        income_object.save()
+                except:
+                    pass
+
+            # update level 3 user wallet by 1% of recharge amount if its first recharge
+            try:
+                level3_user = recharge_record.user.recommended_by.recommended_by.recommended_by
+                if level3_user:
+                    level3_user.profile.wallet = level3_user.profile.wallet + (float(recharge_record.amount) * 0.01)
+                    level3_user.save()
+                    income_object = Income.objects.create(user=level3_user, amount=float(recharge_record.amount) * 0.01, income_type="Level 3 Recharge Income", income_date=timezone.now())
+                    income_object.save()
+            except:
+                pass
+
             # update user wallet
             user = recharge_record.user
             user.recharge_amount = user.recharge_amount + recharge_record.amount
