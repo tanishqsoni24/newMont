@@ -162,12 +162,12 @@ export default function Home() {
             </h3>
             <p>
               1.Notice: MyGoldMalls APP will be officially launched on
-              25/12/2023.
+              02/1/2024.
             </p>
             <p>
               2.Withdrawal is available when your account balance reaches 180₹
             </p>
-            <p>3.Withdrawal handling fee is 3%,</p>
+            <p>3.Withdrawal handling fee is 10%,</p>
             <p>
               4.If recharge fails, please refresh or choose another channel.{" "}
             </p>
