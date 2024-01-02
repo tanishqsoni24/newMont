@@ -58,10 +58,10 @@ def signup(request):
                 if recommend_profile:
                     user_profile_object.recommended_by = recommend_profile.user
                     user_profile_object.save()
-                    recommend_profile.wallet += 50
-                    recommend_profile.save()
-                    income_object = Income.objects.create(user=recommend_profile.user, amount=50, income_type="Referral", income_date=timezone.now())
-                    income_object.save()
+                    # recommend_profile.wallet += 50
+                    # recommend_profile.save()
+                    # income_object = Income.objects.create(user=recommend_profile.user, amount=50, income_type="Referral", income_date=timezone.now())
+                    # income_object.save()
                     return JsonResponse({'status': 'Success', 'message': f'OTP Sent to your registered mail id {email}'})
                 return JsonResponse({'status': 'Error', 'message': 'Invalid Invite Code'})
             return JsonResponse({'status': 'Success', 'message': 'OTP Sent'})
