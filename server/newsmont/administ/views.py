@@ -435,13 +435,13 @@ def approve_recharge_record(request):
         uid = data.get("recharge_id")
         is_rejected = data.get("is_rejected")
         if(is_rejected == True): 
-            recharge_record = Recharge_Record.objects.filter(uid=uid).first()
+            recharge_record = Recharge_Record.objects.filter(transaction_id=uid).first()
             if recharge_record:
                 recharge_record.is_rejected = True
                 recharge_record.save()
                 return JsonResponse({"status": "Success", "message": "Recharge Rejected"})
             return JsonResponse({"status": "Failed", "message": "Invalid Recharge Record"})
-        recharge_record = Recharge_Record.objects.filter(uid=uid).first()
+        recharge_record = Recharge_Record.objects.filter(transaction_id=uid).first()
         if recharge_record:
             recharge_record.status = True
             recharge_record.save()

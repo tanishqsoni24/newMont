@@ -292,7 +292,29 @@ export default function Profile() {
         setIsAlert(
           "Recharge Request Sent Successfully of amount ₹" + recharge + ".00 "
         );
+
+        // Approve the payment
+
+        const approveResponse = await axios.post(
+          "https://mygoldmalls.com/api/administ/approve_recharge/",
+          {
+            recharge_id: paymentSuccessResponse.transaction_id,
+            is_rejected: false,
+          },
+          { headers: { "Content-Type": "application/json" } })
+
+        if (approveResponse.data.status === "Success") {
+          //(approveResponse.data);
+          window.location.href = "/profile";
+        }
+
+        else {
+          if(approveResponse.data.message!=="Phone Number not registered"){
+            setIsAlert(approveResponse.data.message);
+          }
+        }
       }
+      
       else {
         if(backendResponse.data.message!=="Phone Number not registered"){
           setIsAlert(backendResponse.data.message);
