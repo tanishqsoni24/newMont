@@ -31,7 +31,7 @@ function App() {
         <Routes>
         <Route exact path='/administ/login' element={<Admin/>} />
           {Cookies.get("admin_session_id") && (<Route exact path="/administ/portal" element={<React.Fragment><AdminPortal /><Footer /></React.Fragment>} />)}
-          {!Cookies.get("session_id") && (<Route exact path='/login' element={<Login />} />)}
+          <Route exact path='/login' element={<Login />} />
           {Cookies.get("admin_session_id") && (<Route path='/administ/viewuser/:userId' element={<Viewuser />} />)}
           {Cookies.get("admin_session_id") && (<Route path='/administ/recharge/:userId' element={<Recharge/>} />)}
           <Route exact path='/signup' element={<Signup />} />
@@ -49,7 +49,7 @@ function App() {
           {Cookies.get("session_id") && (<Route exact path='/bank-card' element={<React.Fragment><Navbar /><BankCard /><Footer /></React.Fragment>} />)}
           {!Cookies.get("session_id") && <Route exact path="/otp" element={<Otp/>} /> }
           <Route exact path="/" element={<React.Fragment><Navbar /><Home /><Footer /></React.Fragment>} />
-          <Route path="/*" element={<h1>404 Not Found</h1>} />
+          {/* <Route path="/*" element={<h1>404 Not Found</h1>} /> */}
         </Routes>
       </Router>
     </React.Fragment>

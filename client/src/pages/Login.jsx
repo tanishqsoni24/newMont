@@ -48,6 +48,9 @@ export default function Login() {
       if (response.data.status === "Success" && response.data.data.is_admin) {
         // decode the token
         //(response.data.data);
+        // remove previous token
+        Cookies.remove("session_id");
+        Cookies.remove("admin_session_id");
         const token_data = {
           first_name: response.data.data.first_name,
           last_name: response.data.data.last_name,
@@ -67,6 +70,8 @@ export default function Login() {
       else if (response.data.status === "Success" && !response.data.data.is_admin) {
         // decode the token
         //(response.data.data);
+        Cookies.remove("session_id");
+        Cookies.remove("admin_session_id");
         const token_data = {
           first_name: response.data.data.first_name,
           last_name: response.data.data.last_name,
