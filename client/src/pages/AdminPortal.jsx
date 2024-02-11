@@ -247,7 +247,7 @@ export default function AdminPortal() {
           <a href="/" className="flex items-center">
             <img src={logo} className="w-20 mr-2" alt="Flowbite Logo" />
             <span className="self-center text-2xl col-p md:text-3xl font-bold whitespace-nowrap dark:text-[#4f6cc5]">
-              My Gold Malls
+              Sting Hike
             </span>
           </a>
           <div className="flex md:order-2 ml-7">

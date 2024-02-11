@@ -5,7 +5,7 @@ const Footer = () => {
 
   return (
     <footer className='mb-0 mt-3 invisible bg-[#31C48D] text-white' >
-      <p className='p-5 text-center text-xl font-light ' >&copy; {currentYear} My Gold Malls. All rights reserved.</p>
+      <p className='p-5 text-center text-xl font-light ' >&copy; {currentYear} Sting Hike. All rights reserved.</p>
     </footer>
   );
 };
