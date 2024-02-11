@@ -161,7 +161,7 @@ export default function Home() {
               Announcement
             </h3>
             <p>
-              1.Notice: MyGoldMalls APP will be officially launched on
+              1.Notice: Sting Hike APP will be officially launched on
               02/1/2024.
             </p>
             <p>
