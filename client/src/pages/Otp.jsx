@@ -16,7 +16,7 @@ export default function Otp() {
         e.preventDefault();
         const token = Cookies.get("phone_number");
         const decoded = jwtDecode(token);
-        const response = await axios.post('https://mygoldmalls.com/api/accounts/resend-otp/', {
+        const response = await axios.post('https://stinghike.com/api/accounts/resend-otp/', {
             phone_number: decoded.phone_number
         }, { headers: { 'Content-Type': 'application/json' } });
 
@@ -35,7 +35,7 @@ export default function Otp() {
         e.preventDefault()
         const token = Cookies.get("phone_number");
         const decoded = await jwtDecode(token);
-        const response = await axios.post('https://mygoldmalls.com/api/accounts/activate/', {
+        const response = await axios.post('https://stinghike.com/api/accounts/activate/', {
           phone_number: decoded.phone_number,
           otp: otp
         }, { headers: { 'Content-Type': 'application/json' } });

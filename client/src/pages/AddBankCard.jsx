@@ -39,7 +39,7 @@ export default function AddBankCard() {
             const token = Cookies.get("session_id");
             const decoded = await jwt_decode(token);
             //(decoded.phone_number)
-            const response = await axios.post('https://mygoldmalls.com/api/accounts/add-bank-card/',{
+            const response = await axios.post('https://stinghike.com/api/accounts/add-bank-card/',{
                 phone_number: decoded.phone_number,
                 card_holder_name: bankCard.card_holder_name,
                 bank_name: bankCard.bank_name,

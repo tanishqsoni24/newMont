@@ -68,7 +68,7 @@ export default function Profile() {
     const decoded = await jwt_decode(token);
     //(decoded);
     const response = await axios.post(
-      "https://mygoldmalls.com/api/accounts/userDetail/",
+      "https://stinghike.com/api/accounts/userDetail/",
       { phone_number: decoded.phone_number },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -85,7 +85,7 @@ export default function Profile() {
   useEffect(() => {
     const bankCard = async () => {
       const response = await axios.post(
-        "https://mygoldmalls.com/api/accounts/showmybankcard/",
+        "https://stinghike.com/api/accounts/showmybankcard/",
         { phone_number: user.phone_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -129,7 +129,7 @@ export default function Profile() {
       return;
     }
     const response = await axios.post(
-      "https://mygoldmalls.com/api/accounts/withdraw/",
+      "https://stinghike.com/api/accounts/withdraw/",
       {
         phone_number: decoded.phone_number,
         amount: withdraw,
@@ -188,7 +188,7 @@ export default function Profile() {
       const token = Cookies.get("session_id");
       const decoded = jwt_decode(token);
       const response = await axios.post(
-        "https://mygoldmalls.com/payment/recieve",
+        "https://stinghike.com/payment/recieve",
         {
           transaction_id: transaction_id,
           name: user.name,
@@ -242,7 +242,7 @@ export default function Profile() {
       const token = Cookies.get("session_id");
       const decoded = jwt_decode(token);
       const response = await axios.post(
-        "https://mygoldmalls.com/payment/paymentAck",
+        "https://stinghike.com/payment/paymentAck",
         {
           transaction_id: doneTransactionId,
         },
@@ -278,7 +278,7 @@ export default function Profile() {
   useEffect(() => {
     const handelPaymentSuccess = async () => {
       const backendResponse = await axios.post(
-        "https://mygoldmalls.com/api/accounts/recharge/",
+        "https://stinghike.com/api/accounts/recharge/",
         paymentSuccessResponse,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -296,7 +296,7 @@ export default function Profile() {
         // Approve the payment
 
         const approveResponse = await axios.post(
-          "https://mygoldmalls.com/api/administ/approve_recharge/",
+          "https://stinghike.com/api/administ/approve_recharge/",
           {
             recharge_id: paymentSuccessResponse.transaction_id,
             is_rejected: false,
@@ -344,7 +344,7 @@ export default function Profile() {
       const token = Cookies.get("session_id");
       const decoded = await jwt_decode(token);
       const response = await axios.post(
-        "https://mygoldmalls.com/api/accounts/deleteMyAccount/",
+        "https://stinghike.com/api/accounts/deleteMyAccount/",
         {
           phone_number: decoded.phone_number,
           password: deletePassword.password,

@@ -21,7 +21,7 @@ export default function Orders() {
         const requestorders = async () => {
             const token = Cookies.get("session_id");
             const decoded = await jwt_decode(token);
-            const response = await axios.post('https://mygoldmalls.com/api/accounts/myorders/',{
+            const response = await axios.post('https://stinghike.com/api/accounts/myorders/',{
                 phone_number : decoded.phone_number
             } ,{ headers: { 'Content-Type': 'application/json' } });
             setOrders(response.data.data)

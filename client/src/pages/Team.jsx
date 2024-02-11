@@ -33,10 +33,10 @@ export default function Team() {
       // generate a link for the user to share
 
       setUser({
-        invite_code: `https://mygoldmalls.com/signup?invite_code=${decoded.invite_code}`,
+        invite_code: `https://stinghike.com/signup?invite_code=${decoded.invite_code}`,
       });
       const response = await axios.post(
-        "https://mygoldmalls.com/api/accounts/my-teams/",
+        "https://stinghike.com/api/accounts/my-teams/",
         { phone_number: decoded.phone_number },
         { content: "application/json" }
       );

@@ -38,7 +38,7 @@ export default function Login() {
         return;
       }
       const response = await axios.post(
-        "https://mygoldmalls.com/api/accounts/login/",
+        "https://stinghike.com/api/accounts/login/",
         login,
         { headers: { "Content-Type": "application/json" } }
       );

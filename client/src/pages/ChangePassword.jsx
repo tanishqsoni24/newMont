@@ -37,7 +37,7 @@ export default function ChangePassword() {
         const decoded = jwt_decode(token);
         const phone_number = decoded.phone_number;
         if(changePassword.newPassword === changePassword.confirmPassword){
-            const response = await axios.post("https://mygoldmalls.com/api/accounts/changePassword/", {
+            const response = await axios.post("https://stinghike.com/api/accounts/changePassword/", {
                 phone_number: phone_number,
                 oldPassword: changePassword.oldPassword,
                 newPassword: changePassword.newPassword

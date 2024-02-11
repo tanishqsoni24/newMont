@@ -8,7 +8,7 @@ import sign from "jwt-encode";
 
 export default function Signup() {
   useEffect(() => {
-    // https://mygoldmalls.com/signup?invite_code=c68d0c7883a4
+    // https://stinghike.com/signup?invite_code=c68d0c7883a4
     const urlParams = new URLSearchParams(window.location.search);
     const invite_code = urlParams.get("invite_code");
     if (invite_code) {
@@ -86,7 +86,7 @@ export default function Signup() {
       try {
         //(signup);
         const response = await axios.post(
-          "https://mygoldmalls.com/api/accounts/signup/",
+          "https://stinghike.com/api/accounts/signup/",
           signup,
           { headers: { "Content-Type": "application/json" } }
         );

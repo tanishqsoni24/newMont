@@ -19,7 +19,7 @@ export default function Viewuser() {
       };
       useEffect(() => {
         const withdrawDetail = async () => {
-        const response = await axios.post('https://mygoldmalls.com/api/administ/withdrawal_detail/',{phone_number : userId.split("-")[1]} ,{"content": "application/json"});
+        const response = await axios.post('https://stinghike.com/api/administ/withdrawal_detail/',{phone_number : userId.split("-")[1]} ,{"content": "application/json"});
         //(response.data.data)
         
         setDataArray(response.data.data)
